@@ -1,0 +1,2 @@
+[run]
+omit = __init__.py,constants.py,date_utils.py,exceptions.py,field.py,row_record.py
