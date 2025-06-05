@@ -49,6 +49,6 @@ pytest --cov=tsfile --cov-report=html --cov-branch
 ## 综合运行
 
 ```bash
-# 1、覆盖率+自动化
+# 覆盖率+自动化
 pytest --cov=tsfile --cov-report=html --cov-branch --html=report.html
 ```
