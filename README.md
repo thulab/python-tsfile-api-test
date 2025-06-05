@@ -2,7 +2,25 @@
 
 ----
 
-测试工具部署：[‌‍﻿⁠‌‍⁠‍‌‬﻿‬﻿‍‌‬‬⁠‌‬‬⁠‍‌‬‬⁠﻿‬‬⁠TsFile 接口测试工具部署和使用 - 飞书云文档](https://timechor.feishu.cn/docx/Xw64d5FFZoQLKQxZW2UcwGHUnwb)
+## 依赖引用
+
+编译wheel包
+
+```bash
+git clone https://github.com/apache/tsfile.git
+cd tsfile
+mvn clean install -P with-python -DskipTests # wheel包位于tsfile根目录下/python/dist中
+
+```
+
+引用wheel包
+
+```bash
+git clone https://github.com/thulab/python-tsfile-test.git
+cd python-tsfile-test
+pip3 install tsfile-*.whl
+# 删除旧引用：pip3 uninstall tsfile
+```
 
 ## 自动化测试工具——pytest
 
