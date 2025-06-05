@@ -4,7 +4,7 @@
 
 ## 依赖引用
 
-编译wheel包
+编译源码生成wheel包
 
 ```bash
 git clone https://github.com/apache/tsfile.git
