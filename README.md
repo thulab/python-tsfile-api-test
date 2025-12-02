@@ -23,6 +23,7 @@ mvn clean install -P with-python -DskipTests # wheel包位于tsfile根目录下/
 git clone https://github.com/thulab/python-tsfile-api-test.git
 cd python-tsfile-api-test
 pip3 install tsfile-*.whl
+# 查看包的详细信息：pip3 show tsfile
 # 删除旧引用：pip3 uninstall tsfile
 ```
 
