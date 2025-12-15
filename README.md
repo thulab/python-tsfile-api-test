@@ -80,7 +80,7 @@ pip3 install pytest-cov
 ### 使用
 
 ```bash
-# 1、收集要测量覆盖率的源码放到程序根目录的tsfile下
+# 1、收集要测量覆盖率的源码放到程序根目录的tsfile下（注意：测试完成后请删除源码，以防功能测试引用的是源码而非whl包）
 
 # 2、执行下面命令进行代码覆盖率测试并生成报告文件（已开启分支覆盖）
 cd tests
@@ -97,6 +97,7 @@ pytest --cov=tsfile --cov-report=html --cov-branch
 ## 综合运行
 
 ```bash
+cd tests
 # 覆盖率+自动化
 pytest --cov=tsfile --cov-report=html --cov-branch --html=report.html
 ```
