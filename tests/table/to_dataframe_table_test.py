@@ -146,7 +146,7 @@ def test_table_all_datatype_query_to_dataframe_variants():
             assert df2_12.iloc[i, 10] == f"blob_data_{df2_12.iloc[i, 0]}".encode('utf-8')
             assert df2_12.iloc[i, 11] == np.int64(df2_12.iloc[i, 0] * 9)
             assert df2_12.iloc[i, 12] in dateSet
-        df2_13 = to_dataframe(tsfile_path, column_names=["Device1", "Device2", "Value1"]) # TODO：目前未自动转小写
+        df2_13 = to_dataframe(tsfile_path, column_names=["Device1", "Device2", "Value1"])
         for i in range(max_row_num):
             assert df2_13.iloc[i, 1] == "Device1_" + str(df2_13.iloc[i, 0])
             assert df2_13.iloc[i, 2] == "Device2_" + str(df2_13.iloc[i, 0])
