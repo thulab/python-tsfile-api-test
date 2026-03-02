@@ -13,14 +13,11 @@ from tsfile import to_dataframe, TableNotExistError, TableSchema, ColumnSchema, 
 
 
 # tsfile文件路径
-# tsfile_path = "../../data/tsfile/table_data.tsfile"
-# tsfile_path = "C:\\IoTDBProjects\\iotdb-all\\timechodb-2.0.6-SNAPSHOT-bin-all\\timechodb-2.0.6.4-bin-rc2-alone-ainode\\data\\datanode\\data\\sequence\\test_g_0\\12\\-102790\\1764743152066-1-0-0.tsfile"
-
+tsfile_path = "../data/tsfile/table_to_dataframe.tsfile"
 def test_table_all_datatype_query_to_dataframe_variants():
     """
     测试 to_dataframe 函数的正常功能
     """
-    tsfile_path = "test_table.tsfile"
     table = TableSchema("test_table",
                         [ColumnSchema("Device1", TSDataType.STRING, ColumnCategory.TAG),
                          ColumnSchema("Device2", TSDataType.STRING, ColumnCategory.TAG),

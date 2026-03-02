@@ -15,11 +15,8 @@ from tsfile import TsFileWriter, TsFileReader, ColumnCategory
 
 
 # tsfile文件路径
-# tsfile_path = "../../data/tsfile/table_data.tsfile"
-# tsfile_path = "C:\\IoTDBProjects\\iotdb-all\\timechodb-2.0.6-SNAPSHOT-bin-all\\timechodb-2.0.6.4-bin-rc2-alone-ainode\\data\\datanode\\data\\sequence\\root.test.g_0\\13\\0\\1764744753824-1-0-0.tsfile"
-
+tsfile_path = "../data/tsfile/record_write_and_read.tsfile"
 def test_tree_all_datatype_query_to_dataframe_variants1():
-    tsfile_path = "record_write_and_read.tsfile"
     try:
         if os.path.exists(tsfile_path):
             os.remove(tsfile_path)

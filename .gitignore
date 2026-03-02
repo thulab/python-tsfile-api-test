@@ -1,0 +1,3 @@
+tests/report.json
+tests/table/__pycache__/**.pyc
+tests/tree/__pycache__/**.pyc
