@@ -9,7 +9,6 @@ from tsfile import TsFileWriter, TsFileReader, ColumnCategory
 
 """
 标题：树模型 to_dataframe 接口功能测试
-作者：肖林捷
 日期：2025/12
 """
 
@@ -179,5 +178,6 @@ def test_tree_all_datatype_query_to_dataframe_variants1():
         #     print(f"路径不存在的异常: {e}")
 
     finally:
+        # 删除临时文件
         if os.path.exists(tsfile_path):
             os.remove(tsfile_path)

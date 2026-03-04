@@ -7,7 +7,6 @@ from tsfile import to_dataframe, TableNotExistError, TableSchema, ColumnSchema, 
 
 """
 标题：表模型 to_dataframe 接口功能测试
-作者：肖林捷
 日期：2025/12
 """
 
@@ -225,5 +224,6 @@ def test_table_all_datatype_query_to_dataframe_variants():
             assert e.args[0] == "[non_existent_column] Column does not exist"
 
     finally:
+        # 删除临时文件
         if os.path.exists(tsfile_path):
             os.remove(tsfile_path)
