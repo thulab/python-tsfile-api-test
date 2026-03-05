@@ -1,6 +1,6 @@
 import os
 from datetime import date
-
+import pytest
 import numpy as np
 from tsfile import to_dataframe, TableNotExistError, TableSchema, ColumnSchema, TSDataType, ColumnCategory, \
     TsFileTableWriter, Tablet, ColumnNotExistError
@@ -12,7 +12,21 @@ from tsfile import to_dataframe, TableNotExistError, TableSchema, ColumnSchema, 
 
 
 # tsfile文件路径
-tsfile_path = "../data/tsfile/table_to_dataframe.tsfile"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+tsfile_path = os.path.join(current_dir, "../../data/tsfile/dataframe_to_tsfile_test.tsfile")
+tsfile_path = os.path.normpath(tsfile_path)
+
+# 清理tsfile文件
+@pytest.fixture(autouse=True, scope="function")
+def cleanup_tsfile():
+    # 测试前清理
+    if os.path.exists(tsfile_path):
+            os.remove(tsfile_path)
+    yield
+    # 测试后清理
+    if os.path.exists(tsfile_path):
+            os.remove(tsfile_path)
+
 def test_table_all_datatype_query_to_dataframe_variants():
     """
     测试 to_dataframe 函数的正常功能
@@ -91,9 +105,9 @@ def test_table_all_datatype_query_to_dataframe_variants():
         assert df1_1.iloc[0, 0] == 0
 
         # 2. 指定列名
-        # df2_0 = to_dataframe(tsfile_path, column_names=["Device1"]) # TODO：目前返回空，下个版本优化后也要单独列出TAG列数据
-        # for i in range(max_row_num):
-        #     assert df2_0.iloc[i, 1] == "Device1_" + str(df2_0.iloc[i, 0])
+        df2_0 = to_dataframe(tsfile_path, column_names=["Device1"])
+        for i in range(max_row_num):
+            assert df2_0.iloc[i, 1] == "Device1_" + str(df2_0.iloc[i, 0])
         df2_1 = to_dataframe(tsfile_path, column_names=["Value1"])
         for i in range(max_row_num):
             assert df2_1.iloc[i, 1] == np.bool_(df2_1.iloc[i, 0] % 2 == 0)
