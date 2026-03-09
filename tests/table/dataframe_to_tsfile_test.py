@@ -793,79 +793,76 @@ def test_dataframe_to_tsfile_time_column_not_exist():
     except ValueError as e:
         assert str(e) == "Time column 'non_existent_time' not found in DataFrame"
 
-# def test_dataframe_to_tsfile_column_invalid1():
-#     """
-#     测试 21: 功能测试 - dataframe_to_tsfile 接口 - 参数 - 非法列名 空白字符
-#     """
-#     # 创建DataFrame
-#     num_rows = 100
-#     data = {
-#         '': range(num_rows),
-#         'tag1': ['tag1_' + str(i) if i % 3 != 0 else None for i in range(num_rows)],
-#         'tag2': ['tag2_' + str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'bool_': [i % 2 == 0 if i % 3 != 0 else None for i in range(num_rows)],
-#         'int32_': [i * 2 if i % 4 != 0 else None for i in range(num_rows)],
-#         'int64_': [i * 3 if i % 5 != 0 else None for i in range(num_rows)],
-#         'float_': [i * 1.5 if i % 3 != 0 else None for i in range(num_rows)],
-#         'double_': [i * 2.5 if i % 4 != 0 else None for i in range(num_rows)],
-#         'string_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'text_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'blob_': [i.to_bytes(4, byteorder='big') if i % 3 != 0 else None for i in range(num_rows)],
-#         'timestamp_': [i * 1000 if i % 4 != 0 else None for i in range(num_rows)],
-#         'date_': [pd.Timestamp(f'2023-01-01 {i % 24}:00:00').date() if i % 5 != 0 else None for i in range(num_rows)],
-#     }
-#     df = pd.DataFrame(data)
-#     df.int32_ = df.int32_.astype('Int32')  # 使用可空整数类型
-#     df.int64_ = df.int64_.astype('Int64')  # 使用可空整数类型
-#     df.bool_ = df.bool_.astype('boolean')  # 使用可空布尔类型
-#     df.float_ = df.float_.astype(np.float32)
-#     df.timestamp_ = df.timestamp_.astype('Int64') # 使用可空整数类型
+def test_dataframe_to_tsfile_column_invalid1():
+    """
+    测试 21: 功能测试 - dataframe_to_tsfile 接口 - 参数 - 非法列名 空白字符
+    """
+    # 创建DataFrame
+    num_rows = 100
+    data = {
+        '': range(num_rows),
+        'tag1': ['tag1_' + str(i) if i % 3 != 0 else None for i in range(num_rows)],
+        'tag2': ['tag2_' + str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'bool_': [i % 2 == 0 if i % 3 != 0 else None for i in range(num_rows)],
+        'int32_': [i * 2 if i % 4 != 0 else None for i in range(num_rows)],
+        'int64_': [i * 3 if i % 5 != 0 else None for i in range(num_rows)],
+        'float_': [i * 1.5 if i % 3 != 0 else None for i in range(num_rows)],
+        'double_': [i * 2.5 if i % 4 != 0 else None for i in range(num_rows)],
+        'string_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'text_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'blob_': [i.to_bytes(4, byteorder='big') if i % 3 != 0 else None for i in range(num_rows)],
+        'timestamp_': [i * 1000 if i % 4 != 0 else None for i in range(num_rows)],
+        'date_': [pd.Timestamp(f'2023-01-01 {i % 24}:00:00').date() if i % 5 != 0 else None for i in range(num_rows)],
+    }
+    df = pd.DataFrame(data)
+    df.int32_ = df.int32_.astype('Int32')  # 使用可空整数类型
+    df.int64_ = df.int64_.astype('Int64')  # 使用可空整数类型
+    df.bool_ = df.bool_.astype('boolean')  # 使用可空布尔类型
+    df.float_ = df.float_.astype(np.float32)
+    df.timestamp_ = df.timestamp_.astype('Int64') # 使用可空整数类型
     
-#     # 测试非法时间列名
-#     time_column = ''
+    # 测试非法时间列名
+    time_column = ''
     
-#     try:
-#         dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
-#         assert False, f"Time column name '{time_column}' did not raise an exception"
-#     except ValueError as e:
-#         assert str(e) == "Column name cannot be None"
+    try:
+        dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
+        assert False, f"Time column name '{time_column}' did not raise an exception"
+    except ValueError as e:
+        assert str(e) == "Column name cannot be None or empty"
 
-# def test_dataframe_to_tsfile_column_invalid2():
-#     """
-#     测试 22: 功能测试 - dataframe_to_tsfile 接口 - 非法列名 None
-#     """
-#     # 创建DataFrame
-#     num_rows = 100
-#     data = {
-#         'time': range(num_rows),
-#         'tag1': ['tag1_' + str(i) if i % 3 != 0 else None for i in range(num_rows)],
-#         'tag2': ['tag2_' + str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'bool_': [i % 2 == 0 if i % 3 != 0 else None for i in range(num_rows)],
-#         'int32_': [i * 2 if i % 4 != 0 else None for i in range(num_rows)],
-#         'int64_': [i * 3 if i % 5 != 0 else None for i in range(num_rows)],
-#         'float_': [i * 1.5 if i % 3 != 0 else None for i in range(num_rows)],
-#         'double_': [i * 2.5 if i % 4 != 0 else None for i in range(num_rows)],
-#         'string_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'text_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
-#         'blob_': [i.to_bytes(4, byteorder='big') if i % 3 != 0 else None for i in range(num_rows)],
-#         'timestamp_': [i * 1000 if i % 4 != 0 else None for i in range(num_rows)],
-#         'date_': [pd.Timestamp(f'2023-01-01 {i % 24}:00:00').date() if i % 5 != 0 else None for i in range(num_rows)],
-#     }
-#     df = pd.DataFrame(data)
-#     df.int32_ = df.int32_.astype('Int32')  # 使用可空整数类型
-#     df.int64_ = df.int64_.astype('Int64')  # 使用可空整数类型
-#     df.bool_ = df.bool_.astype('boolean')  # 使用可空布尔类型
-#     df.float_ = df.float_.astype(np.float32)
-#     df.timestamp_ = df.timestamp_.astype('Int64') # 使用可空整数类型
+def test_dataframe_to_tsfile_column_invalid2():
+    """
+    测试 22: 功能测试 - dataframe_to_tsfile 接口 - 非法列名 None
+    """
+    # 创建DataFrame
+    num_rows = 100
+    data = {
+        'time': range(num_rows),
+        None: ['tag1_' + str(i) if i % 3 != 0 else None for i in range(num_rows)],
+        'tag2': ['tag2_' + str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'bool_': [i % 2 == 0 if i % 3 != 0 else None for i in range(num_rows)],
+        'int32_': [i * 2 if i % 4 != 0 else None for i in range(num_rows)],
+        'int64_': [i * 3 if i % 5 != 0 else None for i in range(num_rows)],
+        'float_': [i * 1.5 if i % 3 != 0 else None for i in range(num_rows)],
+        'double_': [i * 2.5 if i % 4 != 0 else None for i in range(num_rows)],
+        'string_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'text_': [str(i) if i % 5 != 0 else None for i in range(num_rows)],
+        'blob_': [i.to_bytes(4, byteorder='big') if i % 3 != 0 else None for i in range(num_rows)],
+        'timestamp_': [i * 1000 if i % 4 != 0 else None for i in range(num_rows)],
+        'date_': [pd.Timestamp(f'2023-01-01 {i % 24}:00:00').date() if i % 5 != 0 else None for i in range(num_rows)],
+    }
+    df = pd.DataFrame(data)
+    df.int32_ = df.int32_.astype('Int32')  # 使用可空整数类型
+    df.int64_ = df.int64_.astype('Int64')  # 使用可空整数类型
+    df.bool_ = df.bool_.astype('boolean')  # 使用可空布尔类型
+    df.float_ = df.float_.astype(np.float32)
+    df.timestamp_ = df.timestamp_.astype('Int64') # 使用可空整数类型
     
-#     # 测试非法时间列名
-#     time_column = None
-    
-#     try:
-#         dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
-#         assert False, f"Time column name '{time_column}' did not raise an exception"
-#     except ValueError as e:
-#         assert str(e) == "Column name cannot be None"
+    try:
+        dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
+        assert False, "not raise an exception"
+    except ValueError as e:
+        assert str(e) == "Column name cannot be None or empty"
 
 def test_dataframe_to_tsfile_time_column_int():
     """
@@ -1035,7 +1032,7 @@ def test_dataframe_to_tsfile_set_time_column_only_time_column():
         dataframe_to_tsfile(df, tsfile_path, table_name="test_table", time_column="time")
         assert False, "not raise an exception"
     except ValueError as e:
-        assert str(e) == "DataFrame must have at least one data column besides 'time'"
+        assert str(e) == "DataFrame must have at least one data column besides the time column"
 
 def test_dataframe_to_tsfile_not_set_time_column_only_time_column():
     """
@@ -1052,7 +1049,7 @@ def test_dataframe_to_tsfile_not_set_time_column_only_time_column():
         dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
         assert False, "not raise an exception"
     except ValueError as e:
-        assert str(e) == "DataFrame must have at least one data column besides 'time'"
+        assert str(e) == "DataFrame must have at least one data column besides the time column"
 
 
 def test_dataframe_to_tsfile_tag_column_time():
@@ -1519,19 +1516,3 @@ def test_dataframe_to_tsfile_missing_required_params2():
     except TypeError as e:
         assert str(e) == "dataframe_to_tsfile() missing 1 required positional argument: 'dataframe'"
 
-# def test_dataframe_to_tsfile_only_time_column():
-#     """
-#     测试 42: 功能测试 - dataframe_to_tsfile 接口 - 只有时间列（异常情况）
-#     """
-#     # 创建只有时间列的DataFrame
-#     data = {
-#         'time': range(100),
-#     }
-#     df = pd.DataFrame(data)
-    
-#     # 尝试写入只有时间列的DataFrame
-#     try:
-#         dataframe_to_tsfile(df, tsfile_path, table_name="test_table", time_column="time")
-#         assert False, "Exception not caught"
-#     except ValueError as e:
-#         assert str(e) == "DataFrame must have at least one data column besides 'time'"
