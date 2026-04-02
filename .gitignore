@@ -5,3 +5,4 @@ tsfile/**
 tests/__pycache__/**
 tests/.coverage
 **.tsfile
+.idea
