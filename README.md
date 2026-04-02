@@ -24,6 +24,7 @@ python-tsfile-api-test/
 # 环境
 
 - Python > 3.8
+- C++ 环境 （编译依赖需要）
 
 # 依赖
 
@@ -32,10 +33,47 @@ python-tsfile-api-test/
 ```bash
 git clone https://github.com/apache/tsfile.git
 cd tsfile
-mvn clean install -P with-python -DskipTests 
+mvn clean install -P with-python -DskipTests
 ```
 
 wheel包位于tsfile根目录下/python/dist中
+
+常见问题
+
+```bash
+# 1、若出现缺少clang-format错误，请执行如下命令安装clang-format
+# Ubuntu
+sudo apt install clang-format-17
+# Windows（在管理员权限的PowerShell中执行）若没有安装choco，执行：Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+choco install llvm --version 17.0.6 -y
+# 验证（Windows验证需要重新打开一个窗口）
+clang-format --version
+
+# 2、若出现缺少MinGW错误，请执行如下命令安装MinGW
+# Windows（在管理员权限的PowerShell中执行）
+choco install mingw -y
+# 验证（Windows验证需要重新打开一个窗口）
+gcc --version
+g++ --version
+
+# 3、若出现clang编译器找不到Windows SDK库文件错误（如kernel32.lib等）
+# 原因：LLVM的clang需要Windows SDK，而MinGW Makefiles配置应使用gcc/g++
+# 解决方案一：临时设置环境变量（cmd中执行）
+set CC=gcc
+set CXX=g++
+rd /s /q cpp\target\build  # 清理构建缓存
+mvn clean install -P with-python -DskipTests
+
+# 解决方案二：永久设置环境变量（避免每次编译都要设置）
+# Windows系统环境变量设置方法：
+# （1）调整PATH顺序：将 C:\ProgramData\mingw64\mingw64\bin 移到 C:\Program Files\LLVM\bin 之前
+#     打开"系统属性" → "高级" → "环境变量" → 编辑系统变量"Path" → 移动MinGW路径到LLVM上方
+# （2）或在系统环境变量中添加：
+#     新建变量 CC=gcc，CXX=g++
+# 命令行快速设置（管理员权限cmd）：
+setx CC "gcc" /M
+setx CXX "g++" /M
+```
 
 步骤二：引用wheel包
 
