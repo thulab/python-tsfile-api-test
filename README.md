@@ -23,7 +23,7 @@ python-tsfile-api-test/
 
 # 环境
 
-- Python > 3.8
+- Python > 3.8 （推荐3.10 到 3.12）
 - C++ 环境 （编译依赖需要）
 
 # 依赖
