@@ -117,7 +117,7 @@ pytest
 
 ```Bash
 # 安装插件
-pip install pytest-json
+pip3 install pytest-json
 # 使用（生成的文件位于当前执行目录下）
 pytest --json=report.json
 ```
@@ -126,7 +126,7 @@ pytest --json=report.json
 
 ```Bash
 # 安装插件
-pip install pytest-html
+pip3 install pytest-html
 # 使用（生成的文件位于当前执行目录下）
 pytest --html=report.html
 ```
