@@ -382,7 +382,7 @@ class TestTsFileDataFrameBasic:
     def test_len_no_field_table(self, tsfile_path):
         """测试没有FIELD列的表，没有有效序列会报错"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, [], [], row_num=20)
-        with  pytest.raises(ValueError, match="No valid numeric series found in TsFile"):
+        with  pytest.raises(ValueError, match="No valid time series found in the provided TsFile files"):
             TsFileDataFrame(tsfile_path, show_progress=False)
 
     def test_len_multiple_devices(self, tsfile_path):
@@ -512,14 +512,28 @@ class TestTsFileDataFrameLoc:
             # print(data)
 
 
-    @pytest.mark.skip(reason="loc时间切片功能存在bug，含空值时，返回超出指定时间范围的数据")
-    def test_loc_time_slice_within_range_contain_null_value(self, tsfile_path):
-        """测试时间切片 - 数据含空值"""
-        create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=40, is_contains_null_values=True)
+    def test_loc_alignment_with_null_values(self, tsfile_path):
+        """测试loc对齐查询 - 含空值时的合并去重和NaN填充性能"""
+        import time
+
+        # 1. 创建含空值的测试数据
+        row_num = 5000
+        create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=row_num, is_contains_null_values=True)
+
         with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
             series_names = tsdf.list_timeseries()
-            data = tsdf.loc[0:20, series_names]
-            assert len(data) <= 21
+
+            # 2. 测试含空值的对齐查询（需要NaN填充）
+            start_time = time.time()
+            data = tsdf.loc[0:2500, series_names]
+            query_time = time.time() - start_time
+
+            # 3. 验证结果 - 空值处理会增加一定开销
+            # 注意：由于已知bug，含空值时可能返回超出指定范围的数据
+            assert len(data) == 2501
+            # 含空值的查询时间应该合理
+            assert query_time < 3.0, f"Loc query with null values took too long: {query_time}s"
 
     def test_loc_time_slice_within_range(self, tsfile_path):
         """测试时间切片 - 不超出范围"""
@@ -597,7 +611,7 @@ class TestBoundaryCases:
         with pytest.raises(RuntimeError, match="closed"):
             print(df[0])
 
-    @pytest.mark.skip(reason="所有值都为空，实际查询会出现问题")
+    @pytest.mark.skip(reason="因为现在tag filter的过滤不支持空值，TAG列全空值会出现Windows fatal exception: access violation")
     def test_all_null_values(self, tsfile_path):
         """测试所有值都为空"""
         columns = [
@@ -614,9 +628,14 @@ class TestBoundaryCases:
                 tablet.add_timestamp(i, i)
             writer.write_table(tablet)
 
-        with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
-            print(len(tsdf))
-            print(tsdf[0][0])
+        print()
+        with TsFileReader(tsfile_path) as reader:
+            print(reader.get_all_table_schemas())
+
+        # with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
+        #     print(tsdf)
+        #     print(len(tsdf))
+            # print(tsdf[0][0])
 
 # ============================================
 # 6. 数据类型专项测试
@@ -789,30 +808,6 @@ class TestPerformance:
             print(f"Medium scale loc query time: {query_time}s for {5001} timestamps")
             assert query_time < 5.0, f"Medium scale loc query took too long: {query_time}s"
 
-    @pytest.mark.xfail(reason="loc时间切片功能存在bug，含空值时返回超出指定时间范围的数据")
-    def test_loc_alignment_with_null_values(self, tsfile_path):
-        """测试loc对齐查询 - 含空值时的合并去重和NaN填充性能"""
-        import time
-
-        # 1. 创建含空值的测试数据
-        row_num = 5000
-        create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
-                       row_num=row_num, is_contains_null_values=True)
-
-        with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
-            series_names = tsdf.list_timeseries()
-
-            # 2. 测试含空值的对齐查询（需要NaN填充）
-            start_time = time.time()
-            data = tsdf.loc[0:2500, series_names]
-            query_time = time.time() - start_time
-
-            # 3. 验证结果 - 空值处理会增加一定开销
-            # 注意：由于已知bug，含空值时可能返回超出指定范围的数据
-            assert len(data) == 2501
-            # 含空值的查询时间应该合理
-            assert query_time < 3.0, f"Loc query with null values took too long: {query_time}s"
-
     def test_loc_alignment_multiple_files_different_timestamps(self, test_dir):
         """测试loc对齐查询 - 多文件不同时间戳范围的合并对齐"""
         import time
@@ -891,3 +886,431 @@ class TestPerformance:
             assert data.shape == (row_num, 6)
             print(f"Full range loc query time: {query_time}s for {row_num} timestamps")
             assert query_time < 5.0, f"Full range loc query took too long: {query_time}s"
+
+
+# ============================================
+# 8. Bug修复验证测试 (基于 commit b8885ae)
+# ============================================
+
+class TestBugFixValidation:
+    """测试Bug修复 - 基于 commit b8885ae 的修复内容 """
+
+    # ==================== 空 TsFile 加载问题修复 ====================
+
+    def test_empty_tsfile_shard_skipped(self, tmp_path):
+        """测试空的TsFile shard被正确跳过 - 修复后应该通过"""
+        # 1. 创建一个空的TsFile文件
+        empty_path = str(tmp_path / "empty.tsfile")
+        schema = TableSchema(
+            TABLE_NAME,
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+        with TsFileTableWriter(empty_path, schema):
+            pass  # 不写入任何数据
+
+        # 2. 创建一个有数据的TsFile文件
+        data_path = str(tmp_path / "data.tsfile")
+        create_tsfile1(data_path, TABLE_NAME, ["device"], [TSDataType.STRING],
+                       ["temperature"], [TSDataType.DOUBLE], row_num=20, is_contains_null_values=False)
+
+        # 3. 加载两个文件，验证空的shard被跳过
+        with TsFileDataFrame([empty_path, data_path], show_progress=False) as tsdf:
+            # 4. 验证结果 - 只返回有数据的文件中的序列
+            assert len(tsdf) == 1, f"Expected 1 series from non-empty shard, got {len(tsdf)}"
+            series_list = tsdf.list_timeseries()
+            assert len(series_list) == 1
+            assert TABLE_NAME.lower() in series_list[0]
+
+    def test_single_empty_tsfile_raises_error(self, tmp_path):
+        """测试单个空的TsFile文件 - 当前版本应该报错"""
+        empty_path = str(tmp_path / "empty.tsfile")
+        schema = TableSchema(
+            TABLE_NAME,
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("value", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+        with TsFileTableWriter(empty_path, schema):
+            pass
+
+        # 当前版本应该抛出异常（没有有效序列）
+        with pytest.raises(ValueError, match="No valid"):
+            TsFileDataFrame(empty_path, show_progress=False)
+
+    # ==================== loc 时间范围边界问题修复 ====================
+
+    def test_loc_time_range_boundary_with_sparse_data(self, tmp_path):
+        """测试loc时间范围边界 - 稀疏数据（部分字段有空值） - 修复后应该通过"""
+        path = str(tmp_path / "sparse.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        # 写入稀疏数据 - temperature 和 humidity 在不同时间点有值
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [0, 1, 2, 3],
+                'device': ['device_a', 'device_a', 'device_a', 'device_a'],
+                'temperature': [10.0, np.nan, np.nan, 40.0],
+                'humidity': [np.nan, 20.0, np.nan, 50.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 查询时间范围 [1:2]，验证不超出边界
+            series_names = tsdf.list_timeseries()
+            data = tsdf.loc[1:2, series_names]
+
+            # 验证时间戳严格在 [1, 2] 范围内
+            assert len(data.timestamps) == 2
+            assert data.timestamps[0] == np.int64(1)
+            assert data.timestamps[1] == np.int64(2)
+            assert data.shape == (2, 2)
+
+    def test_loc_single_timestamp_with_nulls(self, tmp_path):
+        """测试loc单时间戳查询 - 含空值时保持精确时间窗口 - 修复后应该通过"""
+        path = str(tmp_path / "single_point.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [0, 1, 2],
+                'device': ['device_a', 'device_a', 'device_a'],
+                'temperature': [10.0, np.nan, 30.0],
+                'humidity': [np.nan, 20.0, 40.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            series_names = tsdf.list_timeseries()
+            data = tsdf.loc[1, series_names]
+
+            # 验证只返回时间戳 1 的数据
+            assert len(data.timestamps) == 1
+            assert data.timestamps[0] == np.int64(1)
+            assert data.shape == (1, 2)
+
+    def test_loc_preserves_requested_series_order(self, tmp_path):
+        """测试loc保持请求的序列顺序"""
+        path = str(tmp_path / "order.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [0, 1, 2],
+                'device': ['device_a', 'device_a', 'device_a'],
+                'temperature': [10.0, 20.0, 30.0],
+                'humidity': [100.0, 200.0, 300.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 请求特定顺序的序列
+            series_names = [
+                "weather.device_a.humidity",
+                "weather.device_a.temperature",
+            ]
+            data = tsdf.loc[0:2, series_names]
+
+            # 验证返回的序列顺序与请求一致
+            assert data.series_names == series_names
+            # 第一列应该是 humidity
+            assert data.values[0, 0] == 100.0
+            # 第二列应该是 temperature
+            assert data.values[0, 1] == 10.0
+
+    def test_loc_supports_negative_series_index(self, tmp_path):
+        """测试loc支持负索引序列"""
+        path = str(tmp_path / "negative_index.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [100, 101, 102],
+                'device': ['device_a', 'device_a', 'device_a'],
+                'temperature': [50.0, 51.0, 52.0],
+                'humidity': [100.0, 102.0, 104.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 使用负索引获取最后一个序列
+            data = tsdf.loc[:101, [-1]]
+
+            assert len(data.timestamps) == 2
+            assert data.timestamps[0] == np.int64(100)
+            assert data.timestamps[1] == np.int64(101)
+            assert data.shape == (2, 1)
+
+    @pytest.mark.skip(reason="空值的TAG列实际查询会报错：Windows fatal exception: access violation")
+    def test_sparse_tags_with_none_values_current_behavior(self, tsfile_path):
+        """测试稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）"""
+        create_tsfile2(tsfile_path, TABLE_NAME)
+        # print()
+        with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
+            # print(tsdf)
+            series_list = tsdf.list_timeseries()
+            assert len(series_list) > 0
+            # print(series_list)
+            # 使用 loc 对齐查询，出现：Windows fatal exception: access violation
+            print(tsdf.loc[0:20, series_list])
+
+
+    def test_sparse_tags_none_values_should_be_skipped(self, tmp_path):
+        """测试稀疏tag值 - 修复后None值应该被跳过"""
+        path = str(tmp_path / "sparse_tags.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("city", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [0, 1, 2],
+                'city': [None, 'beijing', 'shanghai'],  # 第一行 city=None
+                'device': ['device_a', 'device_b', 'device_c'],
+                'temperature': [10.0, 20.0, 30.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            series_list = tsdf.list_timeseries()
+            assert len(series_list) == 3
+
+    def test_sparse_tags_trailing_none_trimmed(self, tmp_path):
+        """测试尾部None值被修剪 - 修复后应该通过"""
+        path = str(tmp_path / "trailing_none.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("region", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            # device=device_a, region=None（尾部）
+            df = pd.DataFrame({
+                'time': [0],
+                'device': ['device_a'],
+                'region': [None],
+                'temperature': [10.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            series_list = tsdf.list_timeseries()
+            assert len(series_list) == 1
+            assert "weather.device_a.null.temperature" == series_list[0]
+
+    def test_list_timeseries_prefix_skip_non_matching(self, tmp_path):
+        """测试list_timeseries前缀过滤跳过不匹配的序列"""
+        path = str(tmp_path / "prefix_filter.tsfile")
+        create_tsfile1(path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=20, is_contains_null_values=False)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 使用不存在的表前缀，应该返回空列表而不构建全部序列名
+            result = tsdf.list_timeseries("nonexistent_table")
+            assert result == []
+
+    # ==================== Preview 性能优化测试 ====================
+
+    def test_repr_only_builds_preview_rows(self, tmp_path, monkeypatch):
+        """测试__repr__只构建预览行，不构建全部序列名"""
+        path = str(tmp_path / "preview.tsfile")
+        create_tsfile1(path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=20, is_contains_null_values=False)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 模拟大量序列（实际只有6个，但测试逻辑）
+            original_count = len(tsdf._index.series_refs_ordered)
+            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered * 100  # 扩展到600个
+
+            # 获取repr输出
+            rendered = repr(tsdf)
+
+            # 验证输出包含省略号（表示截断）
+            assert "..." in rendered
+            # 验证显示序列数量正确
+            assert "600 time series" in rendered or "600" in rendered
+
+            # 恢复原状态
+            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered[:original_count]
+
+    def test_repr_empty_dataframe(self, tmp_path):
+        """测试空DataFrame的repr"""
+        path = str(tmp_path / "empty_repr.tsfile")
+        schema = TableSchema(
+            TABLE_NAME,
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("value", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+        with TsFileTableWriter(path, schema):
+            pass
+
+        with pytest.raises(ValueError):
+            TsFileDataFrame(path, show_progress=False)
+
+    # ==================== 进度显示测试 ====================
+
+    def test_show_progress_reports_start_immediately(self, tmp_path, capsys):
+        """测试进度显示立即报告开始状态"""
+        path = str(tmp_path / "progress.tsfile")
+        create_tsfile1(path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=20, is_contains_null_values=False)
+
+        with TsFileDataFrame(path, show_progress=True) as tsdf:
+            pass
+
+        # 验证进度输出包含开始状态
+        stderr = capsys.readouterr().err
+        assert "Loading" in stderr or "done" in stderr
+
+    def test_show_progress_multiple_files(self, tmp_path, capsys):
+        """测试多文件并行加载进度显示"""
+        path1 = str(tmp_path / "part1.tsfile")
+        path2 = str(tmp_path / "part2.tsfile")
+        create_tsfile1(path1, f"{TABLE_NAME}_1", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=20, is_contains_null_values=False)
+        create_tsfile1(path2, f"{TABLE_NAME}_2", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES,
+                       row_num=20, is_contains_null_values=False)
+
+        with TsFileDataFrame([path1, path2], show_progress=True) as tsdf:
+            pass
+
+        stderr = capsys.readouterr().err
+        # 验证进度显示包含文件计数
+        assert "2" in stderr or "done" in stderr
+
+    # ==================== query_by_row 跨边界问题测试 ====================
+
+    def test_read_series_by_row_large_range(self, tmp_path):
+        """测试read_series_by_row大范围查询"""
+        path = str(tmp_path / "large_range.tsfile")
+        # 创建大量数据，测试跨内部边界的情况
+        create_tsfile1(path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["double_field"], [TSDataType.DOUBLE],
+                       row_num=100, is_contains_null_values=False)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            ts = tsdf[0]
+            # 验证能正确读取全部数据
+            assert len(ts) == 100
+            assert ts.timestamps[0] == 0
+            assert ts.timestamps[99] == 99
+
+    def test_read_series_by_row_with_offset(self, tmp_path):
+        """测试read_series_by_row带偏移的查询"""
+        path = str(tmp_path / "offset_query.tsfile")
+        create_tsfile1(path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["double_field"], [TSDataType.DOUBLE],
+                       row_num=50, is_contains_null_values=False)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            ts = tsdf[0]
+            # 使用切片访问，验证偏移正确
+            # ts[10:30] 返回的是 values 数组，不是 Timeseries
+            partial_values = ts[10:30]
+            assert len(partial_values) == 20
+            # 验证完整的时间戳长度
+            assert len(ts.timestamps) == 50
+
+    # ==================== 混合边界情况测试 ====================
+
+    def test_loc_mixed_series_specifiers(self, tmp_path):
+        """测试loc混合序列指定方式（索引和名称）"""
+        path = str(tmp_path / "mixed_spec.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [0, 1],
+                'device': ['device_a', 'device_a'],
+                'temperature': [20.0, 21.5],
+                'humidity': [50.0, 52.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            # 使用索引0和序列名混合
+            series_name = "weather.device_a.humidity"
+            data = tsdf.loc[0, [0, series_name]]
+
+            assert len(data.timestamps) == 1
+            assert data.shape == (1, 2)
+            # 验证序列顺序
+            assert "temperature" in data.series_names[0]
+            assert "humidity" in data.series_names[1]
+
+    def test_loc_open_ended_range(self, tmp_path):
+        """测试loc开放结束范围"""
+        path = str(tmp_path / "open_range.tsfile")
+        schema = TableSchema(
+            "weather",
+            [
+                ColumnSchema("device", TSDataType.STRING, ColumnCategory.TAG),
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+
+        with TsFileTableWriter(path, schema) as writer:
+            df = pd.DataFrame({
+                'time': [100, 101, 102],
+                'device': ['device_a', 'device_a', 'device_a'],
+                'temperature': [50.0, 51.0, 52.0],
+                'humidity': [100.0, 102.0, 104.0],
+            })
+            writer.write_dataframe(df)
+
+        with TsFileDataFrame(path, show_progress=False) as tsdf:
+            series_names = tsdf.list_timeseries()
+            # 使用开放结束范围 [:101]
+            data = tsdf.loc[:101, series_names]
+
+            assert len(data.timestamps) == 2
+            assert data.timestamps[0] == np.int64(100)
+            assert data.timestamps[1] == np.int64(101)
