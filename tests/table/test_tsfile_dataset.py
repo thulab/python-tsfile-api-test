@@ -1136,7 +1136,9 @@ class TestBugFixValidation:
         with TsFileDataFrame(path, show_progress=False) as tsdf:
             series_list = tsdf.list_timeseries()
             assert len(series_list) == 1
-            assert "weather.device_a.null.temperature" == series_list[0]
+            # 尾部 TAG region=None 属于 trailing null tag，按设计应被修剪丢弃，
+            # 序列名中不应出现该 null 段（参见 metadata.py: "Trailing null tags are dropped"）。
+            assert "weather.device_a.temperature" == series_list[0]
 
     def test_list_timeseries_prefix_skip_non_matching(self, tmp_path):
         """测试list_timeseries前缀过滤跳过不匹配的序列"""
