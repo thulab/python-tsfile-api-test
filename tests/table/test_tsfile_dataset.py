@@ -1161,8 +1161,8 @@ class TestBugFixValidation:
 
         with TsFileDataFrame(path, show_progress=False) as tsdf:
             # 模拟大量序列（实际只有6个，但测试逻辑）
-            original_count = len(tsdf._index.series_refs_ordered)
-            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered * 100  # 扩展到600个
+            original_count = len(tsdf._index.series)
+            tsdf._index.series = tsdf._index.series * 100  # 扩展到600个
 
             # 获取repr输出
             rendered = repr(tsdf)
@@ -1173,7 +1173,7 @@ class TestBugFixValidation:
             assert "600 time series" in rendered or "600" in rendered
 
             # 恢复原状态
-            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered[:original_count]
+            tsdf._index.series = tsdf._index.series[:original_count]
 
     def test_repr_empty_dataframe(self, tmp_path):
         """测试空DataFrame的repr"""
