@@ -11,7 +11,6 @@ python-tsfile-api-test/
 ├── data/                          # 测试数据目录
 │   ├── csv/                       # CSV格式测试数据
 │   └── tsfile/                    # 存放测试生成TsFile测试数据
-├── example/                       # 示例代码目录
 ├── tests/                         # 测试代码目录
 │   ├── table/                     # 表结构相关测试
 │   ├── tree/                      # 树结构相关测试
