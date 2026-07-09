@@ -760,7 +760,6 @@ class TestPerformance:
             assert load_time < 15.0, f"Nested directory load took too long: {load_time}s"
 
     # ==================== 对齐查询瓶颈测试 ====================
-
     def test_loc_alignment_small_scale(self, tsfile_path):
         """测试loc对齐查询 - 小规模数据（数千时间戳）"""
         import time
@@ -1086,6 +1085,251 @@ class TestBugFixValidation:
             print(tsdf.loc[0:20, series_list])
 
 
+    @pytest.mark.parametrize(
+        "case_name,tag_columns,rows,expected_series_count",
+        [
+            (
+                "single_tag_all_null",
+                ["device"],
+                [
+                    {"time": 0, "device": None, "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "device": None, "temperature": 20.0, "humidity": 60.0},
+                ],
+                2,
+            ),
+            (
+                "single_tag_mixed_null",
+                ["device"],
+                [
+                    {"time": 0, "device": None, "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "device": "device_a", "temperature": 20.0, "humidity": 60.0},
+                    {"time": 2, "device": None, "temperature": 30.0, "humidity": 70.0},
+                ],
+                4,
+            ),
+            (
+                "two_tags_leading_null",
+                ["city", "device"],
+                [
+                    {"time": 0, "city": None, "device": "d1", "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "city": None, "device": "d2", "temperature": 20.0, "humidity": 60.0},
+                ],
+                4,
+            ),
+            (
+                "two_tags_trailing_null",
+                ["city", "device"],
+                [
+                    {"time": 0, "city": "beijing", "device": None, "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "city": "shanghai", "device": None, "temperature": 20.0, "humidity": 60.0},
+                ],
+                4,
+            ),
+            (
+                "two_tags_all_null",
+                ["city", "device"],
+                [
+                    {"time": 0, "city": None, "device": None, "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "city": None, "device": None, "temperature": 20.0, "humidity": 60.0},
+                ],
+                2,
+            ),
+            (
+                "three_tags_middle_null",
+                ["city", "region", "device"],
+                [
+                    {"time": 0, "city": "beijing", "region": None, "device": "d1", "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "city": "beijing", "region": None, "device": "d2", "temperature": 20.0, "humidity": 60.0},
+                ],
+                4,
+            ),
+            (
+                "three_tags_sparse_mixed",
+                ["city", "region", "device"],
+                [
+                    {"time": 0, "city": None, "region": "north", "device": "d1", "temperature": 10.0, "humidity": 50.0},
+                    {"time": 1, "city": "beijing", "region": None, "device": "d1", "temperature": 20.0, "humidity": 60.0},
+                    {"time": 2, "city": None, "region": None, "device": None, "temperature": 30.0, "humidity": 70.0},
+                    {"time": 3, "city": "shanghai", "region": "south", "device": "d2", "temperature": 40.0, "humidity": 80.0},
+                ],
+                8,
+            ),
+        ],
+        ids=lambda case: case if isinstance(case, str) else None,
+    )
+    def test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc(
+        self, tmp_path, case_name, tag_columns, rows, expected_series_count
+    ):
+        """补充回归：验证表模型 tag=null 时，list_timeseries 返回结果继续传给 loc 不再崩溃。"""
+        path = tmp_path / f"14_boundary_table_nullable_tag_values_{case_name}.tsfile"
+        schema = TableSchema(
+            "weather",
+            [ColumnSchema(tag, TSDataType.STRING, ColumnCategory.TAG) for tag in tag_columns]
+            + [
+                ColumnSchema("temperature", TSDataType.DOUBLE, ColumnCategory.FIELD),
+                ColumnSchema("humidity", TSDataType.DOUBLE, ColumnCategory.FIELD),
+            ],
+        )
+        with TsFileTableWriter(str(path), schema) as writer:
+            writer.write_dataframe(pd.DataFrame(rows))
+
+        with TsFileDataFrame(str(path), show_progress=False) as df:
+            series = df.list_timeseries()
+            metadata = df.list_timeseries_metadata()
+            aligned = df.loc[:, series]
+
+            assert len(series) == expected_series_count
+            assert metadata.index.tolist() == series
+            for column in ["table", "field", "count", *tag_columns]:
+                assert column in metadata.columns
+            assert int(metadata["count"].sum()) == len(rows) * 2
+
+            for name in series:
+                ts = df[name]
+                values = ts[:]
+                assert len(ts) == int(metadata.loc[name, "count"])
+                assert len(values) == len(ts)
+                assert np.count_nonzero(~np.isnan(values)) == len(values)
+
+            assert aligned.shape == (len(rows), expected_series_count)
+            np.testing.assert_array_equal(
+                aligned.timestamps, np.array([row["time"] for row in rows])
+            )
+            present_values = aligned.values[~np.isnan(aligned.values)]
+            expected_values = [
+                value
+                for row in rows
+                for value in (row["temperature"], row["humidity"])
+            ]
+            assert len(present_values) == len(expected_values)
+            np.testing.assert_allclose(
+                np.sort(present_values), np.sort(np.array(expected_values))
+            )
+
+    @pytest.mark.parametrize(
+        "case_name,table_name,tag_columns,tag_values,field_name,expected_series",
+        [
+            (
+                "tag_value_dot",
+                "weather",
+                ["device"],
+                ["dev.a"],
+                "temperature",
+                "weather.dev\\.a.temperature",
+            ),
+            (
+                "tag_value_space",
+                "weather",
+                ["device"],
+                ["dev a"],
+                "temperature",
+                "weather.dev a.temperature",
+            ),
+            (
+                "tag_value_backquoted_dot",
+                "weather",
+                ["device"],
+                ["`dev.a`"],
+                "temperature",
+                "weather.`dev\\.a`.temperature",
+            ),
+            (
+                "field_name_dot",
+                "weather",
+                ["device"],
+                ["dev"],
+                "temp.erature",
+                "weather.dev.temp\\.erature",
+            ),
+            (
+                "field_name_space",
+                "weather",
+                ["device"],
+                ["dev"],
+                "temp space",
+                "weather.dev.temp space",
+            ),
+            (
+                "multi_tag_mixed",
+                "weather",
+                ["city", "device"],
+                ["bei.jing", "dev a"],
+                "temperature",
+                "weather.bei\\.jing.dev a.temperature",
+            ),
+            (
+                "uppercase_tag_value",
+                "weather",
+                ["device"],
+                ["DeviceA"],
+                "temperature",
+                "weather.DeviceA.temperature",
+            ),
+            (
+                "chinese_tag_value",
+                "weather",
+                ["device"],
+                ["设备A"],
+                "temperature",
+                "weather.设备A.temperature",
+            ),
+            (
+                "uppercase_table_and_field_are_normalized",
+                "Weather",
+                ["device"],
+                ["DeviceA"],
+                "Temperature",
+                "weather.DeviceA.temperature",
+            ),
+        ],
+        ids=lambda case: case if isinstance(case, str) else None,
+    )
+    def test_table_series_name_variants_round_trip_all_dataframe_apis(
+        self, tmp_path, case_name, table_name, tag_columns, tag_values, field_name, expected_series
+    ):
+        """补充回归：验证表模型各类序列名在 list/metadata/getitem/loc 间可闭环。"""
+        path = tmp_path / f"table_series_name_{case_name}.tsfile"
+        schema = TableSchema(
+            table_name,
+            [ColumnSchema(tag, TSDataType.STRING, ColumnCategory.TAG) for tag in tag_columns]
+            + [ColumnSchema(field_name, TSDataType.DOUBLE, ColumnCategory.FIELD)],
+        )
+        rows = []
+        for timestamp in range(3):
+            row = {"time": timestamp, field_name: 10.0 + timestamp}
+            for tag, value in zip(tag_columns, tag_values):
+                row[tag] = value
+            rows.append(row)
+        with TsFileTableWriter(str(path), schema) as writer:
+            writer.write_dataframe(pd.DataFrame(rows))
+
+        expected_values = np.array([10.0, 11.0, 12.0])
+        with TsFileDataFrame(str(path), show_progress=False) as df:
+            series = df.list_timeseries()
+            metadata = df.list_timeseries_metadata()
+            table_prefix = expected_series.split(".", 1)[0]
+
+            assert series == [expected_series]
+            assert df.list_timeseries(table_prefix) == [expected_series]
+            assert df.list_timeseries(expected_series) == [expected_series]
+            assert metadata.index.tolist() == [expected_series]
+            assert df.list_timeseries_metadata(table_prefix).index.tolist() == [expected_series]
+            assert int(metadata.loc[expected_series, "count"]) == len(expected_values)
+
+            values = df[expected_series][:]
+            np.testing.assert_allclose(values, expected_values)
+
+            aligned = df.loc[:, series]
+            assert aligned.series_names == [expected_series]
+            assert aligned.shape == (len(expected_values), 1)
+            np.testing.assert_array_equal(aligned.timestamps, np.arange(len(expected_values), dtype=np.int64))
+            np.testing.assert_allclose(aligned.values[:, 0], expected_values)
+            rendered = repr(df)
+            assert "TsFileDataFrame(table model, 1 time series, 1 files)" in rendered
+            assert table_prefix in rendered
+            assert "count" in rendered
+
+
     def test_sparse_tags_none_values_should_be_skipped(self, tmp_path):
         """测试稀疏tag值 - 修复后None值应该被跳过"""
         path = str(tmp_path / "sparse_tags.tsfile")
@@ -1136,7 +1380,7 @@ class TestBugFixValidation:
         with TsFileDataFrame(path, show_progress=False) as tsdf:
             series_list = tsdf.list_timeseries()
             assert len(series_list) == 1
-            assert "weather.device_a.null.temperature" == series_list[0]
+            assert "weather.device_a.temperature" == series_list[0]
 
     def test_list_timeseries_prefix_skip_non_matching(self, tmp_path):
         """测试list_timeseries前缀过滤跳过不匹配的序列"""
@@ -1159,19 +1403,19 @@ class TestBugFixValidation:
 
         with TsFileDataFrame(path, show_progress=False) as tsdf:
             # 模拟大量序列（实际只有6个，但测试逻辑）
-            original_count = len(tsdf._index.series_refs_ordered)
-            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered * 100  # 扩展到600个
+            original_series = list(tsdf._index.series)
+            tsdf._index.series = original_series * 100  # 扩展到600个
+            try:
+                # 获取repr输出
+                rendered = repr(tsdf)
 
-            # 获取repr输出
-            rendered = repr(tsdf)
-
-            # 验证输出包含省略号（表示截断）
-            assert "..." in rendered
-            # 验证显示序列数量正确
-            assert "600 time series" in rendered or "600" in rendered
-
-            # 恢复原状态
-            tsdf._index.series_refs_ordered = tsdf._index.series_refs_ordered[:original_count]
+                # 验证输出包含省略号（表示截断）
+                assert "..." in rendered
+                # 验证显示序列数量正确
+                assert "600 time series" in rendered or "600" in rendered
+            finally:
+                # 恢复原状态
+                tsdf._index.series = original_series
 
     def test_repr_empty_dataframe(self, tmp_path):
         """测试空DataFrame的repr"""
