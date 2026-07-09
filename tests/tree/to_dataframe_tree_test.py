@@ -14,7 +14,9 @@ from tsfile import TsFileWriter, TsFileReader, ColumnCategory
 
 
 # tsfile文件路径
-tsfile_path = "../data/tsfile/record_write_and_read.tsfile"
+tsfile_path = os.path.join(os.path.dirname(__file__), "record_write_and_read.tsfile")
+
+
 def test_tree_all_datatype_query_to_dataframe_variants1():
     try:
         if os.path.exists(tsfile_path):

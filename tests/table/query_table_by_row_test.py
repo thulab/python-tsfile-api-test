@@ -773,5 +773,3 @@ def test_offset_and_limit_combination():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
-
-

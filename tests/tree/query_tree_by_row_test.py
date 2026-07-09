@@ -3,7 +3,7 @@ import pytest
 
 from tsfile import TsFileReader, TsFileWriter, TimeseriesSchema, TSDataType
 from tsfile import RowRecord, Field
-from tsfile.exceptions import DeviceNotExistError, MeasurementNotExistError, NotExistsError
+from tsfile.exceptions import DeviceNotExistError, MeasurementNotExistError
 
 
 """
