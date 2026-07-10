@@ -611,7 +611,6 @@ class TestBoundaryCases:
         with pytest.raises(RuntimeError, match="closed"):
             print(df[0])
 
-    @pytest.mark.skip(reason="因为现在tag filter的过滤不支持空值，TAG列全空值会出现Windows fatal exception: access violation")
     def test_all_null_values(self, tsfile_path):
         """测试所有值都为空"""
         columns = [
@@ -1071,7 +1070,6 @@ class TestBugFixValidation:
             assert data.timestamps[1] == np.int64(101)
             assert data.shape == (2, 1)
 
-    @pytest.mark.skip(reason="空值的TAG列实际查询会报错：Windows fatal exception: access violation")
     def test_sparse_tags_with_none_values_current_behavior(self, tsfile_path):
         """测试稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）"""
         create_tsfile2(tsfile_path, TABLE_NAME)

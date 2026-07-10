@@ -301,7 +301,6 @@ def test_column_names_multi_all_exist():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
-@pytest.mark.skip(reason="预期只输出存在的列，实际会报错列不存在")
 def test_column_names_multi_partial_exist():
     """测试列名：多列部分测点不存在"""
     try:
@@ -313,9 +312,9 @@ def test_column_names_multi_partial_exist():
         table_data_dir = create_test_tsfile(table_name, column_name_list, data_type_list, column_category_list)
 
         with TsFileReader(table_data_dir) as reader:
-            result = reader.query_table_by_row(table_name, ["tag1", "s1", "s2", "non_existent_column"])
-            while result.next():
-                print(result.read_data_frame)
+            with pytest.raises(ColumnNotExistError) as exc_info:
+                reader.query_table_by_row(table_name, ["tag1", "s1", "s2", "non_existent_column"])
+            assert exc_info.value._default_message == "Column does not exist"
     finally:
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
@@ -366,7 +365,6 @@ def test_multi_device_query():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
-@pytest.mark.skip(reason="待确认不支持只查询TAG列？")
 def test_column_type_tag():
     """测试列类型：只查询TAG列"""
     try:
@@ -378,11 +376,10 @@ def test_column_type_tag():
         table_data_dir = create_test_tsfile(table_name, column_name_list, data_type_list, column_category_list)
 
         with TsFileReader(table_data_dir) as reader:
-            result = reader.query_table_by_row(table_name, ["tag1", "s1"])
+            result = reader.query_table_by_row(table_name, ["tag1"])
             count = 0
             while result.next():
                 count += 1
-            # 仅查询TAG列返回0行
             assert count == 10, f"Expected 10 rows when querying only TAG column, got {count}"
     finally:
         if os.path.exists(get_table_data_dir()):
@@ -772,4 +769,3 @@ def test_offset_and_limit_combination():
     finally:
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
-

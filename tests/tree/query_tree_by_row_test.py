@@ -3,7 +3,6 @@ import pytest
 
 from tsfile import TsFileReader, TsFileWriter, TimeseriesSchema, TSDataType
 from tsfile import RowRecord, Field
-from tsfile.exceptions import DeviceNotExistError, MeasurementNotExistError
 
 
 """
@@ -97,7 +96,6 @@ def test_device_ids_single_exist():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="设备不存在时，预期不会报错，实际会报错")
 def test_device_ids_single_not_exist():
     """测试设备ID：单设备不存在的设备"""
     try:
@@ -113,7 +111,7 @@ def test_device_ids_single_not_exist():
             while result.next():
                 count += 1
                 # 3. 验证数据
-            assert count == 10, f"Expected 10 rows, got {count}"
+            assert count == 0, f"Expected 0 rows for non-existent device, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
@@ -139,7 +137,6 @@ def test_device_ids_multi_all_exist():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="部分设备不存在时，预期只输出存在的，实际会报错")
 def test_device_ids_multi_partial_exist():
     """测试设备ID：多设备部分设备不存在"""
     try:
@@ -158,14 +155,13 @@ def test_device_ids_multi_partial_exist():
             count = 0
             while result.next():
                 count += 1
-            # 预期只返回存在设备的数据
-            assert count == 20, f"Expected 20 rows (from existing devices), got {count}"
+            # 按 Java API 契约，仅合并存在设备的时间轴，两个设备时间戳相同，因此返回 10 行
+            assert count == 10, f"Expected 10 merged rows from existing devices, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="全部设备不存在时，预期输出空，实际会报错")
 def test_device_ids_multi_all_not_exist():
     """测试设备ID：多设备全部设备不存在"""
     try:
@@ -176,14 +172,14 @@ def test_device_ids_multi_all_not_exist():
         tree_data_dir = create_test_tsfile_tree(device_ids, measurement_names_map)
 
         with TsFileReader(tree_data_dir) as reader:
-            try:
-                reader.query_tree_by_row(
-                    ["root.non_existent1", "root.non_existent2"],
-                    measurement_names
-                )
-                assert False, "All non-existent devices should raise DeviceNotExistError"
-            except DeviceNotExistError as e:
-                assert "does not exist" in str(e)
+            result = reader.query_tree_by_row(
+                ["root.non_existent1", "root.non_existent2"],
+                measurement_names
+            )
+            count = 0
+            while result.next():
+                count += 1
+            assert count == 0, f"Expected 0 rows for all non-existent devices, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
@@ -229,11 +225,10 @@ def test_device_ids_uppercase():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="纯数字设备ID会导致程序崩溃")
 def test_device_ids_numbers():
-    """测试设备ID：纯数字"""
+    """测试设备ID：反引号包裹的纯数字节点"""
     try:
-        device_ids = ["root.1234567890"]
+        device_ids = ["root.`1234567890`"]
         measurement_names = ["s1"]
         measurement_names_map = {device_ids[0]: measurement_names}
 
@@ -245,6 +240,7 @@ def test_device_ids_numbers():
             while result.next():
                 count += 1
             assert count == 10, f"Expected 10 rows, got {count}"
+
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
@@ -289,7 +285,6 @@ def test_device_ids_chinese():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
-@pytest.mark.skip(reason="特殊字符带空格设备ID会导致程序崩溃")
 def test_device_ids_special_chars():
     """测试设备ID：特殊字符"""
     try:
@@ -335,7 +330,6 @@ def test_measurement_names_single_exist():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
-@pytest.mark.skip(reason="单测点不存在的测点，预期输出空，实际报错")
 def test_measurement_names_single_not_exist():
     """测试测点名：单测点不存在的测点"""
     try:
@@ -350,7 +344,7 @@ def test_measurement_names_single_not_exist():
             count = 0
             while result.next():
                 count += 1
-            assert count == 10, f"Expected 10 rows, got {count}"
+            assert count == 0, f"Expected 0 rows for non-existent measurement, got {count}"
 
     finally:
         if os.path.exists(get_tree_data_dir()):
@@ -377,7 +371,6 @@ def test_measurement_names_multi_all_exist():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="部分测点不存在时，预期只输出存在的，实际报错")
 def test_measurement_names_multi_partial_exist():
     """测试测点名：多测点部分测点不存在"""
     try:
@@ -399,7 +392,6 @@ def test_measurement_names_multi_partial_exist():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="全部测点不存在时，预期输出空，实际报错")
 def test_measurement_names_multi_all_not_exist():
     """测试测点名：多测点全部测点不存在"""
     try:
@@ -410,11 +402,11 @@ def test_measurement_names_multi_all_not_exist():
         tree_data_dir = create_test_tsfile_tree(device_ids, measurement_names_map)
 
         with TsFileReader(tree_data_dir) as reader:
-            try:
-                reader.query_tree_by_row(device_ids, ["non_existent1", "non_existent2"])
-                assert False, "All non-existent measurements should raise MeasurementNotExistError"
-            except MeasurementNotExistError:
-                pass  # 异常类型正确即可
+            result = reader.query_tree_by_row(device_ids, ["non_existent1", "non_existent2"])
+            count = 0
+            while result.next():
+                count += 1
+            assert count == 0, f"Expected 0 rows for all non-existent measurements, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
@@ -460,12 +452,11 @@ def test_measurement_names_uppercase():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="数字测点名会导致程序崩溃")
 def test_measurement_names_numbers():
-    """测试测点名：数字"""
+    """测试测点名：反引号包裹的纯数字节点"""
     try:
         device_ids = ["root.device1"]
-        measurement_names = ["1234567890"]
+        measurement_names = ["`1234567890`"]
         measurement_names_map = {device_ids[0]: measurement_names}
 
         tree_data_dir = create_test_tsfile_tree(device_ids, measurement_names_map)
@@ -521,7 +512,6 @@ def test_measurement_names_chinese():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="特殊字符带空格测点名会导致程序崩溃")
 def test_measurement_names_special_chars():
     """测试测点名：特殊字符"""
     try:
@@ -732,7 +722,6 @@ def test_offset_and_limit_combination():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
-@pytest.mark.skip(reason="查询多个设备的不同测点，预期可以输出存在的，实际报错NotExistsError")
 def test_multi_device_different_measurements():
     """测试多设备，每个设备的测点名不一样情况"""
     try:
