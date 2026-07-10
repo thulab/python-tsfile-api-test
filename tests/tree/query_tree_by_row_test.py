@@ -641,9 +641,11 @@ def test_limit_negative():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(reason="limit=0会导致TSDataType枚举错误")
+@pytest.mark.skip(
+    reason="已知产品缺陷：limit=0 返回无效 TSDataType 254，暂时跳过以避免影响仓库自动化"
+)
 def test_limit_zero():
-    """测试limit：等于0"""
+    """测试limit=0按Java语义表示不限制返回行数"""
     try:
         device_ids = ["root.device1"]
         measurement_names = ["s1"]
@@ -656,7 +658,7 @@ def test_limit_zero():
             count = 0
             while result.next():
                 count += 1
-            assert count == 0, f"Expected 0 rows with limit=0, got {count}"
+            assert count == 10, f"Expected all 10 rows with limit=0, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
