@@ -231,10 +231,10 @@ def test_iterator_with_all_params(tsfile_with_data):
 
 def test_table_not_exist(tsfile_with_data):
     """测试表不存在异常"""
-    with pytest.raises(TableNotExistError, match="Requested table does not exist"):
+    with pytest.raises(TableNotExistError, match="Table.*does not exist"):
         to_dataframe(tsfile_with_data, table_name="non_existent_table")
 
 def test_column_not_exist(tsfile_with_data):
     """测试列不存在异常"""
-    with pytest.raises(ColumnNotExistError, match="Column does not exist"):
+    with pytest.raises(ColumnNotExistError, match="Column.*does not exist"):
         to_dataframe(tsfile_with_data, column_names=["non_existent_column"])
