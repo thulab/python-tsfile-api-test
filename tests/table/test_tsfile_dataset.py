@@ -216,10 +216,9 @@ class TestTsFileDataFramePaths:
         # 1. 创建文件
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
         create_tsfile1(tsfile_path2, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
-        # 2. 加载文件，验证相同设备重复时间戳异常
-        with TsFileDataFrame([tsfile_path, tsfile_path2], show_progress=False) as tsdf:
-            with pytest.raises(ValueError):
-                print(tsdf[0].timestamps)
+        # 2. 加载文件，构建索引阶段即校验跨分片重复时间戳
+        with pytest.raises(ValueError, match="Duplicate timestamp"):
+            TsFileDataFrame([tsfile_path, tsfile_path2], show_progress=False)
 
     def test_multiple_file_paths_same_timeseries_different_timestamp(self, tsfile_path, tsfile_path2):
         """测试多条文件路径 - 相同时间序列不重复时间戳"""
@@ -261,10 +260,9 @@ class TestTsFileDataFramePaths:
             file_path = os.path.join(test_dir, f"file_{idx}.tsfile")
             create_tsfile1(file_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
 
-        # 2. 加载文件
-        with TsFileDataFrame(test_dir, show_progress=False) as tsdf:
-            with pytest.raises(ValueError):
-                print(tsdf[0][10])
+        # 2. 加载文件，构建索引阶段即校验跨分片重复时间戳
+        with pytest.raises(ValueError, match="Duplicate timestamp"):
+            TsFileDataFrame(test_dir, show_progress=False)
 
     def test_directory_path_contains_non_tsfile(self, test_dir, tsfile_path):
         """测试目录路径，包含非TsFile文件"""

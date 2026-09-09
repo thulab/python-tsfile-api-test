@@ -1517,19 +1517,16 @@ def test_tree_merges_identical_series_across_files(tmp_path):
 
 
 def test_tree_duplicate_timestamps_across_shards_raise(tmp_path):
-    """用例 93：验证跨分片出现重复时间戳时，读取时间轴和值都会抛出明确错误。"""
+    """用例 93：验证跨分片出现重复时间戳时，构建索引阶段即抛出明确错误。"""
     # 1. 生成两个同名序列且时间戳重叠的树模型TsFile文件
     path1 = tmp_path / "first.tsfile"
     path2 = tmp_path / "second.tsfile"
     _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=0)
     _write_tree_rows(path2, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=2)
 
-    # 2. 加载文件并校验读取时间戳和值时均提示重复时间戳
-    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
-        with pytest.raises(ValueError, match="Duplicate timestamp 2.*across shards"):
-            _ = tsdf["root.a.b.m1"].timestamps
-        with pytest.raises(ValueError, match="Duplicate timestamp 2.*across shards"):
-            _ = tsdf["root.a.b.m1"][:]
+    # 2. 加载文件，构建索引阶段即抛出重复时间戳错误
+    with pytest.raises(ValueError, match="Duplicate timestamp 2.*across TsFile shards"):
+        TsFileDataFrame([str(path1), str(path2)], show_progress=False)
 
 
 def test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge(
@@ -2220,9 +2217,8 @@ def test_tree_dataframe_and_series_lifecycle(tmp_path):
     series = tsdf[0]
     subset = tsdf[:1]
 
-    # 3. 关闭子集视图，确认是 no-op 且不影响根 DataFrame
-    with pytest.warns(RuntimeWarning, match="no-op"):
-        subset.close()
+    # 3. 关闭子集视图，确认是静默 no-op 且不影响根 DataFrame
+    subset.close()
     assert len(tsdf) == 3
 
     # 4. 连续关闭根 DataFrame，确认 close 幂等
