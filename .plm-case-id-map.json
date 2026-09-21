@@ -1,0 +1,2055 @@
+{
+ "nmap": {
+  "TsFile-621": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_reader_handles_stale_path_columns_after_reused_queries"
+  ],
+  "TsFile-620": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_repr_only_builds_preview_rows"
+  ],
+  "TsFile-619": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_name_dot_device_segment_reports_clear_error_from_dataframe_api"
+  ],
+  "TsFile-618": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_name_variants_round_trip_all_dataframe_apis"
+  ],
+  "TsFile-617": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_handles_iotdb_naming_rules"
+  ],
+  "TsFile-616": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_uppercase_measurement_can_align_by_full_path"
+  ],
+  "TsFile-615": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_uppercase_measurement_can_be_read_by_full_path"
+  ],
+  "TsFile-614": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_identifier_names_are_case_sensitive"
+  ],
+  "TsFile-613": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_backquoted_identifier_names_are_preserved"
+  ],
+  "TsFile-612": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_unquoted_identifier_names_are_preserved"
+  ],
+  "TsFile-611": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_escaped_measurement_name_can_be_resolved"
+  ],
+  "TsFile-610": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_file_field_union_aligns_missing_values"
+  ],
+  "TsFile-609": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_metadata_filtered_subset_aligns_series"
+  ],
+  "TsFile-608": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_named_series_variants_align_by_tree_path_rules"
+  ],
+  "TsFile-607": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_different_measurements_preserves_values"
+  ],
+  "TsFile-606": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_alignment_preserves_values"
+  ],
+  "TsFile-605": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_timestamps_are_cached_but_values_are_read_on_demand"
+  ],
+  "TsFile-604": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_additional_slice_and_aligned_indexing_forms"
+  ],
+  "TsFile-603": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_metadata_and_indexing"
+  ],
+  "TsFile-602": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_named_series_variants_expose_metadata"
+  ],
+  "TsFile-601": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_metadata_filtered_view_exposes_series_metadata"
+  ],
+  "TsFile-600": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_dataframe_columns_filter_and_export"
+  ],
+  "TsFile-591": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_repeated_index_view_and_invalid_entries"
+  ],
+  "TsFile-590": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_list_respects_requested_order"
+  ],
+  "TsFile-589": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_slice_variants_return_metadata_ready_subsets"
+  ],
+  "TsFile-587": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_forms_expose_series_metadata"
+  ],
+  "TsFile-585": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_handles_different_series_counts"
+  ],
+  "TsFile-584": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_by_middle_device_prefix"
+  ],
+  "TsFile-583": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_database_names"
+  ],
+  "TsFile-582": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_measurement_names"
+  ],
+  "TsFile-581": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_device_names"
+  ],
+  "TsFile-580": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_handles_different_series_counts"
+  ],
+  "TsFile-579": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_middle_device_prefix"
+  ],
+  "TsFile-578": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_database_names"
+  ],
+  "TsFile-577": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_measurement_names"
+  ],
+  "TsFile-576": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_device_names"
+  ],
+  "TsFile-575": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_reader_metadata_scan_reports_device_and_series_counts"
+  ],
+  "TsFile-574": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_load_reports_shard_progress"
+  ],
+  "TsFile-573": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_single_file_uses_serial_loader"
+  ],
+  "TsFile-572": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loading_uses_thread_pool_for_multiple_files"
+  ],
+  "TsFile-571": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_display_truncates_large_results"
+  ],
+  "TsFile-570": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_repr_and_show_keep_tree_headers"
+  ],
+  "TsFile-569": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_display_timestamp_format_keeps_milliseconds"
+  ],
+  "TsFile-568": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_device_path_rebuild_rejects_null_segment"
+  ],
+  "TsFile-567": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_device_path_rebuild_rejects_dotted_segment"
+  ],
+  "TsFile-565": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_duplicate_specifiers_read_underlying_device_once"
+  ],
+  "TsFile-564": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_specifier_keeps_column_positions"
+  ],
+  "TsFile-563": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_series_name_keeps_requested_columns"
+  ],
+  "TsFile-562": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_dedups_name_and_index_specifier"
+  ],
+  "TsFile-561": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_registers_only_fields_owned_by_device"
+  ],
+  "TsFile-560": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_short_path_stays_resolvable"
+  ],
+  "TsFile-559": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_extends_segment_layout_to_deepest_device"
+  ],
+  "TsFile-558": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_of_field_subsets_loads_instead_of_rejecting"
+  ],
+  "TsFile-557": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_maps_global_field_index_to_local_shard"
+  ],
+  "TsFile-556": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_field_columns_expand_in_first_seen_order"
+  ],
+  "TsFile-555": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_string_or_text_only_measurements_are_non_numeric"
+  ],
+  "TsFile-554": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_empty_file_without_device_metadata_raises"
+  ],
+  "TsFile-553": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_multiple_root_segments_in_one_file"
+  ],
+  "TsFile-552": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_repeated_close_is_idempotent"
+  ],
+  "TsFile-551": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_view_close_is_noop"
+  ],
+  "TsFile-550": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_access_after_dataframe_close_raises"
+  ],
+  "TsFile-549": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_access_after_close_raises"
+  ],
+  "TsFile-548": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_close_releases_resources"
+  ],
+  "TsFile-547": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_context_exit_closes_root_and_releases_readers"
+  ],
+  "TsFile-546": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_show_limits_rendered_rows"
+  ],
+  "TsFile-545": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_repr_prints_readable_table"
+  ],
+  "TsFile-543": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_repr_header_reports_subset_size"
+  ],
+  "TsFile-542": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_display_headers_expose_tree_model_columns"
+  ],
+  "TsFile-541": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_show_limits_rendered_rows"
+  ],
+  "TsFile-540": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_repr_truncates_long_series_list"
+  ],
+  "TsFile-539": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_nan_values_are_preserved"
+  ],
+  "TsFile-538": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_omits_non_numeric_measurements"
+  ],
+  "TsFile-537": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_numeric_measurements_read_as_float64"
+  ],
+  "TsFile-536": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge"
+  ],
+  "TsFile-535": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_pads_shallow_device_segments_with_nan"
+  ],
+  "TsFile-534": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_takes_field_name_union_across_files"
+  ],
+  "TsFile-533": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_same_device_and_measurement_across_files_merge"
+  ],
+  "TsFile-532": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_duplicate_timestamps_across_shards_raise"
+  ],
+  "TsFile-531": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_merged_series_count_sums_shard_counts"
+  ],
+  "TsFile-530": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_same_series_across_shards_merges_into_one"
+  ],
+  "TsFile-529": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_out_of_range_series_index_raises"
+  ],
+  "TsFile-528": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_invalid_series_specifier_raises_type_error"
+  ],
+  "TsFile-527": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_invalid_time_index_raises_type_error"
+  ],
+  "TsFile-526": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_requires_two_arguments"
+  ],
+  "TsFile-525": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_indexing"
+  ],
+  "TsFile-524": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_row_count"
+  ],
+  "TsFile-523": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_exposes_attributes"
+  ],
+  "TsFile-522": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_alignment_stays_within_requested_bounds"
+  ],
+  "TsFile-521": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_series_specifiers_do_not_raise"
+  ],
+  "TsFile-520": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_negative_series_index"
+  ],
+  "TsFile-519": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_open_time_slices_and_empty_range"
+  ],
+  "TsFile-518": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_single_timestamp_query"
+  ],
+  "TsFile-517": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_accepts_mixed_name_and_index_specifiers"
+  ],
+  "TsFile-516": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_timelines_align_by_timestamp"
+  ],
+  "TsFile-514": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_column_order_follows_requested_series"
+  ],
+  "TsFile-513": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_union_aligns_sparse_timestamps_with_nan"
+  ],
+  "TsFile-512": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_range_query_returns_aligned_timeseries"
+  ],
+  "TsFile-495": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_view_reuses_parent_readers"
+  ],
+  "TsFile-494": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_unsupported_key_type_raises"
+  ],
+  "TsFile-493": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_out_of_range_raises"
+  ],
+  "TsFile-492": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_with_non_integer_raises"
+  ],
+  "TsFile-491": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_returns_positional_view"
+  ],
+  "TsFile-490": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_slice_returns_subset_view"
+  ],
+  "TsFile-489": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_unknown_name_raises_key_error"
+  ],
+  "TsFile-488": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_out_of_range_raises"
+  ],
+  "TsFile-487": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_negative_index_returns_last_series"
+  ],
+  "TsFile-486": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_position_index_returns_timeseries"
+  ],
+  "TsFile-485": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_name_returns_timeseries_handle"
+  ],
+  "TsFile-484": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_boolean_filter_without_match_returns_empty_view"
+  ],
+  "TsFile-483": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_boolean_filter_returns_subset_view"
+  ],
+  "TsFile-482": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_unknown_column_raises_key_error"
+  ],
+  "TsFile-481": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_time_and_count_columns_projection"
+  ],
+  "TsFile-480": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_table_column_is_unavailable"
+  ],
+  "TsFile-479": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_col3_column_projection"
+  ],
+  "TsFile-478": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_col1_column_projection"
+  ],
+  "TsFile-477": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_field_column_projection"
+  ],
+  "TsFile-467": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_invalid_prefix_returns_empty"
+  ],
+  "TsFile-466": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_unmatched_prefix_returns_empty"
+  ],
+  "TsFile-465": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_prefix_matches_by_segment"
+  ],
+  "TsFile-464": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_device_prefix"
+  ],
+  "TsFile-463": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_root_prefix"
+  ],
+  "TsFile-462": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_without_prefix_returns_all"
+  ],
+  "TsFile-456": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_pads_short_device_segments"
+  ],
+  "TsFile-455": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_lists_every_series_name_depth"
+  ],
+  "TsFile-454": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_names_flatten_device_segments"
+  ],
+  "TsFile-453": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_initialization_only_scans_metadata"
+  ],
+  "TsFile-452": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_load_without_any_numeric_series_raises"
+  ],
+  "TsFile-451": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_empty_table_shard_mixed_with_tree_file_raises_model_conflict"
+  ],
+  "TsFile-450": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_tree_then_table_model_mix"
+  ],
+  "TsFile-449": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_table_then_tree_model_mix"
+  ],
+  "TsFile-448": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_model_identified_as_tree"
+  ],
+  "TsFile-447": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_relative_path_normalized_to_absolute"
+  ],
+  "TsFile-446": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_ignores_non_tsfile_files"
+  ],
+  "TsFile-445": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_missing_file_path_raises"
+  ],
+  "TsFile-444": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_empty_directory_raises"
+  ],
+  "TsFile-443": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_searches_nested_subdirectories"
+  ],
+  "TsFile-442": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_finds_all_tsfiles"
+  ],
+  "TsFile-441": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_file_list_loads_multiple_files"
+  ],
+  "TsFile-440": [
+   "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_single_file_path_loads"
+  ],
+  "TsFile-439": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_query[1000-100]"
+  ],
+  "TsFile-438": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[-10-0]"
+  ],
+  "TsFile-437": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[0-0]"
+  ],
+  "TsFile-436": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[1000-100]"
+  ],
+  "TsFile-435": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[100-100]"
+  ],
+  "TsFile-434": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[50-50]"
+  ],
+  "TsFile-433": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-50-50-51]"
+  ],
+  "TsFile-432": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-10-10-11]"
+  ],
+  "TsFile-431": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[10--10-0]"
+  ],
+  "TsFile-430": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-5--5-0]"
+  ],
+  "TsFile-429": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[5-5-1]"
+  ],
+  "TsFile-428": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[None--5-0]"
+  ],
+  "TsFile-427": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[None-5-6]"
+  ],
+  "TsFile-426": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-10-None-100]"
+  ],
+  "TsFile-425": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value7-<lambda>]"
+  ],
+  "TsFile-424": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value6-<lambda>]"
+  ],
+  "TsFile-423": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value5-<lambda>]"
+  ],
+  "TsFile-422": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value4-<lambda>]"
+  ],
+  "TsFile-421": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value3-<lambda>]"
+  ],
+  "TsFile-420": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value2-<lambda>]"
+  ],
+  "TsFile-419": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value1-<lambda>]"
+  ],
+  "TsFile-418": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]"
+  ],
+  "TsFile-417": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]"
+  ],
+  "TsFile-416": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]"
+  ],
+  "TsFile-415": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]"
+  ],
+  "TsFile-414": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]"
+  ],
+  "TsFile-413": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]"
+  ],
+  "TsFile-412": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]"
+  ],
+  "TsFile-411": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]"
+  ],
+  "TsFile-410": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_sparse_mixed-tag_columns6-rows6-8]"
+  ],
+  "TsFile-409": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_middle_null-tag_columns5-rows5-4]"
+  ],
+  "TsFile-408": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_all_null-tag_columns4-rows4-2]"
+  ],
+  "TsFile-407": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_trailing_null-tag_columns3-rows3-4]"
+  ],
+  "TsFile-406": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_leading_null-tag_columns2-rows2-4]"
+  ],
+  "TsFile-405": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_mixed_null-tag_columns1-rows1-4]"
+  ],
+  "TsFile-404": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[float64-Exception]"
+  ],
+  "TsFile-403": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[!@#-!@#]"
+  ],
+  "TsFile-402": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[123-123]"
+  ],
+  "TsFile-401": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[\\u65f6\\u95f4-\\u65f6\\u95f4]"
+  ],
+  "TsFile-400": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[TIME-TIME]"
+  ],
+  "TsFile-399": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[!@#$%^&*()_+-=[]{};':\",./<>?]"
+  ],
+  "TsFile-398": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[12345]"
+  ],
+  "TsFile-397": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[\\u6d4b\\u8bd5\\u8868]"
+  ],
+  "TsFile-396": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[TEST_TABLE]"
+  ],
+  "TsFile-395": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]"
+  ],
+  "TsFile-231": [
+   "tests/tree/to_dataframe_tree_test.py::test_tree_all_datatype_query_to_dataframe_variants1"
+  ],
+  "TsFile-167": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_all_measurements"
+  ],
+  "TsFile-166": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_common_measurements"
+  ],
+  "TsFile-165": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_different_measurements"
+  ],
+  "TsFile-164": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_and_limit_combination"
+  ],
+  "TsFile-163": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_exceeds_rows"
+  ],
+  "TsFile-162": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_within_range"
+  ],
+  "TsFile-161": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_zero"
+  ],
+  "TsFile-160": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_negative"
+  ],
+  "TsFile-159": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_exceeds_rows"
+  ],
+  "TsFile-158": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_within_range"
+  ],
+  "TsFile-157": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_zero"
+  ],
+  "TsFile-156": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_negative"
+  ],
+  "TsFile-155": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_special_chars"
+  ],
+  "TsFile-154": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_chinese"
+  ],
+  "TsFile-153": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_underscore"
+  ],
+  "TsFile-152": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_numbers"
+  ],
+  "TsFile-151": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_uppercase"
+  ],
+  "TsFile-150": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_lowercase"
+  ],
+  "TsFile-149": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_not_exist"
+  ],
+  "TsFile-148": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_partial_exist"
+  ],
+  "TsFile-147": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_exist"
+  ],
+  "TsFile-146": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_not_exist"
+  ],
+  "TsFile-145": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_exist"
+  ],
+  "TsFile-144": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_special_chars"
+  ],
+  "TsFile-143": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_chinese"
+  ],
+  "TsFile-142": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_underscore"
+  ],
+  "TsFile-141": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_numbers"
+  ],
+  "TsFile-140": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_uppercase"
+  ],
+  "TsFile-139": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_lowercase"
+  ],
+  "TsFile-138": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_not_exist"
+  ],
+  "TsFile-137": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_partial_exist"
+  ],
+  "TsFile-136": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_exist"
+  ],
+  "TsFile-135": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_single_not_exist"
+  ],
+  "TsFile-134": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_single_exist"
+  ],
+  "TsFile-133": [
+   "tests/table/to_dataframe_table_test.py::test_column_not_exist"
+  ],
+  "TsFile-132": [
+   "tests/table/to_dataframe_table_test.py::test_table_not_exist"
+  ],
+  "TsFile-131": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_with_all_params"
+  ],
+  "TsFile-130": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_query[20-20]"
+  ],
+  "TsFile-129": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[1-1]"
+  ],
+  "TsFile-128": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[10-None-90]"
+  ],
+  "TsFile-127": [
+   "tests/table/to_dataframe_table_test.py::test_table_name_uppercase"
+  ],
+  "TsFile-126": [
+   "tests/table/to_dataframe_table_test.py::test_table_name_lowercase"
+  ],
+  "TsFile-125": [
+   "tests/table/to_dataframe_table_test.py::test_all_columns_query"
+  ],
+  "TsFile-124": [
+   "tests/table/to_dataframe_table_test.py::test_two_columns_query"
+  ],
+  "TsFile-123": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Device1-<lambda>]"
+  ],
+  "TsFile-122": [
+   "tests/table/to_dataframe_table_test.py::test_default_query"
+  ],
+  "TsFile-121": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_open_ended_range"
+  ],
+  "TsFile-120": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_mixed_series_specifiers"
+  ],
+  "TsFile-119": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_with_offset"
+  ],
+  "TsFile-118": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_large_range"
+  ],
+  "TsFile-117": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_multiple_files"
+  ],
+  "TsFile-116": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_reports_start_immediately"
+  ],
+  "TsFile-115": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_empty_dataframe"
+  ],
+  "TsFile-114": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_only_builds_preview_rows"
+  ],
+  "TsFile-113": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_list_timeseries_prefix_skip_non_matching"
+  ],
+  "TsFile-112": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_trailing_none_trimmed"
+  ],
+  "TsFile-111": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_none_values_should_be_skipped"
+  ],
+  "TsFile-110": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_dot-weather-tag_columns0-tag_values0-temperature-weather.dev\\\\.a.temperature]"
+  ],
+  "TsFile-109": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_all_null-tag_columns0-rows0-2]"
+  ],
+  "TsFile-108": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_with_none_values_current_behavior"
+  ],
+  "TsFile-107": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_supports_negative_series_index"
+  ],
+  "TsFile-106": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_preserves_requested_series_order"
+  ],
+  "TsFile-105": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_single_timestamp_with_nulls"
+  ],
+  "TsFile-104": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_time_range_boundary_with_sparse_data"
+  ],
+  "TsFile-103": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_single_empty_tsfile_raises_error"
+  ],
+  "TsFile-102": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_empty_tsfile_shard_skipped"
+  ],
+  "TsFile-101": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_full_range"
+  ],
+  "TsFile-100": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_large_series_count"
+  ],
+  "TsFile-99": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_multiple_files_different_timestamps"
+  ],
+  "TsFile-98": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_medium_scale"
+  ],
+  "TsFile-97": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_small_scale"
+  ],
+  "TsFile-96": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_nested_directory"
+  ],
+  "TsFile-95": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_multiple_files"
+  ],
+  "TsFile-94": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_timestamp_type"
+  ],
+  "TsFile-93": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_double_type"
+  ],
+  "TsFile-92": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_float_type"
+  ],
+  "TsFile-91": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int64_type"
+  ],
+  "TsFile-90": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int32_type"
+  ],
+  "TsFile-89": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_boolean_type"
+  ],
+  "TsFile-88": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_all_null_values"
+  ],
+  "TsFile-87": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_access_after_close"
+  ],
+  "TsFile-86": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_close_dataframe_twice"
+  ],
+  "TsFile-85": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_series_names_nonexistent_table_prefix"
+  ],
+  "TsFile-84": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index2"
+  ],
+  "TsFile-83": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index1"
+  ],
+  "TsFile-82": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_all_exceed"
+  ],
+  "TsFile-81": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_right_exceed"
+  ],
+  "TsFile-80": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_left_exceed"
+  ],
+  "TsFile-79": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_within_range"
+  ],
+  "TsFile-78": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_alignment_with_null_values"
+  ],
+  "TsFile-77": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_AlignedTimeseries_Basic"
+  ],
+  "TsFile-76": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name_nonexistent"
+  ],
+  "TsFile-75": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name"
+  ],
+  "TsFile-74": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_out_of_range"
+  ],
+  "TsFile-73": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_negative"
+  ],
+  "TsFile-72": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_valid"
+  ],
+  "TsFile-71": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_special_column_name"
+  ],
+  "TsFile-70": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_nonexistent"
+  ],
+  "TsFile-69": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_numbers"
+  ],
+  "TsFile-68": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_chinese"
+  ],
+  "TsFile-67": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_lowercase"
+  ],
+  "TsFile-66": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_uppercase"
+  ],
+  "TsFile-65": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_multiple_devices"
+  ],
+  "TsFile-64": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_field_table"
+  ],
+  "TsFile-63": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_tag_table"
+  ],
+  "TsFile-62": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_all_types"
+  ],
+  "TsFile-61": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_without_tsfile"
+  ],
+  "TsFile-60": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nested_directory_path_contains_non_tsfile"
+  ],
+  "TsFile-59": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_contains_non_tsfile"
+  ],
+  "TsFile-58": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_different_timeseries"
+  ],
+  "TsFile-57": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_same_timeseries"
+  ],
+  "TsFile-56": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nonexistent_file_path"
+  ],
+  "TsFile-55": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_different_timestamp"
+  ],
+  "TsFile-54": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_same_timestamp"
+  ],
+  "TsFile-53": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_different_timeseries_same_timestamp"
+  ],
+  "TsFile-52": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_single_file_path"
+  ],
+  "TsFile-51": [
+   "tests/table/query_table_by_row_test.py::test_offset_and_limit_combination"
+  ],
+  "TsFile-50": [
+   "tests/table/query_table_by_row_test.py::test_limit_exceeds_rows"
+  ],
+  "TsFile-49": [
+   "tests/table/query_table_by_row_test.py::test_limit_within_range"
+  ],
+  "TsFile-48": [
+   "tests/table/query_table_by_row_test.py::test_limit_zero"
+  ],
+  "TsFile-47": [
+   "tests/table/query_table_by_row_test.py::test_limit_negative"
+  ],
+  "TsFile-46": [
+   "tests/table/query_table_by_row_test.py::test_offset_exceeds_rows"
+  ],
+  "TsFile-45": [
+   "tests/table/query_table_by_row_test.py::test_offset_within_range"
+  ],
+  "TsFile-44": [
+   "tests/table/query_table_by_row_test.py::test_offset_zero"
+  ],
+  "TsFile-43": [
+   "tests/table/query_table_by_row_test.py::test_offset_negative"
+  ],
+  "TsFile-42": [
+   "tests/table/query_table_by_row_test.py::test_column_names_whitespace"
+  ],
+  "TsFile-41": [
+   "tests/table/query_table_by_row_test.py::test_column_names_empty"
+  ],
+  "TsFile-40": [
+   "tests/table/query_table_by_row_test.py::test_column_names_special_chars"
+  ],
+  "TsFile-39": [
+   "tests/table/query_table_by_row_test.py::test_column_names_chinese"
+  ],
+  "TsFile-38": [
+   "tests/table/query_table_by_row_test.py::test_column_names_underscore"
+  ],
+  "TsFile-37": [
+   "tests/table/query_table_by_row_test.py::test_column_names_numbers"
+  ],
+  "TsFile-36": [
+   "tests/table/query_table_by_row_test.py::test_column_names_uppercase"
+  ],
+  "TsFile-35": [
+   "tests/table/query_table_by_row_test.py::test_column_names_lowercase"
+  ],
+  "TsFile-34": [
+   "tests/table/query_table_by_row_test.py::test_column_type_field"
+  ],
+  "TsFile-33": [
+   "tests/table/query_table_by_row_test.py::test_column_type_tag"
+  ],
+  "TsFile-32": [
+   "tests/table/query_table_by_row_test.py::test_multi_device_query"
+  ],
+  "TsFile-31": [
+   "tests/table/query_table_by_row_test.py::test_column_names_multi_partial_exist"
+  ],
+  "TsFile-30": [
+   "tests/table/query_table_by_row_test.py::test_column_names_multi_all_exist"
+  ],
+  "TsFile-29": [
+   "tests/table/query_table_by_row_test.py::test_column_names_single_not_exist"
+  ],
+  "TsFile-28": [
+   "tests/table/query_table_by_row_test.py::test_column_names_single_exist"
+  ],
+  "TsFile-27": [
+   "tests/table/query_table_by_row_test.py::test_table_name_not_exist"
+  ],
+  "TsFile-26": [
+   "tests/table/query_table_by_row_test.py::test_table_name_special_chars"
+  ],
+  "TsFile-25": [
+   "tests/table/query_table_by_row_test.py::test_table_name_chinese"
+  ],
+  "TsFile-24": [
+   "tests/table/query_table_by_row_test.py::test_table_name_underscore"
+  ],
+  "TsFile-23": [
+   "tests/table/query_table_by_row_test.py::test_table_name_numbers"
+  ],
+  "TsFile-22": [
+   "tests/table/query_table_by_row_test.py::test_table_name_uppercase"
+  ],
+  "TsFile-21": [
+   "tests/table/query_table_by_row_test.py::test_table_name_lowercase"
+  ],
+  "TsFile-20": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_from_to_dataframe"
+  ],
+  "TsFile-19": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_set_without_time_column"
+  ],
+  "TsFile-18": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_name_none"
+  ],
+  "TsFile-17": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_name_empty"
+  ],
+  "TsFile-16": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_duplicate"
+  ],
+  "TsFile-15": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[str-TypeError]"
+  ],
+  "TsFile-14": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_exist"
+  ],
+  "TsFile-13": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_int32"
+  ],
+  "TsFile-12": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[time-time]"
+  ],
+  "TsFile-11": [
+   "tests/table/dataframe_to_tsfile_test.py::test_directory_path"
+  ],
+  "TsFile-10": [
+   "tests/table/dataframe_to_tsfile_test.py::test_existing_file_path"
+  ],
+  "TsFile-9": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_name_not_set"
+  ],
+  "TsFile-8": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[TestTable]"
+  ],
+  "TsFile-7": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_none"
+  ],
+  "TsFile-6": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_empty"
+  ],
+  "TsFile-5": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_values_count_inconsistent"
+  ],
+  "TsFile-4": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_no_null"
+  ],
+  "TsFile-3": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_cross_partition"
+  ],
+  "TsFile-2": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_all_null"
+  ],
+  "TsFile-1": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_partial_null"
+  ]
+ },
+ "revmap": {
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_reader_handles_stale_path_columns_after_reused_queries": "TsFile-621",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_repr_only_builds_preview_rows": "TsFile-620",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_series_name_dot_device_segment_reports_clear_error_from_dataframe_api": "TsFile-619",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_series_name_variants_round_trip_all_dataframe_apis": "TsFile-618",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_handles_iotdb_naming_rules": "TsFile-617",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_uppercase_measurement_can_align_by_full_path": "TsFile-616",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_iotdb_uppercase_measurement_can_be_read_by_full_path": "TsFile-615",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_iotdb_identifier_names_are_case_sensitive": "TsFile-614",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_iotdb_backquoted_identifier_names_are_preserved": "TsFile-613",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_iotdb_unquoted_identifier_names_are_preserved": "TsFile-612",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_escaped_measurement_name_can_be_resolved": "TsFile-611",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_cross_file_field_union_aligns_missing_values": "TsFile-610",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_metadata_filtered_subset_aligns_series": "TsFile-609",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_named_series_variants_align_by_tree_path_rules": "TsFile-608",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_cross_device_different_measurements_preserves_values": "TsFile-607",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_cross_device_alignment_preserves_values": "TsFile-606",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_timeseries_timestamps_are_cached_but_values_are_read_on_demand": "TsFile-605",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_timeseries_additional_slice_and_aligned_indexing_forms": "TsFile-604",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_timeseries_metadata_and_indexing": "TsFile-603",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_named_series_variants_expose_metadata": "TsFile-602",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_metadata_filtered_view_exposes_series_metadata": "TsFile-601",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_dataframe_columns_filter_and_export": "TsFile-600",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_repeated_index_view_and_invalid_entries": "TsFile-591",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_list_respects_requested_order": "TsFile-590",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_slice_variants_return_metadata_ready_subsets": "TsFile-589",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_index_forms_expose_series_metadata": "TsFile-587",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_handles_different_series_counts": "TsFile-585",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_filters_by_middle_device_prefix": "TsFile-584",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_filters_different_database_names": "TsFile-583",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_filters_different_measurement_names": "TsFile-582",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_filters_different_device_names": "TsFile-581",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_handles_different_series_counts": "TsFile-580",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_by_middle_device_prefix": "TsFile-579",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_different_database_names": "TsFile-578",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_different_measurement_names": "TsFile-577",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_different_device_names": "TsFile-576",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_reader_metadata_scan_reports_device_and_series_counts": "TsFile-575",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_dataframe_load_reports_shard_progress": "TsFile-574",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_single_file_uses_serial_loader": "TsFile-573",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loading_uses_thread_pool_for_multiple_files": "TsFile-572",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_aligned_display_truncates_large_results": "TsFile-571",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_repr_and_show_keep_tree_headers": "TsFile-570",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_display_timestamp_format_keeps_milliseconds": "TsFile-569",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_device_path_rebuild_rejects_null_segment": "TsFile-568",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_device_path_rebuild_rejects_dotted_segment": "TsFile-567",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_duplicate_specifiers_read_underlying_device_once": "TsFile-565",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_repeated_specifier_keeps_column_positions": "TsFile-564",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_repeated_series_name_keeps_requested_columns": "TsFile-563",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_dedups_name_and_index_specifier": "TsFile-562",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_registers_only_fields_owned_by_device": "TsFile-561",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_short_path_stays_resolvable": "TsFile-560",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_extends_segment_layout_to_deepest_device": "TsFile-559",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_of_field_subsets_loads_instead_of_rejecting": "TsFile-558",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_maps_global_field_index_to_local_shard": "TsFile-557",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_field_columns_expand_in_first_seen_order": "TsFile-556",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_string_or_text_only_measurements_are_non_numeric": "TsFile-555",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_empty_file_without_device_metadata_raises": "TsFile-554",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_rejects_multiple_root_segments_in_one_file": "TsFile-553",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_dataframe_repeated_close_is_idempotent": "TsFile-552",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_subset_view_close_is_noop": "TsFile-551",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_series_access_after_dataframe_close_raises": "TsFile-550",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_dataframe_access_after_close_raises": "TsFile-549",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_dataframe_close_releases_resources": "TsFile-548",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_context_exit_closes_root_and_releases_readers": "TsFile-547",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_aligned_show_limits_rendered_rows": "TsFile-546",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_aligned_repr_prints_readable_table": "TsFile-545",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_subset_repr_header_reports_subset_size": "TsFile-543",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_display_headers_expose_tree_model_columns": "TsFile-542",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_show_limits_rendered_rows": "TsFile-541",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_repr_truncates_long_series_list": "TsFile-540",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_nan_values_are_preserved": "TsFile-539",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_omits_non_numeric_measurements": "TsFile-538",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_numeric_measurements_read_as_float64": "TsFile-537",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge": "TsFile-536",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_pads_shallow_device_segments_with_nan": "TsFile-535",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_union_takes_field_name_union_across_files": "TsFile-534",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_same_device_and_measurement_across_files_merge": "TsFile-533",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_duplicate_timestamps_across_shards_raise": "TsFile-532",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_merged_series_count_sums_shard_counts": "TsFile-531",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_same_series_across_shards_merges_into_one": "TsFile-530",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_out_of_range_series_index_raises": "TsFile-529",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_invalid_series_specifier_raises_type_error": "TsFile-528",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_invalid_time_index_raises_type_error": "TsFile-527",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_requires_two_arguments": "TsFile-526",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_aligned_result_indexing": "TsFile-525",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_aligned_result_row_count": "TsFile-524",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_aligned_result_exposes_attributes": "TsFile-523",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_alignment_stays_within_requested_bounds": "TsFile-522",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_repeated_series_specifiers_do_not_raise": "TsFile-521",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_negative_series_index": "TsFile-520",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_open_time_slices_and_empty_range": "TsFile-519",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_single_timestamp_query": "TsFile-518",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_accepts_mixed_name_and_index_specifiers": "TsFile-517",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_cross_device_timelines_align_by_timestamp": "TsFile-516",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_column_order_follows_requested_series": "TsFile-514",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_union_aligns_sparse_timestamps_with_nan": "TsFile-513",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_loc_range_query_returns_aligned_timeseries": "TsFile-512",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_subset_view_reuses_parent_readers": "TsFile-495",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_unsupported_key_type_raises": "TsFile-494",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_index_list_out_of_range_raises": "TsFile-493",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_index_list_with_non_integer_raises": "TsFile-492",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_index_list_returns_positional_view": "TsFile-491",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_slice_returns_subset_view": "TsFile-490",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_unknown_name_raises_key_error": "TsFile-489",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_index_out_of_range_raises": "TsFile-488",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_negative_index_returns_last_series": "TsFile-487",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_position_index_returns_timeseries": "TsFile-486",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_getitem_name_returns_timeseries_handle": "TsFile-485",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_boolean_filter_without_match_returns_empty_view": "TsFile-484",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_boolean_filter_returns_subset_view": "TsFile-483",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_unknown_column_raises_key_error": "TsFile-482",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_time_and_count_columns_projection": "TsFile-481",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_table_column_is_unavailable": "TsFile-480",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_col3_column_projection": "TsFile-479",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_col1_column_projection": "TsFile-478",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_metadata_field_column_projection": "TsFile-477",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_invalid_prefix_returns_empty": "TsFile-467",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_unmatched_prefix_returns_empty": "TsFile-466",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_prefix_matches_by_segment": "TsFile-465",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_by_device_prefix": "TsFile-464",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_filters_by_root_prefix": "TsFile-463",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_without_prefix_returns_all": "TsFile-462",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_metadata_pads_short_device_segments": "TsFile-456",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_list_timeseries_lists_every_series_name_depth": "TsFile-455",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_series_names_flatten_device_segments": "TsFile-454",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_initialization_only_scans_metadata": "TsFile-453",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_load_without_any_numeric_series_raises": "TsFile-452",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_empty_table_shard_mixed_with_tree_file_raises_model_conflict": "TsFile-451",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_rejects_tree_then_table_model_mix": "TsFile-450",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_rejects_table_then_tree_model_mix": "TsFile-449",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_model_identified_as_tree": "TsFile-448",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_relative_path_normalized_to_absolute": "TsFile-447",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_directory_load_ignores_non_tsfile_files": "TsFile-446",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_missing_file_path_raises": "TsFile-445",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_empty_directory_raises": "TsFile-444",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_directory_load_searches_nested_subdirectories": "TsFile-443",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_directory_load_finds_all_tsfiles": "TsFile-442",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_file_list_loads_multiple_files": "TsFile-441",
+  "tests.tree.test_tsfile_dataframe_tree_model::test_tree_single_file_path_loads": "TsFile-440",
+  "tests.table.to_dataframe_table_test::test_iterator_query[1000-100]": "TsFile-439",
+  "tests.table.to_dataframe_table_test::test_max_row_num[-10-0]": "TsFile-438",
+  "tests.table.to_dataframe_table_test::test_max_row_num[0-0]": "TsFile-437",
+  "tests.table.to_dataframe_table_test::test_max_row_num[1000-100]": "TsFile-436",
+  "tests.table.to_dataframe_table_test::test_max_row_num[100-100]": "TsFile-435",
+  "tests.table.to_dataframe_table_test::test_max_row_num[50-50]": "TsFile-434",
+  "tests.table.to_dataframe_table_test::test_time_range[-50-50-51]": "TsFile-433",
+  "tests.table.to_dataframe_table_test::test_time_range[-10-10-11]": "TsFile-432",
+  "tests.table.to_dataframe_table_test::test_time_range[10--10-0]": "TsFile-431",
+  "tests.table.to_dataframe_table_test::test_time_range[-5--5-0]": "TsFile-430",
+  "tests.table.to_dataframe_table_test::test_time_range[5-5-1]": "TsFile-429",
+  "tests.table.to_dataframe_table_test::test_time_range[None--5-0]": "TsFile-428",
+  "tests.table.to_dataframe_table_test::test_time_range[None-5-6]": "TsFile-427",
+  "tests.table.to_dataframe_table_test::test_time_range[-10-None-100]": "TsFile-426",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value7-<lambda>]": "TsFile-425",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value6-<lambda>]": "TsFile-424",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value5-<lambda>]": "TsFile-423",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value4-<lambda>]": "TsFile-422",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value3-<lambda>]": "TsFile-421",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value2-<lambda>]": "TsFile-420",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Value1-<lambda>]": "TsFile-419",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]": "TsFile-418",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]": "TsFile-417",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]": "TsFile-416",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]": "TsFile-415",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]": "TsFile-414",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]": "TsFile-413",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]": "TsFile-412",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]": "TsFile-411",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_sparse_mixed-tag_columns6-rows6-8]": "TsFile-410",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_middle_null-tag_columns5-rows5-4]": "TsFile-409",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_all_null-tag_columns4-rows4-2]": "TsFile-408",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_trailing_null-tag_columns3-rows3-4]": "TsFile-407",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_leading_null-tag_columns2-rows2-4]": "TsFile-406",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_mixed_null-tag_columns1-rows1-4]": "TsFile-405",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_invalid_type[float64-Exception]": "TsFile-404",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_names[!@#-!@#]": "TsFile-403",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_names[123-123]": "TsFile-402",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_names[\\u65f6\\u95f4-\\u65f6\\u95f4]": "TsFile-401",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_names[TIME-TIME]": "TsFile-400",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[!@#$%^&*()_+-=[]{};':\",./<>?]": "TsFile-399",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[12345]": "TsFile-398",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[\\u6d4b\\u8bd5\\u8868]": "TsFile-397",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[TEST_TABLE]": "TsFile-396",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[test_table]": "TsFile-395",
+  "tests.tree.to_dataframe_tree_test::test_tree_all_datatype_query_to_dataframe_variants1": "TsFile-231",
+  "tests.tree.query_tree_by_row_test::test_multi_device_all_measurements": "TsFile-167",
+  "tests.tree.query_tree_by_row_test::test_multi_device_common_measurements": "TsFile-166",
+  "tests.tree.query_tree_by_row_test::test_multi_device_different_measurements": "TsFile-165",
+  "tests.tree.query_tree_by_row_test::test_offset_and_limit_combination": "TsFile-164",
+  "tests.tree.query_tree_by_row_test::test_limit_exceeds_rows": "TsFile-163",
+  "tests.tree.query_tree_by_row_test::test_limit_within_range": "TsFile-162",
+  "tests.tree.query_tree_by_row_test::test_limit_zero": "TsFile-161",
+  "tests.tree.query_tree_by_row_test::test_limit_negative": "TsFile-160",
+  "tests.tree.query_tree_by_row_test::test_offset_exceeds_rows": "TsFile-159",
+  "tests.tree.query_tree_by_row_test::test_offset_within_range": "TsFile-158",
+  "tests.tree.query_tree_by_row_test::test_offset_zero": "TsFile-157",
+  "tests.tree.query_tree_by_row_test::test_offset_negative": "TsFile-156",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_special_chars": "TsFile-155",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_chinese": "TsFile-154",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_underscore": "TsFile-153",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_numbers": "TsFile-152",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_uppercase": "TsFile-151",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_lowercase": "TsFile-150",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_multi_all_not_exist": "TsFile-149",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_multi_partial_exist": "TsFile-148",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_multi_all_exist": "TsFile-147",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_single_not_exist": "TsFile-146",
+  "tests.tree.query_tree_by_row_test::test_measurement_names_single_exist": "TsFile-145",
+  "tests.tree.query_tree_by_row_test::test_device_ids_special_chars": "TsFile-144",
+  "tests.tree.query_tree_by_row_test::test_device_ids_chinese": "TsFile-143",
+  "tests.tree.query_tree_by_row_test::test_device_ids_underscore": "TsFile-142",
+  "tests.tree.query_tree_by_row_test::test_device_ids_numbers": "TsFile-141",
+  "tests.tree.query_tree_by_row_test::test_device_ids_uppercase": "TsFile-140",
+  "tests.tree.query_tree_by_row_test::test_device_ids_lowercase": "TsFile-139",
+  "tests.tree.query_tree_by_row_test::test_device_ids_multi_all_not_exist": "TsFile-138",
+  "tests.tree.query_tree_by_row_test::test_device_ids_multi_partial_exist": "TsFile-137",
+  "tests.tree.query_tree_by_row_test::test_device_ids_multi_all_exist": "TsFile-136",
+  "tests.tree.query_tree_by_row_test::test_device_ids_single_not_exist": "TsFile-135",
+  "tests.tree.query_tree_by_row_test::test_device_ids_single_exist": "TsFile-134",
+  "tests.table.to_dataframe_table_test::test_column_not_exist": "TsFile-133",
+  "tests.table.to_dataframe_table_test::test_table_not_exist": "TsFile-132",
+  "tests.table.to_dataframe_table_test::test_iterator_with_all_params": "TsFile-131",
+  "tests.table.to_dataframe_table_test::test_iterator_query[20-20]": "TsFile-130",
+  "tests.table.to_dataframe_table_test::test_max_row_num[1-1]": "TsFile-129",
+  "tests.table.to_dataframe_table_test::test_time_range[10-None-90]": "TsFile-128",
+  "tests.table.to_dataframe_table_test::test_table_name_uppercase": "TsFile-127",
+  "tests.table.to_dataframe_table_test::test_table_name_lowercase": "TsFile-126",
+  "tests.table.to_dataframe_table_test::test_all_columns_query": "TsFile-125",
+  "tests.table.to_dataframe_table_test::test_two_columns_query": "TsFile-124",
+  "tests.table.to_dataframe_table_test::test_single_column_query[Device1-<lambda>]": "TsFile-123",
+  "tests.table.to_dataframe_table_test::test_default_query": "TsFile-122",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_open_ended_range": "TsFile-121",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_mixed_series_specifiers": "TsFile-120",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_read_series_by_row_with_offset": "TsFile-119",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_read_series_by_row_large_range": "TsFile-118",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_show_progress_multiple_files": "TsFile-117",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_show_progress_reports_start_immediately": "TsFile-116",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_repr_empty_dataframe": "TsFile-115",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_repr_only_builds_preview_rows": "TsFile-114",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_list_timeseries_prefix_skip_non_matching": "TsFile-113",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_sparse_tags_trailing_none_trimmed": "TsFile-112",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_sparse_tags_none_values_should_be_skipped": "TsFile-111",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_dot-weather-tag_columns0-tag_values0-temperature-weather.dev\\\\.a.temperature]": "TsFile-110",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_all_null-tag_columns0-rows0-2]": "TsFile-109",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_sparse_tags_with_none_values_current_behavior": "TsFile-108",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_supports_negative_series_index": "TsFile-107",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_preserves_requested_series_order": "TsFile-106",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_single_timestamp_with_nulls": "TsFile-105",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_loc_time_range_boundary_with_sparse_data": "TsFile-104",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_single_empty_tsfile_raises_error": "TsFile-103",
+  "tests.table.test_tsfile_dataset.TestBugFixValidation::test_empty_tsfile_shard_skipped": "TsFile-102",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_loc_alignment_full_range": "TsFile-101",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_loc_alignment_large_series_count": "TsFile-100",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_loc_alignment_multiple_files_different_timestamps": "TsFile-99",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_loc_alignment_medium_scale": "TsFile-98",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_loc_alignment_small_scale": "TsFile-97",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_parallel_load_nested_directory": "TsFile-96",
+  "tests.table.test_tsfile_dataset.TestPerformance::test_parallel_load_multiple_files": "TsFile-95",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_timestamp_type": "TsFile-94",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_double_type": "TsFile-93",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_float_type": "TsFile-92",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_int64_type": "TsFile-91",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_int32_type": "TsFile-90",
+  "tests.table.test_tsfile_dataset.TestAllDataTypesValue::test_boolean_type": "TsFile-89",
+  "tests.table.test_tsfile_dataset.TestBoundaryCases::test_all_null_values": "TsFile-88",
+  "tests.table.test_tsfile_dataset.TestBoundaryCases::test_access_after_close": "TsFile-87",
+  "tests.table.test_tsfile_dataset.TestBoundaryCases::test_close_dataframe_twice": "TsFile-86",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_series_names_nonexistent_table_prefix": "TsFile-85",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_index2": "TsFile-84",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_index1": "TsFile-83",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_time_slice_all_exceed": "TsFile-82",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_time_slice_right_exceed": "TsFile-81",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_time_slice_left_exceed": "TsFile-80",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_time_slice_within_range": "TsFile-79",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_loc_alignment_with_null_values": "TsFile-78",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameLoc::test_AlignedTimeseries_Basic": "TsFile-77",
+  "tests.table.test_tsfile_dataset.TestTimeseries::test_timeseries_name_nonexistent": "TsFile-76",
+  "tests.table.test_tsfile_dataset.TestTimeseries::test_timeseries_name": "TsFile-75",
+  "tests.table.test_tsfile_dataset.TestTimeseries::test_timeseries_index_out_of_range": "TsFile-74",
+  "tests.table.test_tsfile_dataset.TestTimeseries::test_timeseries_index_negative": "TsFile-73",
+  "tests.table.test_tsfile_dataset.TestTimeseries::test_timeseries_index_valid": "TsFile-72",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_special_column_name": "TsFile-71",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_nonexistent": "TsFile-70",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_numbers": "TsFile-69",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_chinese": "TsFile-68",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_lowercase": "TsFile-67",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_uppercase": "TsFile-66",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_len_multiple_devices": "TsFile-65",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_len_no_field_table": "TsFile-64",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_len_no_tag_table": "TsFile-63",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFrameBasic::test_all_types": "TsFile-62",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_directory_without_tsfile": "TsFile-61",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_nested_directory_path_contains_non_tsfile": "TsFile-60",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_directory_path_contains_non_tsfile": "TsFile-59",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_directory_path_different_timeseries": "TsFile-58",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_directory_path_same_timeseries": "TsFile-57",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_nonexistent_file_path": "TsFile-56",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_different_timestamp": "TsFile-55",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_same_timestamp": "TsFile-54",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_multiple_file_paths_different_timeseries_same_timestamp": "TsFile-53",
+  "tests.table.test_tsfile_dataset.TestTsFileDataFramePaths::test_single_file_path": "TsFile-52",
+  "tests.table.query_table_by_row_test::test_offset_and_limit_combination": "TsFile-51",
+  "tests.table.query_table_by_row_test::test_limit_exceeds_rows": "TsFile-50",
+  "tests.table.query_table_by_row_test::test_limit_within_range": "TsFile-49",
+  "tests.table.query_table_by_row_test::test_limit_zero": "TsFile-48",
+  "tests.table.query_table_by_row_test::test_limit_negative": "TsFile-47",
+  "tests.table.query_table_by_row_test::test_offset_exceeds_rows": "TsFile-46",
+  "tests.table.query_table_by_row_test::test_offset_within_range": "TsFile-45",
+  "tests.table.query_table_by_row_test::test_offset_zero": "TsFile-44",
+  "tests.table.query_table_by_row_test::test_offset_negative": "TsFile-43",
+  "tests.table.query_table_by_row_test::test_column_names_whitespace": "TsFile-42",
+  "tests.table.query_table_by_row_test::test_column_names_empty": "TsFile-41",
+  "tests.table.query_table_by_row_test::test_column_names_special_chars": "TsFile-40",
+  "tests.table.query_table_by_row_test::test_column_names_chinese": "TsFile-39",
+  "tests.table.query_table_by_row_test::test_column_names_underscore": "TsFile-38",
+  "tests.table.query_table_by_row_test::test_column_names_numbers": "TsFile-37",
+  "tests.table.query_table_by_row_test::test_column_names_uppercase": "TsFile-36",
+  "tests.table.query_table_by_row_test::test_column_names_lowercase": "TsFile-35",
+  "tests.table.query_table_by_row_test::test_column_type_field": "TsFile-34",
+  "tests.table.query_table_by_row_test::test_column_type_tag": "TsFile-33",
+  "tests.table.query_table_by_row_test::test_multi_device_query": "TsFile-32",
+  "tests.table.query_table_by_row_test::test_column_names_multi_partial_exist": "TsFile-31",
+  "tests.table.query_table_by_row_test::test_column_names_multi_all_exist": "TsFile-30",
+  "tests.table.query_table_by_row_test::test_column_names_single_not_exist": "TsFile-29",
+  "tests.table.query_table_by_row_test::test_column_names_single_exist": "TsFile-28",
+  "tests.table.query_table_by_row_test::test_table_name_not_exist": "TsFile-27",
+  "tests.table.query_table_by_row_test::test_table_name_special_chars": "TsFile-26",
+  "tests.table.query_table_by_row_test::test_table_name_chinese": "TsFile-25",
+  "tests.table.query_table_by_row_test::test_table_name_underscore": "TsFile-24",
+  "tests.table.query_table_by_row_test::test_table_name_numbers": "TsFile-23",
+  "tests.table.query_table_by_row_test::test_table_name_uppercase": "TsFile-22",
+  "tests.table.query_table_by_row_test::test_table_name_lowercase": "TsFile-21",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_from_to_dataframe": "TsFile-20",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_not_set_without_time_column": "TsFile-19",
+  "tests.table.dataframe_to_tsfile_test::test_column_name_none": "TsFile-18",
+  "tests.table.dataframe_to_tsfile_test::test_column_name_empty": "TsFile-17",
+  "tests.table.dataframe_to_tsfile_test::test_column_duplicate": "TsFile-16",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_invalid_type[str-TypeError]": "TsFile-15",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_not_exist": "TsFile-14",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_int32": "TsFile-13",
+  "tests.table.dataframe_to_tsfile_test::test_time_column_names[time-time]": "TsFile-12",
+  "tests.table.dataframe_to_tsfile_test::test_directory_path": "TsFile-11",
+  "tests.table.dataframe_to_tsfile_test::test_existing_file_path": "TsFile-10",
+  "tests.table.dataframe_to_tsfile_test::test_table_name_not_set": "TsFile-9",
+  "tests.table.dataframe_to_tsfile_test::test_table_names[TestTable]": "TsFile-8",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_none": "TsFile-7",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_empty": "TsFile-6",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_values_count_inconsistent": "TsFile-5",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_no_null": "TsFile-4",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_cross_partition": "TsFile-3",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_all_null": "TsFile-2",
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_partial_null": "TsFile-1"
+ },
+ "aliases": {
+  "Python-Table-001": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_partial_null"
+  ],
+  "Python-Table-002": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_all_null"
+  ],
+  "Python-Table-003": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_cross_partition"
+  ],
+  "Python-Table-004": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_no_null"
+  ],
+  "Python-Table-005": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_values_count_inconsistent"
+  ],
+  "Python-Table-006": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_empty"
+  ],
+  "Python-Table-007": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_none"
+  ],
+  "Python-Table-008": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[TestTable]"
+  ],
+  "Python-Table-009": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_name_not_set"
+  ],
+  "Python-Table-010": [
+   "tests/table/dataframe_to_tsfile_test.py::test_existing_file_path"
+  ],
+  "Python-Table-011": [
+   "tests/table/dataframe_to_tsfile_test.py::test_directory_path"
+  ],
+  "Python-Table-012": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[time-time]"
+  ],
+  "Python-Table-013": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_int32"
+  ],
+  "Python-Table-014": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_exist"
+  ],
+  "Python-Table-015": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[str-TypeError]"
+  ],
+  "Python-Table-016": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_duplicate"
+  ],
+  "Python-Table-017": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_name_empty"
+  ],
+  "Python-Table-018": [
+   "tests/table/dataframe_to_tsfile_test.py::test_column_name_none"
+  ],
+  "Python-Table-019": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_set_without_time_column"
+  ],
+  "Python-Table-020": [
+   "tests/table/dataframe_to_tsfile_test.py::test_dataframe_from_to_dataframe"
+  ],
+  "Python-Table-021": [
+   "tests/table/query_table_by_row_test.py::test_table_name_lowercase"
+  ],
+  "Python-Table-022": [
+   "tests/table/query_table_by_row_test.py::test_table_name_uppercase"
+  ],
+  "Python-Table-023": [
+   "tests/table/query_table_by_row_test.py::test_table_name_numbers"
+  ],
+  "Python-Table-024": [
+   "tests/table/query_table_by_row_test.py::test_table_name_underscore"
+  ],
+  "Python-Table-025": [
+   "tests/table/query_table_by_row_test.py::test_table_name_chinese"
+  ],
+  "Python-Table-026": [
+   "tests/table/query_table_by_row_test.py::test_table_name_special_chars"
+  ],
+  "Python-Table-027": [
+   "tests/table/query_table_by_row_test.py::test_table_name_not_exist"
+  ],
+  "Python-Table-028": [
+   "tests/table/query_table_by_row_test.py::test_column_names_single_exist"
+  ],
+  "Python-Table-029": [
+   "tests/table/query_table_by_row_test.py::test_column_names_single_not_exist"
+  ],
+  "Python-Table-030": [
+   "tests/table/query_table_by_row_test.py::test_column_names_multi_all_exist"
+  ],
+  "Python-Table-031": [
+   "tests/table/query_table_by_row_test.py::test_column_names_multi_partial_exist"
+  ],
+  "Python-Table-032": [
+   "tests/table/query_table_by_row_test.py::test_multi_device_query"
+  ],
+  "Python-Table-033": [
+   "tests/table/query_table_by_row_test.py::test_column_type_tag"
+  ],
+  "Python-Table-034": [
+   "tests/table/query_table_by_row_test.py::test_column_type_field"
+  ],
+  "Python-Table-035": [
+   "tests/table/query_table_by_row_test.py::test_column_names_lowercase"
+  ],
+  "Python-Table-036": [
+   "tests/table/query_table_by_row_test.py::test_column_names_uppercase"
+  ],
+  "Python-Table-037": [
+   "tests/table/query_table_by_row_test.py::test_column_names_numbers"
+  ],
+  "Python-Table-038": [
+   "tests/table/query_table_by_row_test.py::test_column_names_underscore"
+  ],
+  "Python-Table-039": [
+   "tests/table/query_table_by_row_test.py::test_column_names_chinese"
+  ],
+  "Python-Table-040": [
+   "tests/table/query_table_by_row_test.py::test_column_names_special_chars"
+  ],
+  "Python-Table-041": [
+   "tests/table/query_table_by_row_test.py::test_column_names_empty"
+  ],
+  "Python-Table-042": [
+   "tests/table/query_table_by_row_test.py::test_column_names_whitespace"
+  ],
+  "Python-Table-043": [
+   "tests/table/query_table_by_row_test.py::test_offset_negative"
+  ],
+  "Python-Table-044": [
+   "tests/table/query_table_by_row_test.py::test_offset_zero"
+  ],
+  "Python-Table-045": [
+   "tests/table/query_table_by_row_test.py::test_offset_within_range"
+  ],
+  "Python-Table-046": [
+   "tests/table/query_table_by_row_test.py::test_offset_exceeds_rows"
+  ],
+  "Python-Table-047": [
+   "tests/table/query_table_by_row_test.py::test_limit_negative"
+  ],
+  "Python-Table-048": [
+   "tests/table/query_table_by_row_test.py::test_limit_zero"
+  ],
+  "Python-Table-049": [
+   "tests/table/query_table_by_row_test.py::test_limit_within_range"
+  ],
+  "Python-Table-050": [
+   "tests/table/query_table_by_row_test.py::test_limit_exceeds_rows"
+  ],
+  "Python-Table-051": [
+   "tests/table/query_table_by_row_test.py::test_offset_and_limit_combination"
+  ],
+  "Python-Table-052": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_single_file_path"
+  ],
+  "Python-Table-053": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_different_timeseries_same_timestamp"
+  ],
+  "Python-Table-054": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_same_timestamp"
+  ],
+  "Python-Table-055": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_different_timestamp"
+  ],
+  "Python-Table-056": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nonexistent_file_path"
+  ],
+  "Python-Table-057": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_same_timeseries"
+  ],
+  "Python-Table-058": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_different_timeseries"
+  ],
+  "Python-Table-059": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_contains_non_tsfile"
+  ],
+  "Python-Table-060": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nested_directory_path_contains_non_tsfile"
+  ],
+  "Python-Table-061": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_without_tsfile"
+  ],
+  "Python-Table-062": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_all_types"
+  ],
+  "Python-Table-063": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_tag_table"
+  ],
+  "Python-Table-064": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_field_table"
+  ],
+  "Python-Table-065": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_multiple_devices"
+  ],
+  "Python-Table-066": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_uppercase"
+  ],
+  "Python-Table-067": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_lowercase"
+  ],
+  "Python-Table-068": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_chinese"
+  ],
+  "Python-Table-069": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_numbers"
+  ],
+  "Python-Table-070": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_nonexistent"
+  ],
+  "Python-Table-071": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_special_column_name"
+  ],
+  "Python-Table-072": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_valid"
+  ],
+  "Python-Table-073": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_negative"
+  ],
+  "Python-Table-074": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_out_of_range"
+  ],
+  "Python-Table-075": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name"
+  ],
+  "Python-Table-076": [
+   "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name_nonexistent"
+  ],
+  "Python-Table-077": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_AlignedTimeseries_Basic"
+  ],
+  "Python-Table-078": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_alignment_with_null_values"
+  ],
+  "Python-Table-079": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_within_range"
+  ],
+  "Python-Table-080": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_left_exceed"
+  ],
+  "Python-Table-081": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_right_exceed"
+  ],
+  "Python-Table-082": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_all_exceed"
+  ],
+  "Python-Table-083": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index1"
+  ],
+  "Python-Table-084": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index2"
+  ],
+  "Python-Table-085": [
+   "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_series_names_nonexistent_table_prefix"
+  ],
+  "Python-Table-086": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_close_dataframe_twice"
+  ],
+  "Python-Table-087": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_access_after_close"
+  ],
+  "Python-Table-088": [
+   "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_all_null_values"
+  ],
+  "Python-Table-089": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_boolean_type"
+  ],
+  "Python-Table-090": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int32_type"
+  ],
+  "Python-Table-091": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int64_type"
+  ],
+  "Python-Table-092": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_float_type"
+  ],
+  "Python-Table-093": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_double_type"
+  ],
+  "Python-Table-094": [
+   "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_timestamp_type"
+  ],
+  "Python-Table-095": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_multiple_files"
+  ],
+  "Python-Table-096": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_nested_directory"
+  ],
+  "Python-Table-097": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_small_scale"
+  ],
+  "Python-Table-098": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_medium_scale"
+  ],
+  "Python-Table-099": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_multiple_files_different_timestamps"
+  ],
+  "Python-Table-100": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_large_series_count"
+  ],
+  "Python-Table-101": [
+   "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_full_range"
+  ],
+  "Python-Table-102": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_empty_tsfile_shard_skipped"
+  ],
+  "Python-Table-103": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_single_empty_tsfile_raises_error"
+  ],
+  "Python-Table-104": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_time_range_boundary_with_sparse_data"
+  ],
+  "Python-Table-105": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_single_timestamp_with_nulls"
+  ],
+  "Python-Table-106": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_preserves_requested_series_order"
+  ],
+  "Python-Table-107": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_supports_negative_series_index"
+  ],
+  "Python-Table-108": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_with_none_values_current_behavior"
+  ],
+  "Python-Table-109": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_all_null-tag_columns0-rows0-2]"
+  ],
+  "Python-Table-110": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_dot-weather-tag_columns0-tag_values0-temperature-weather.dev\\\\.a.temperature]"
+  ],
+  "Python-Table-111": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_none_values_should_be_skipped"
+  ],
+  "Python-Table-112": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_trailing_none_trimmed"
+  ],
+  "Python-Table-113": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_list_timeseries_prefix_skip_non_matching"
+  ],
+  "Python-Table-114": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_only_builds_preview_rows"
+  ],
+  "Python-Table-115": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_empty_dataframe"
+  ],
+  "Python-Table-116": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_reports_start_immediately"
+  ],
+  "Python-Table-117": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_multiple_files"
+  ],
+  "Python-Table-118": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_large_range"
+  ],
+  "Python-Table-119": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_with_offset"
+  ],
+  "Python-Table-120": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_mixed_series_specifiers"
+  ],
+  "Python-Table-121": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_open_ended_range"
+  ],
+  "Python-Table-122": [
+   "tests/table/to_dataframe_table_test.py::test_default_query"
+  ],
+  "Python-Table-123": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Device1-<lambda>]"
+  ],
+  "Python-Table-124": [
+   "tests/table/to_dataframe_table_test.py::test_two_columns_query"
+  ],
+  "Python-Table-125": [
+   "tests/table/to_dataframe_table_test.py::test_all_columns_query"
+  ],
+  "Python-Table-126": [
+   "tests/table/to_dataframe_table_test.py::test_table_name_lowercase"
+  ],
+  "Python-Table-127": [
+   "tests/table/to_dataframe_table_test.py::test_table_name_uppercase"
+  ],
+  "Python-Table-128": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[10-None-90]"
+  ],
+  "Python-Table-129": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[1-1]"
+  ],
+  "Python-Table-130": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_query[20-20]"
+  ],
+  "Python-Table-131": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_with_all_params"
+  ],
+  "Python-Table-132": [
+   "tests/table/to_dataframe_table_test.py::test_table_not_exist"
+  ],
+  "Python-Table-133": [
+   "tests/table/to_dataframe_table_test.py::test_column_not_exist"
+  ],
+  "Python-Tree-001": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_single_exist"
+  ],
+  "Python-Tree-002": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_single_not_exist"
+  ],
+  "Python-Tree-003": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_exist"
+  ],
+  "Python-Tree-004": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_partial_exist"
+  ],
+  "Python-Tree-005": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_not_exist"
+  ],
+  "Python-Tree-006": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_lowercase"
+  ],
+  "Python-Tree-007": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_uppercase"
+  ],
+  "Python-Tree-008": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_numbers"
+  ],
+  "Python-Tree-009": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_underscore"
+  ],
+  "Python-Tree-010": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_chinese"
+  ],
+  "Python-Tree-011": [
+   "tests/tree/query_tree_by_row_test.py::test_device_ids_special_chars"
+  ],
+  "Python-Tree-012": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_exist"
+  ],
+  "Python-Tree-013": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_not_exist"
+  ],
+  "Python-Tree-014": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_exist"
+  ],
+  "Python-Tree-015": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_partial_exist"
+  ],
+  "Python-Tree-016": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_not_exist"
+  ],
+  "Python-Tree-017": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_lowercase"
+  ],
+  "Python-Tree-018": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_uppercase"
+  ],
+  "Python-Tree-019": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_numbers"
+  ],
+  "Python-Tree-020": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_underscore"
+  ],
+  "Python-Tree-021": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_chinese"
+  ],
+  "Python-Tree-022": [
+   "tests/tree/query_tree_by_row_test.py::test_measurement_names_special_chars"
+  ],
+  "Python-Tree-023": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_negative"
+  ],
+  "Python-Tree-024": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_zero"
+  ],
+  "Python-Tree-025": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_within_range"
+  ],
+  "Python-Tree-026": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_exceeds_rows"
+  ],
+  "Python-Tree-027": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_negative"
+  ],
+  "Python-Tree-028": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_zero"
+  ],
+  "Python-Tree-029": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_within_range"
+  ],
+  "Python-Tree-030": [
+   "tests/tree/query_tree_by_row_test.py::test_limit_exceeds_rows"
+  ],
+  "Python-Tree-031": [
+   "tests/tree/query_tree_by_row_test.py::test_offset_and_limit_combination"
+  ],
+  "Python-Tree-032": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_different_measurements"
+  ],
+  "Python-Tree-033": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_common_measurements"
+  ],
+  "Python-Tree-034": [
+   "tests/tree/query_tree_by_row_test.py::test_multi_device_all_measurements"
+  ],
+  "Python-Tree-098": [
+   "tests/tree/to_dataframe_tree_test.py::test_tree_all_datatype_query_to_dataframe_variants1"
+  ],
+  "Python-Table-008-P46B83AFB": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]"
+  ],
+  "Python-Table-008-PC2DBDB3B": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[TEST_TABLE]"
+  ],
+  "Python-Table-008-P49EC1725": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[\\u6d4b\\u8bd5\\u8868]"
+  ],
+  "Python-Table-008-P5994471A": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[12345]"
+  ],
+  "Python-Table-008-PA7531F1A": [
+   "tests/table/dataframe_to_tsfile_test.py::test_table_names[!@#$%^&*()_+-=[]{};':\",./<>?]"
+  ],
+  "Python-Table-012-P52021F91": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[TIME-TIME]"
+  ],
+  "Python-Table-012-P9A6D64BE": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[\\u65f6\\u95f4-\\u65f6\\u95f4]"
+  ],
+  "Python-Table-012-PCFCC3B84": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[123-123]"
+  ],
+  "Python-Table-012-P55CDA0E0": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[!@#-!@#]"
+  ],
+  "Python-Table-015-P20555230": [
+   "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[float64-Exception]"
+  ],
+  "Python-Table-109-P83398F33": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_mixed_null-tag_columns1-rows1-4]"
+  ],
+  "Python-Table-109-PBB1F61F5": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_leading_null-tag_columns2-rows2-4]"
+  ],
+  "Python-Table-109-P9C38166E": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_trailing_null-tag_columns3-rows3-4]"
+  ],
+  "Python-Table-109-PE9DA2DE7": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_all_null-tag_columns4-rows4-2]"
+  ],
+  "Python-Table-109-PBB637981": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_middle_null-tag_columns5-rows5-4]"
+  ],
+  "Python-Table-109-P4FEA402E": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_sparse_mixed-tag_columns6-rows6-8]"
+  ],
+  "Python-Table-110-PBB287A34": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]"
+  ],
+  "Python-Table-110-P6A917F56": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]"
+  ],
+  "Python-Table-110-P262D380A": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]"
+  ],
+  "Python-Table-110-P6291EF90": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]"
+  ],
+  "Python-Table-110-PDDCE22DF": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]"
+  ],
+  "Python-Table-110-P5A5079E5": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]"
+  ],
+  "Python-Table-110-P6C842242": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]"
+  ],
+  "Python-Table-110-P23DC0935": [
+   "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]"
+  ],
+  "Python-Table-123-P0F5D2D61": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value1-<lambda>]"
+  ],
+  "Python-Table-123-P275F728E": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value2-<lambda>]"
+  ],
+  "Python-Table-123-P6C3C1439": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value3-<lambda>]"
+  ],
+  "Python-Table-123-P414A31B5": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value4-<lambda>]"
+  ],
+  "Python-Table-123-P01086959": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value5-<lambda>]"
+  ],
+  "Python-Table-123-P96FFEF49": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value6-<lambda>]"
+  ],
+  "Python-Table-123-P2EF671BC": [
+   "tests/table/to_dataframe_table_test.py::test_single_column_query[Value7-<lambda>]"
+  ],
+  "Python-Table-128-P0A0DDC7A": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-10-None-100]"
+  ],
+  "Python-Table-128-PC3F8D360": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[None-5-6]"
+  ],
+  "Python-Table-128-PC577022F": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[None--5-0]"
+  ],
+  "Python-Table-128-P2C22B660": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[5-5-1]"
+  ],
+  "Python-Table-128-P34B0B78B": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-5--5-0]"
+  ],
+  "Python-Table-128-PACF88306": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[10--10-0]"
+  ],
+  "Python-Table-128-P7A449447": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-10-10-11]"
+  ],
+  "Python-Table-128-P4D1C33BA": [
+   "tests/table/to_dataframe_table_test.py::test_time_range[-50-50-51]"
+  ],
+  "Python-Table-129-PE8968B57": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[50-50]"
+  ],
+  "Python-Table-129-P69A9A52D": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[100-100]"
+  ],
+  "Python-Table-129-P48563E8A": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[1000-100]"
+  ],
+  "Python-Table-129-P22841EA3": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[0-0]"
+  ],
+  "Python-Table-129-P97E67F89": [
+   "tests/table/to_dataframe_table_test.py::test_max_row_num[-10-0]"
+  ],
+  "Python-Table-130-P48563E8A": [
+   "tests/table/to_dataframe_table_test.py::test_iterator_query[1000-100]"
+  ]
+ }
+}

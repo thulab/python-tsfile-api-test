@@ -1,16 +1,37 @@
 # Python TsFile 全量回归测试报告
 
-报告时间：2026-07-10 15:14:23 +08:00
+报告时间：2026-08-31 11:22 +08:00
 
 ## 测试范围
 
-- 测试程序：`D:\TestProgram\python\python-tsfile-api-test`
+- 测试程序：`D:\TestProgram\TimechoPLM\python-tsfile-api-test`
 - 用例文档：`C:\Users\timecho\Desktop\TimechoDB测试\测试用例\TsFile 测试用例 - TsFileDataFrame 支持 2.0 树模型.csv`
 - 当前约束：测试人员仅修改测试代码、测试文档和测试报告；产品源码问题只记录，不修改产品源码。
 
-## 本轮维护
+## 本轮（2026-08-31）维护
 
-本轮继续保持“只改测试不改源码”，对树模型 `AlignedTimeseries` / `.loc` 覆盖做专项检查，并补齐 3 条跨场景自动化覆盖：
+- 修复 PLM 用例映射遗漏：pytest 实际收集 276 个 node，`.plm-case-id-map.json`、`.plm-case-info.json`、`.plm-cn-names.json` 现均覆盖 276 个 CASE ID；原有 231 条 node 映射保持不变，补齐 45 个参数实例。
+- `PYTHON-TABLE-008-P46B83AFB` 现精确映射到 `tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]`，目标用例单独执行通过。
+- 新增 `plm_case_map.py` 与 `plm_tests/test_plm_case_map.py`，校验 pytest collection、正反向映射、用例信息和中文名集合完全一致，且 CASE ID 一对一、规范化后不重复。
+- `start.sh case` 改为通过统一映射工具解析 CASE ID，并在执行前校验 ID、创建报告目录和删除同名历史 XML，避免旧产物掩盖“映射不存在”。
+- 全量首轮额外发现 `test_table_not_exist` 的异常类型正确，但当前 wheel 消息为 `Requested table does not exist`，旧断言 `Table.*does not exist` 因大小写敏感误判。该问题分类为“过期测试期望”，已改为大小写不敏感匹配；目标复测及全量复测通过。
+- 本轮只修改测试代码、映射数据、测试文档和报告；未修改仓库 `tsfile/`、已安装 wheel 或其他产品源码。
+
+实际执行命令：
+
+```powershell
+python -m pytest plm_tests -q --tb=short
+python plm_case_map.py list-cases
+python -m pytest "tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]" -q -rs --tb=short
+python -m pytest tests/table/to_dataframe_table_test.py::test_table_not_exist -q --tb=short
+python -m pytest tests -q -rs --tb=short
+```
+
+映射校验结果：`2 passed`；两个目标用例均为 `1 passed`；最终全量结果见下文。
+
+### 既有回归基线
+
+既有维护继续保持“只改测试不改源码”，对树模型 `AlignedTimeseries` / `.loc` 覆盖做专项检查，并补齐 3 条跨场景自动化覆盖：
 
 - `test_tree_loc_named_series_variants_align_by_tree_path_rules`：覆盖普通、中文、反引号、点号转义、大小写设备名等命名规则序列参与 `.loc` 对齐查询。
 - `test_tree_loc_metadata_filtered_subset_aligns_series`：覆盖元数据布尔过滤得到的子集视图继续执行 `.loc`，并校验名称和索引混用。
@@ -57,7 +78,7 @@ CSV 用例总数仍为 155 条；用例结论仍为 153 条结果一致、2 条�
 | 树模型不支持路径段 | 已覆盖：反引号设备路径段包含点号时，`list_timeseries` 和 metadata 可暴露序列，后续 `df[name][:]` / `.loc` 给出明确 `NotImplementedError`。 |
 | 表模型可闭环序列名 | 已覆盖：TAG 值含点号、空格、反引号点号、中文、大写，FIELD 名含点号/空格，多 TAG 混合点号与空格，表名/字段名大小写归一后路径可读取。 |
 
-## 树模型目标文件
+## 历史树模型目标文件（2026-07-10）
 
 执行命令：
 
@@ -89,7 +110,7 @@ python -m pytest tests -q -rs --tb=short
 
 执行结果：
 
-- 通过：400
+- 通过：271
 - 跳过：5
 - 预期失败 xfail：0
 - 失败：0
@@ -137,7 +158,7 @@ skip 用例 5：
 
 ## 覆盖率
 
-执行目录：`D:\TestProgram\python\python-tsfile-api-test\tests`
+执行目录：`D:\TestProgram\TimechoPLM\python-tsfile-api-test\tests`
 
 执行命令：
 
@@ -147,18 +168,18 @@ python -m pytest --cov=tsfile --cov-report=html:htmlcov --cov-report=json:covera
 
 执行结果：
 
-- 通过：400
+- 通过：271
 - 跳过：5
 - 预期失败 xfail：0
 - 失败：0
-- 总覆盖率：88%
-- 语句覆盖率：90%
-- 分支覆盖率：84%
-- 覆盖行数：1836 / 2042
-- 缺失行数：206
-- 分支覆盖：640 / 764
-- 部分覆盖分支：84
-- 缺失分支：124
+- 总覆盖率：83%
+- 语句覆盖率：86%
+- 分支覆盖率：78%
+- 覆盖行数：1750 / 2043
+- 缺失行数：293
+- 分支覆盖：592 / 762
+- 部分覆盖分支：96
+- 缺失分支：170
 - 退出码：0
 
 覆盖率报告：
@@ -166,7 +187,7 @@ python -m pytest --cov=tsfile --cov-report=html:htmlcov --cov-report=json:covera
 - `tests\htmlcov\index.html`
 - `tests\coverage.json`
 
-## Java 端参考结论
+## 历史 Java 端参考结论（2026-07-10）
 
 参考工程：`D:\TestProgram\java\java-tsfile-api-test`
 
@@ -218,7 +239,7 @@ Java API 行为作为本轮 Python 侧 skip 语义判定基准：
 - 恢复正常执行并通过：15 / 16
 - 保留为临时 skip：1 / 16，即 `limit=0`
 - 当前 skip：5，其中另 4 条为树模型已知缺陷专项用例
-- 全量结果：`400 passed, 5 skipped`
+- 当前全量结果：`271 passed, 5 skipped`
 - 全空 TAG/FIELD 用例当前测试体可安全通过，且未确认存在 Java 行为差异，因此不再保留 skip。补充探针中的 `TsFileDataFrame` 空文件加载语义作为独立观察记录，不影响当前用例执行。
 
 已解除的历史 skip：
@@ -243,4 +264,4 @@ Java API 行为作为本轮 Python 侧 skip 语义判定基准：
 
 ## 结论
 
-本轮继续保持“只改测试不改源码”。反引号纯数字设备段和测点名在 Python 与 Java 中均能成功写入并查询 10 行，不再发生进程级崩溃。当前 5 条已知缺陷用例按本次提交要求暂时标记为 skip，避免影响仓库自动化；全量回归结果为 `400 passed, 5 skipped`，非预期失败和 xfail 均为 0，退出码为 0。覆盖率为 88%，覆盖行数为 `1836 / 2042`。5 条 skip 分别跟踪 `limit=0` 元数据类型异常，以及 CSV 用例 21、130 的大写物理量读取和跨设备读取问题；产品修复后应移除对应 skip 并恢复正常断言执行。
+本轮继续保持“只改测试不改源码”。PLM 的 276 个 `ts-py` CASE ID 已与 pytest 的 276 个 node 一对一对齐，目标用例 `PYTHON-TABLE-008-P46B83AFB` 可精确执行并通过。全量首轮发现的表不存在异常消息大小写兼容问题已按过期测试期望修正；最终全量回归结果为 `271 passed, 5 skipped`，非预期失败和 xfail 均为 0，退出码为 0。覆盖率为 83%，覆盖行数为 `1750 / 2043`。5 条 skip 继续跟踪 `limit=0` 元数据类型异常，以及 CSV 用例 21、130 的大写物理量读取和跨设备读取问题；产品修复后应移除对应 skip 并恢复正常断言执行。

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": ".plm-classification.json",
+  "title": "PLM Test Case Scene Classification Rules",
+  "description": "Defines how test cases from this program are classified into PLM's 3-level scene hierarchy (L1=Language → L2=Model → L3=Interface). An agent reading this file can automatically determine the correct scene for any new test case.",
+  "version": "1.0",
+  "program": {
+    "name": "python-tsfile-api-test",
+    "language": "Python",
+    "automationType": "ts-py"
+  },
+  "hierarchy": {
+    "L1": "Python",
+    "L2": {
+      "Table 模型": {
+        "sourceFilePattern": "/table/",
+        "description": "Cases under tests/table/ directory"
+      },
+      "Tree 模型": {
+        "sourceFilePattern": "/tree/",
+        "description": "Cases under tests/tree/ directory"
+      }
+    },
+    "L3": {
+      "description": "Interface type classification by method name keyword matching. Rules are applied in priority order — first match wins.",
+      "rules": [
+        {
+          "name": "异常/校验",
+          "priority": 1,
+          "keywords": ["exception", "error", "throw", "invalid", "illegal", "null", "empty", "fail", "reject", "missing", "wrong_type", "duplicate", "nonexist", "null_", "crash", "raises", "conflict", "inconsistent", "overlap", "stale", "shard", "index_out_of_bound", "out_of_bound"],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "Exception handling, error validation, boundary checks, conflict detection"
+        },
+        {
+          "name": "写入接口",
+          "priority": 2,
+          "keywords": ["write", "writer", "tablet", "add_value", "add_column", "insert", "builder", "build"],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "Data writing, tablet operations, writer/builder APIs"
+        },
+        {
+          "name": "查询接口",
+          "priority": 3,
+          "keywords": ["query", "reader", "read", "get_timeseries", "get_table", "get_all", "list_timeseries", "select", "filter", "tag_filter", "getitem", "loc", "iloc", "get_value", "iterator", "to_dataframe", "load", "device_ids", "get_timestamps", "getter"],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "Data querying, reading, filtering, selection operations"
+        },
+        {
+          "name": "Schema/Metadata",
+          "priority": 4,
+          "keywords": ["schema", "metadata", "enum", "column_type", "column_name", "table_schema", "series_name", "field", "measurement", "timeseries", "timestamp", "column"],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "Schema definition, metadata inspection, column management"
+        },
+        {
+          "name": "DataFrame 转换",
+          "priority": 5,
+          "keywords": ["dataframe", "dataset"],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "DataFrame/Dataset conversion and operations"
+        },
+        {
+          "name": "查询接口",
+          "priority": 99,
+          "keywords": [],
+          "matchField": "caseId",
+          "caseSensitive": false,
+          "description": "Default fallback — any case not matching above rules"
+        }
+      ]
+    }
+  },
+  "sceneBinding": {
+    "apiBase": "http://localhost:8083/api/open",
+    "method": "POST",
+    "endpoint": "/test-cases/{caseDbId}/scenes/{sceneId}",
+    "auth": "Bearer {pat_token}",
+    "note": "PAT token requires READ,WRITE scopes. Scene IDs can be queried via GET /api/open/scenes?productId={productId}."
+  },
+  "usage": {
+    "byAgent": "Read this file to understand the 3-level classification. For each test case from list-cases --json, determine L2 by sourceFile path, then L3 by applying L3 rules in priority order to the caseId (lowercased). Use Open API to create scenes and bind cases.",
+    "classificationExample": {
+      "caseId": "query_table_by_row_test.test_table_name_lowercase",
+      "sourceFile": "tests/table/query_table_by_row_test.py",
+      "L1": "Python",
+      "L2": "Table 模型 (sourceFile contains /table/)",
+      "L3": "查询接口 (caseId matches 'query')"
+    }
+  }
+}

@@ -43,21 +43,27 @@ result is unclear:
 
 - A newly observed failure must remain an ordinary failed test until a human
   reviews it.
-- Do not automatically add skip or xfail merely to make the suite pass.
+- Do not automatically add xfail (or any suppression) merely to make the suite pass.
 - Record an unreviewed failure as `pending human review` in the test report,
   including the command, expected behavior, actual behavior, and traceback or
   process exit code.
-- After human review, classify the result as follows:
-  - Confirmed product defect: use `pytest.mark.xfail(strict=True)`.
+- After human review, classify the result as follows (the rule depends on the context):
+  - During a verification run (a task that explicitly verifies a version / RN):
+    a confirmed product defect is marked with `pytest.mark.xfail(strict=True)`
+    plus a precise reason.
+  - Outside verification runs (routine maintenance / alignment / refactor):
+    the case must be handled before the change is finished -- either fix the
+    outdated expectation so it passes, or let it fail loudly and report the
+    defect; do not leave it in xfail or skip state.
   - Incorrect or outdated test expectation: fix the test and run it normally.
-  - Missing external environment: use `pytest.mark.skip` with a precise reason.
-  - Process-level crash: reproduce it in an isolated subprocess and prefer a
-    strict xfail; use skip only when safe isolation is impossible.
-- Every xfail or skip must include a specific reason and a related issue ID
-  when one is available.
+  - Missing external environment: treat it as a blocking item, report it, and do not skip.
+  - Process-level crash: reproduce it in an isolated subprocess and prefer a strict xfail.
+- `pytest.mark.skip` is forbidden in this repository: never use skip to hide a failing
+  or unverified case, in any context.
+- Every `xfail` must include a specific reason and a related issue ID when one is available.
 - If Python behavior agrees with the contract and Java behavior, run the test
   normally and assert the result directly.
-- Track a confirmed product defect with `pytest.mark.xfail(strict=True)`.
+- Track a confirmed product defect with `pytest.mark.xfail(strict=True)` during verification runs.
 - A strict xfail test must assert the correct target behavior, not the current
   defective behavior.
 - When a product fix causes XPASS, remove the xfail marker and restore the test

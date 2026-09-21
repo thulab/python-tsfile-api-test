@@ -79,6 +79,7 @@ def get_table_data_dir():
 # 1. 测试table_name参数 - 各种表名
 # ============================================
 
+# 用例 PYTHON-TABLE-021：表名小写
 def test_table_name_lowercase():
     """测试表名：小写英文"""
     try:
@@ -100,6 +101,7 @@ def test_table_name_lowercase():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-022：表名大写
 def test_table_name_uppercase():
     """测试表名：大写英文"""
     try:
@@ -122,6 +124,7 @@ def test_table_name_uppercase():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-023：表名含数字
 def test_table_name_numbers():
     """测试表名：数字"""
     try:
@@ -143,6 +146,7 @@ def test_table_name_numbers():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-024：表名下划线
 def test_table_name_underscore():
     """测试表名：下划线"""
     try:
@@ -164,6 +168,7 @@ def test_table_name_underscore():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-025：表名中文
 def test_table_name_chinese():
     """测试表名：UNICODE中文字符"""
     try:
@@ -185,6 +190,7 @@ def test_table_name_chinese():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-026：表名特殊字符
 def test_table_name_special_chars():
     """测试表名：特殊字符（空格等）"""
     try:
@@ -209,6 +215,7 @@ def test_table_name_special_chars():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-027：表名不存在
 def test_table_name_not_exist():
     """测试表名：不存在的表"""
     try:
@@ -235,6 +242,7 @@ def test_table_name_not_exist():
 # 2. 测试column_names参数 - 各种列名和列类型
 # ============================================
 
+# 用例 PYTHON-TABLE-028：单列存在
 def test_column_names_single_exist():
     """测试列名：单列存在的测点"""
     try:
@@ -260,6 +268,7 @@ def test_column_names_single_exist():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-029：单列不存在
 def test_column_names_single_not_exist():
     """测试列名：单列不存在的测点"""
     try:
@@ -281,6 +290,7 @@ def test_column_names_single_not_exist():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-030：多列全存在
 def test_column_names_multi_all_exist():
     """测试列名：多列全存在的测点"""
     try:
@@ -301,6 +311,7 @@ def test_column_names_multi_all_exist():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
+# 用例 PYTHON-TABLE-031：多列部分存在
 def test_column_names_multi_partial_exist():
     """测试列名：多列部分测点不存在"""
     try:
@@ -320,6 +331,7 @@ def test_column_names_multi_partial_exist():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-032：多设备查询
 def test_multi_device_query():
     """测试多设备查询：查询全部设备测点"""
     try:
@@ -365,6 +377,7 @@ def test_multi_device_query():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
+# 用例 PYTHON-TABLE-033：列类型tag
 def test_column_type_tag():
     """测试列类型：只查询TAG列"""
     try:
@@ -386,6 +399,7 @@ def test_column_type_tag():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-034：列类型字段
 def test_column_type_field():
     """测试列类型：只查询FIELD列"""
     try:
@@ -407,6 +421,7 @@ def test_column_type_field():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-035：列名小写
 def test_column_names_lowercase():
     """测试列名：小写英文"""
     try:
@@ -428,6 +443,7 @@ def test_column_names_lowercase():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-036：列名大写
 def test_column_names_uppercase():
     """测试列名：大写英文"""
     try:
@@ -448,6 +464,7 @@ def test_column_names_uppercase():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
+# 用例 PYTHON-TABLE-037：列名含数字
 def test_column_names_numbers():
     """测试列名：数字"""
     try:
@@ -468,6 +485,7 @@ def test_column_names_numbers():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
+# 用例 PYTHON-TABLE-038：列名下划线
 def test_column_names_underscore():
     """测试列名：符号"""
     try:
@@ -488,6 +506,7 @@ def test_column_names_underscore():
         if os.path.exists(get_table_data_dir()):
             os.remove(get_table_data_dir())
 
+# 用例 PYTHON-TABLE-039：列名中文
 def test_column_names_chinese():
     """测试列名：UNICODE中文字符"""
     try:
@@ -509,6 +528,7 @@ def test_column_names_chinese():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-040：列名特殊字符
 def test_column_names_special_chars():
     """测试列名：特殊字符（空格）"""
     try:
@@ -530,6 +550,7 @@ def test_column_names_special_chars():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-041：列名为空
 def test_column_names_empty():
     """测试列名：空白值"""
     try:
@@ -551,6 +572,7 @@ def test_column_names_empty():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-042：列名空白
 def test_column_names_whitespace():
     """测试列名：空值"""
     try:
@@ -576,6 +598,7 @@ def test_column_names_whitespace():
 # 3. 测试offset参数
 # ============================================
 
+# 用例 PYTHON-TABLE-043：负偏移量
 def test_offset_negative():
     """测试offset：小于0"""
     try:
@@ -598,6 +621,7 @@ def test_offset_negative():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-044：零偏移量
 def test_offset_zero():
     """测试offset：等于0"""
     try:
@@ -619,6 +643,7 @@ def test_offset_zero():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-045：偏移在范围内
 def test_offset_within_range():
     """测试offset：大于0且不超过实际行数"""
     try:
@@ -640,6 +665,7 @@ def test_offset_within_range():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-046：偏移超出行数
 def test_offset_exceeds_rows():
     """测试offset：超过实际行数"""
     try:
@@ -665,6 +691,7 @@ def test_offset_exceeds_rows():
 # 4. 测试limit参数
 # ============================================
 
+# 用例 PYTHON-TABLE-047：负行数限制
 def test_limit_negative():
     """测试limit：小于0（代表无限制）"""
     try:
@@ -686,6 +713,7 @@ def test_limit_negative():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-048：零行数限制
 def test_limit_zero():
     """测试limit：等于0"""
     try:
@@ -707,6 +735,7 @@ def test_limit_zero():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-049：限制在范围内
 def test_limit_within_range():
     """测试limit：大于0且不超过实际行数"""
     try:
@@ -728,6 +757,7 @@ def test_limit_within_range():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-050：限制超出行数
 def test_limit_exceeds_rows():
     """测试limit：超过实际行数"""
     try:
@@ -749,6 +779,7 @@ def test_limit_exceeds_rows():
             os.remove(get_table_data_dir())
 
 
+# 用例 PYTHON-TABLE-051：偏移与限制组合
 def test_offset_and_limit_combination():
     """测试offset和limit组合"""
     try:

@@ -1,0 +1,2114 @@
+{
+ "TsFile-621": {
+  "name": "Reader残留列隔离",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_reader_handles_stale_path_columns_after_reused_queries",
+  "automationType": "python",
+  "plmDescription": "回归验证复用 reader 后，前一次查询遗留的 col_i 列不会误导后续设备读取。（组合验证）"
+ },
+ "TsFile-620": {
+  "name": "repr仅为预览行构建元信息",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_repr_only_builds_preview_rows",
+  "automationType": "python",
+  "plmDescription": "验证 repr 仅为预览行构建元信息，避免为所有序列做不必要的展示计算。（组合验证）"
+ },
+ "TsFile-619": {
+  "name": "路径含点号时读取给出明确异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_name_dot_device_segment_reports_clear_error_from_dataframe_api",
+  "automationType": "python",
+  "plmDescription": "补充验证设备路径段包含点号时，list_timeseries 返回路径后的读取路径给出明确异常。（组合验证）"
+ },
+ "TsFile-618": {
+  "name": "树模型序列名闭环验证",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_name_variants_round_trip_all_dataframe_apis",
+  "automationType": "python",
+  "plmDescription": "补充验证各类树模型序列名在浏览、元数据、取数和 .loc 中可闭环。（组合验证）"
+ },
+ "TsFile-617": {
+  "name": "list_timeseries特殊路径列出筛选",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_handles_iotdb_naming_rules",
+  "automationType": "python",
+  "plmDescription": "验证 list_timeseries 对非反引号、反引号、点号转义和大小写路径均能正确列出和筛选。（组合验证）"
+ },
+ "TsFile-616": {
+  "name": "大写物理量可参与.loc对齐查询",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_uppercase_measurement_can_align_by_full_path",
+  "automationType": "python",
+  "plmDescription": "回归验证 IoTDB 合法大写物理量名称可参与 .loc 对齐查询。（组合验证）"
+ },
+ "TsFile-615": {
+  "name": "大写物理量名称读取",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_uppercase_measurement_can_be_read_by_full_path",
+  "automationType": "python",
+  "plmDescription": "回归验证 IoTDB 合法大写物理量名称可按完整路径读取真实数据。（组合验证）"
+ },
+ "TsFile-614": {
+  "name": "路径大小写敏感，不同视为不同序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_identifier_names_are_case_sensitive",
+  "automationType": "python",
+  "plmDescription": "验证 IoTDB 路径节点大小写敏感，设备路径段和物理量名大小写不同均视为不同序列。（组合验证）"
+ },
+ "TsFile-613": {
+  "name": "反引号特殊节点原样展示可读取",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_backquoted_identifier_names_are_preserved",
+  "automationType": "python",
+  "plmDescription": "验证 IoTDB 反引号包裹的特殊路径节点会原样展示并可按完整路径读取。（组合验证）"
+ },
+ "TsFile-612": {
+  "name": "IoTDB合法节点按路径规则展示读取",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_iotdb_unquoted_identifier_names_are_preserved",
+  "automationType": "python",
+  "plmDescription": "验证 IoTDB 非反引号合法节点按 root + 设备路径 + 物理量规则展示并读取。（组合验证）"
+ },
+ "TsFile-611": {
+  "name": "测点名含点号转义读取",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_escaped_measurement_name_can_be_resolved",
+  "automationType": "python",
+  "plmDescription": "验证测点名包含点号时会转义展示，并可使用转义后的逻辑路径读取。（组合验证）"
+ },
+ "TsFile-610": {
+  "name": "跨文件并集按时间戳补齐NaN",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_file_field_union_aligns_missing_values",
+  "automationType": "python",
+  "plmDescription": "验证跨文件合并和物理量并集场景下 .loc 对齐会按时间戳补齐 NaN。（组合验证）"
+ },
+ "TsFile-609": {
+  "name": "元数据过滤子集可.loc对齐查询",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_metadata_filtered_subset_aligns_series",
+  "automationType": "python",
+  "plmDescription": "验证元数据过滤得到的子集视图仍可执行 .loc 对齐查询。（组合验证）"
+ },
+ "TsFile-608": {
+  "name": "合法树路径均可参与.loc对齐查询",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_named_series_variants_align_by_tree_path_rules",
+  "automationType": "python",
+  "plmDescription": "验证命名规则场景下，各类合法树路径均可参与 .loc 对齐查询。（组合验证）"
+ },
+ "TsFile-607": {
+  "name": "跨设备不同物理量.loc读取真实值",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_different_measurements_preserves_values",
+  "automationType": "python",
+  "plmDescription": "回归验证跨设备且物理量名不同时 .loc 对齐查询仍能读取各自真实值。（组合验证）"
+ },
+ "TsFile-606": {
+  "name": "跨设备同名测点不串值",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_alignment_preserves_values",
+  "automationType": "python",
+  "plmDescription": "验证跨设备对齐不会串值，两个设备同名测点的数值按各自设备保持正确。（组合验证）"
+ },
+ "TsFile-605": {
+  "name": "timestamps缓存复用",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_timestamps_are_cached_but_values_are_read_on_demand",
+  "automationType": "python",
+  "plmDescription": "验证 Timeseries.timestamps 会缓存复用，而值读取仍按请求走底层行读取。（组合验证）"
+ },
+ "TsFile-604": {
+  "name": "负索引切片与步长",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_additional_slice_and_aligned_indexing_forms",
+  "automationType": "python",
+  "plmDescription": "补充验证负索引切片、步长采样、时间戳切片，以及 AlignedTimeseries 的索引访问。（组合验证）"
+ },
+ "TsFile-603": {
+  "name": "Timeseries名称与切片",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_timeseries_metadata_and_indexing",
+  "automationType": "python",
+  "plmDescription": "验证 Timeseries 的名称、长度、统计信息、时间戳、正反向切片和非法索引行为。（组合验证）"
+ },
+ "TsFile-602": {
+  "name": "特殊设备名可按名称查看元信息",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_named_series_variants_expose_metadata",
+  "automationType": "python",
+  "plmDescription": "验证普通、中文、反引号、点号转义和大小写设备名序列均可按名称查看元信息。（组合验证）"
+ },
+ "TsFile-601": {
+  "name": "布尔过滤子集仍可取元信息",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_metadata_filtered_view_exposes_series_metadata",
+  "automationType": "python",
+  "plmDescription": "验证按元数据布尔过滤后的子集视图仍可获取 Timeseries 元信息。（组合验证）"
+ },
+ "TsFile-600": {
+  "name": "元数据DataFrame列结构与CSV导出",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_dataframe_columns_filter_and_export",
+  "automationType": "python",
+  "plmDescription": "验证元数据 DataFrame 的列结构、时间列类型、前缀过滤、空结果和 CSV 导出能力。（组合验证）"
+ },
+ "TsFile-591": {
+  "name": "列表全为同一个索引时保留重复序列视图",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_repeated_index_view_and_invalid_entries",
+  "automationType": "python",
+  "plmDescription": "验证列表全为同一个索引时保留重复序列视图，列表含越界索引或非整数时稳定报错"
+ },
+ "TsFile-590": {
+  "name": "列表按请求索引顺序返回子集视图",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_list_respects_requested_order",
+  "automationType": "python",
+  "plmDescription": "验证列表按请求索引顺序返回子集视图，并支持负索引混用后继续查看序列元信息"
+ },
+ "TsFile-589": {
+  "name": "前段、中段、尾段",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_slice_variants_return_metadata_ready_subsets",
+  "automationType": "python",
+  "plmDescription": "验证前段、中段、尾段、步长和空切片返回的子集视图稳定且可继续查看序列元信息"
+ },
+ "TsFile-587": {
+  "name": "正索引和负索引获取 Timeseries 后可查看",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_forms_expose_series_metadata",
+  "automationType": "python",
+  "plmDescription": "验证正索引和负索引获取 Timeseries 后可查看 name、len() 和 stats"
+ },
+ "TsFile-585": {
+  "name": "单序列和大量序列场景",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_handles_different_series_counts",
+  "automationType": "python",
+  "plmDescription": "验证单序列和大量序列场景下 list_timeseries_metadata 返回行数与 len(df) 一致且不截断"
+ },
+ "TsFile-584": {
+  "name": "不同序列名深度的树模型元数据可完整返回并按中间设备名前缀筛选",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_by_middle_device_prefix",
+  "automationType": "python",
+  "plmDescription": "验证不同序列名深度的树模型元数据可完整返回并按中间设备名前缀筛选"
+ },
+ "TsFile-583": {
+  "name": "元数据按库名区分同名设备",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_database_names",
+  "automationType": "python",
+  "plmDescription": "验证不同数据库名下相同设备名和物理量名称的元数据可区分返回并按数据库名前缀筛选"
+ },
+ "TsFile-582": {
+  "name": "同一设备名下不同物理量名",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_measurement_names",
+  "automationType": "python",
+  "plmDescription": "验证同一设备名下不同物理量名称的元数据可完整返回并按完整序列名前缀筛选"
+ },
+ "TsFile-581": {
+  "name": "同一数据库名下不同设备名的元数据可完整返回并按设备名前缀隔离",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_filters_different_device_names",
+  "automationType": "python",
+  "plmDescription": "验证同一数据库名下不同设备名的元数据可完整返回并按设备名前缀隔离"
+ },
+ "TsFile-580": {
+  "name": "单序列和大量序列场景下 list_timeseries",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_handles_different_series_counts",
+  "automationType": "python",
+  "plmDescription": "验证单序列和大量序列场景下 list_timeseries 返回数量与 len(df) 一致且不截断"
+ },
+ "TsFile-579": {
+  "name": "不同序列名深度的树模型序列可完整列出并按中间设备名前缀筛选",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_middle_device_prefix",
+  "automationType": "python",
+  "plmDescription": "验证不同序列名深度的树模型序列可完整列出并按中间设备名前缀筛选"
+ },
+ "TsFile-578": {
+  "name": "list_timeseries 按库名区分同名设备",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_database_names",
+  "automationType": "python",
+  "plmDescription": "验证不同数据库名下相同设备名和物理量名称可区分列出并按数据库名前缀筛选"
+ },
+ "TsFile-577": {
+  "name": "同一设备名下不同物理量名称可完整列出并按完整序列名前缀筛选",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_measurement_names",
+  "automationType": "python",
+  "plmDescription": "验证同一设备名下不同物理量名称可完整列出并按完整序列名前缀筛选"
+ },
+ "TsFile-576": {
+  "name": "同一数据库名下不同设备名的序列可完整列出并按设备名前缀隔离",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_different_device_names",
+  "automationType": "python",
+  "plmDescription": "验证同一数据库名下不同设备名的序列可完整列出并按设备名前缀隔离"
+ },
+ "TsFile-575": {
+  "name": "show_progress=True",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_reader_metadata_scan_reports_device_and_series_counts",
+  "automationType": "python",
+  "plmDescription": "验证 show_progress=True 时树模型元数据扫描输出设备名数量和序列数量"
+ },
+ "TsFile-574": {
+  "name": "show_progress=True 时向 stderr",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_load_reports_shard_progress",
+  "automationType": "python",
+  "plmDescription": "验证 show_progress=True 时向 stderr 输出加载进度"
+ },
+ "TsFile-573": {
+  "name": "单文件加载走串行路径",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_single_file_uses_serial_loader",
+  "automationType": "python",
+  "plmDescription": "验证单文件加载走串行路径"
+ },
+ "TsFile-572": {
+  "name": "多文件时使用线程池并行扫描元数据",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loading_uses_thread_pool_for_multiple_files",
+  "automationType": "python",
+  "plmDescription": "验证多文件时使用线程池并行扫描元数据"
+ },
+ "TsFile-571": {
+  "name": "对齐结果展示仅渲染展示行并在大结果集下正确截断",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_display_truncates_large_results",
+  "automationType": "python",
+  "plmDescription": "验证对齐结果展示仅渲染展示行并在大结果集下正确截断"
+ },
+ "TsFile-570": {
+  "name": "多文件 union 后 df 展示仍使用树模型设备名分段列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_repr_and_show_keep_tree_headers",
+  "automationType": "python",
+  "plmDescription": "验证多文件 union 后 df 展示仍使用树模型设备名分段列 _col_i 且不出现表模型 table 列"
+ },
+ "TsFile-569": {
+  "name": "展示层时间戳格式保留毫秒且整秒不追加多余小数",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_display_timestamp_format_keeps_milliseconds",
+  "automationType": "python",
+  "plmDescription": "验证展示层时间戳格式保留毫秒且整秒不追加多余小数"
+ },
+ "TsFile-568": {
+  "name": "树模型设备名分段值出现中间 None",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_device_path_rebuild_rejects_null_segment",
+  "automationType": "python",
+  "plmDescription": "验证树模型设备名分段值出现中间 None 时不被当成尾部浅层补齐处理"
+ },
+ "TsFile-567": {
+  "name": "树模型设备名分段本身含点号时读取路径重建给出明确错误",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_device_path_rebuild_rejects_dotted_segment",
+  "automationType": "python",
+  "plmDescription": "验证树模型设备名分段本身含点号时读取路径重建给出明确错误"
+ },
+ "TsFile-565": {
+  "name": ".loc 对重复序列的内部读取去重避免同一 shard",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_duplicate_specifiers_read_underlying_device_once",
+  "automationType": "python",
+  "plmDescription": "验证 .loc 对重复序列的内部读取去重避免同一 shard 被重复扫描"
+ },
+ "TsFile-564": {
+  "name": "重复序列夹在其它序列中时结果列顺序和重复列位置不被去重打乱",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_specifier_keeps_column_positions",
+  "automationType": "python",
+  "plmDescription": "验证重复序列夹在其它序列中时结果列顺序和重复列位置不被去重打乱"
+ },
+ "TsFile-563": {
+  "name": ".loc 同一个序列名重复两次时不报错且结果列数符合请求",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_series_name_keeps_requested_columns",
+  "automationType": "python",
+  "plmDescription": "验证 .loc 同一个序列名重复两次时不报错且结果列数符合请求"
+ },
+ "TsFile-562": {
+  "name": ".loc 内同一序列用名",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_dedups_name_and_index_specifier",
+  "automationType": "python",
+  "plmDescription": "验证 .loc 内同一序列用名称和整数索引重复指定时内部去重但输出保留请求列"
+ },
+ "TsFile-561": {
+  "name": "树模型内部元数据合并存在",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_registers_only_fields_owned_by_device",
+  "automationType": "python",
+  "plmDescription": "验证树模型内部元数据合并存在物理量名称并集时只注册设备名真实拥有的物理量"
+ },
+ "TsFile-560": {
+  "name": "不同深度 union 后浅层设备名补 NaN",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_short_path_stays_resolvable",
+  "automationType": "python",
+  "plmDescription": "验证不同深度 union 后浅层设备名补 NaN 只用于展示和元数据不进入逻辑路径解析"
+ },
+ "TsFile-559": {
+  "name": "多树文件设备名深度不同时全局设备名分段布局扩展到最深设备名",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_extends_segment_layout_to_deepest_device",
+  "automationType": "python",
+  "plmDescription": "验证多树文件设备名深度不同时全局设备名分段布局扩展到最深设备名"
+ },
+ "TsFile-558": {
+  "name": "同一设备名在不同树文件中",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_of_field_subsets_loads_instead_of_rejecting",
+  "automationType": "python",
+  "plmDescription": "验证同一设备名在不同树文件中拥有不同物理量名称子集时使用物理量名称并集而非拒绝加载"
+ },
+ "TsFile-557": {
+  "name": "多树文件物理量名称顺序或子集不同时按物理量名称映射全局索引",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_maps_global_field_index_to_local_shard",
+  "automationType": "python",
+  "plmDescription": "验证多树文件物理量名称顺序或子集不同时按物理量名称映射全局索引"
+ },
+ "TsFile-556": {
+  "name": "多个树模型文件物理量名称",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_field_columns_expand_in_first_seen_order",
+  "automationType": "python",
+  "plmDescription": "验证多个树模型文件物理量名称集合不同时全局物理量名称列表按首次出现顺序扩展"
+ },
+ "TsFile-555": {
+  "name": "树模型仅含 STRING 或 TEXT",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_string_or_text_only_measurements_are_non_numeric",
+  "automationType": "python",
+  "plmDescription": "验证树模型仅含 STRING 或 TEXT 物理量时被整体判定为无数值序列"
+ },
+ "TsFile-554": {
+  "name": "树模型文件没有任何设备名元数据时加载失败",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_empty_file_without_device_metadata_raises",
+  "automationType": "python",
+  "plmDescription": "验证树模型文件没有任何设备名元数据时加载失败"
+ },
+ "TsFile-553": {
+  "name": "单个树模型 TsFile 内存在多个根段时加载失败",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_multiple_root_segments_in_one_file",
+  "automationType": "python",
+  "plmDescription": "验证单个树模型 TsFile 内存在多个根段时加载失败"
+ },
+ "TsFile-552": {
+  "name": "重复 close 幂等、不报错",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_repeated_close_is_idempotent",
+  "automationType": "python",
+  "plmDescription": "验证重复 close 幂等、不报错"
+ },
+ "TsFile-551": {
+  "name": "对子集视图调用 close() 为静默 no-op",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_view_close_is_noop",
+  "automationType": "python",
+  "plmDescription": "验证对子集视图调用 close() 为静默 no-op、不影响父"
+ },
+ "TsFile-550": {
+  "name": "close 后访问已取得的 Timeseries 抛",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_access_after_dataframe_close_raises",
+  "automationType": "python",
+  "plmDescription": "验证 close 后访问已取得的 Timeseries 抛 RuntimeError"
+ },
+ "TsFile-549": {
+  "name": "close 后再访问 df 抛 RuntimeError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_access_after_close_raises",
+  "automationType": "python",
+  "plmDescription": "验证 close 后再访问 df 抛 RuntimeError"
+ },
+ "TsFile-548": {
+  "name": "可手动调用 df.close() 释放资源",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_dataframe_close_releases_resources",
+  "automationType": "python",
+  "plmDescription": "验证可手动调用 df.close() 释放资源"
+ },
+ "TsFile-547": {
+  "name": "with 语句退出后自动关闭并释放文件句柄",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_context_exit_closes_root_and_releases_readers",
+  "automationType": "python",
+  "plmDescription": "验证 with 语句退出后自动关闭并释放文件句柄"
+ },
+ "TsFile-546": {
+  "name": "data.show(max_rows) 控制对齐结果输出行数",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_show_limits_rendered_rows",
+  "automationType": "python",
+  "plmDescription": "验证 data.show(max_rows) 控制对齐结果输出行数"
+ },
+ "TsFile-545": {
+  "name": "print(data) 输出可读的对齐表格并自动截断",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_aligned_repr_prints_readable_table",
+  "automationType": "python",
+  "plmDescription": "验证 print(data) 输出可读的对齐表格并自动截断"
+ },
+ "TsFile-543": {
+  "name": "视图 repr 头部显示 subset of N",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_repr_header_reports_subset_size",
+  "automationType": "python",
+  "plmDescription": "验证视图 repr 头部显示 subset of N"
+ },
+ "TsFile-542": {
+  "name": "树模型展示表头包含设备名分段列 _col_i",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_display_headers_expose_tree_model_columns",
+  "automationType": "python",
+  "plmDescription": "验证树模型展示表头包含设备名分段列 _col_i 与物理量名称列 field"
+ },
+ "TsFile-541": {
+  "name": "df.show(max_rows) 控制最大输出行数",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_show_limits_rendered_rows",
+  "automationType": "python",
+  "plmDescription": "验证 df.show(max_rows) 控制最大输出行数"
+ },
+ "TsFile-540": {
+  "name": "print(df) 最多输出 20 行、超出头尾截断",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_repr_truncates_long_series_list",
+  "automationType": "python",
+  "plmDescription": "验证 print(df) 最多输出 20 行、超出头尾截断"
+ },
+ "TsFile-539": {
+  "name": "空值以 NaN 保留、不被丢弃或改写",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_nan_values_are_preserved",
+  "automationType": "python",
+  "plmDescription": "验证空值以 NaN 保留、不被丢弃或改写"
+ },
+ "TsFile-538": {
+  "name": "TEXT、DATE、BLOB、STRING",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_omits_non_numeric_measurements",
+  "automationType": "python",
+  "plmDescription": "验证 TEXT、DATE、BLOB、STRING 树模型物理量均被过滤、不作为序列暴露"
+ },
+ "TsFile-537": {
+  "name": "BOOLEAN、INT32、INT64、FLOAT",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_numeric_measurements_read_as_float64",
+  "automationType": "python",
+  "plmDescription": "验证 BOOLEAN、INT32、INT64、FLOAT、DOUBLE、TIMESTAMP 树模型物理量均可由数值面读取并统一输出 float64"
+ },
+ "TsFile-536": {
+  "name": "时间范围重叠的多分片按行读取时不物化全量时间戳",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge",
+  "automationType": "python",
+  "plmDescription": "验证时间范围重叠的多分片按行读取时不物化全量时间戳"
+ },
+ "TsFile-535": {
+  "name": "不同最大设备名深度的树文件合并时全局设备名分段布局取并集",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_pads_shallow_device_segments_with_nan",
+  "automationType": "python",
+  "plmDescription": "验证不同最大设备名深度的树文件合并时全局设备名分段布局取并集、较浅设备名补 None"
+ },
+ "TsFile-534": {
+  "name": "同设备名不同物理量名称子集跨文件时取物理量名称并集",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_union_takes_field_name_union_across_files",
+  "automationType": "python",
+  "plmDescription": "验证同设备名不同物理量名称子集跨文件时取物理量名称并集"
+ },
+ "TsFile-533": {
+  "name": "两树文件相同设备名和物理量名称、时间不相交时合并为一条序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_same_device_and_measurement_across_files_merge",
+  "automationType": "python",
+  "plmDescription": "验证两树文件相同设备名和物理量名称、时间不相交时合并为一条序列"
+ },
+ "TsFile-532": {
+  "name": "跨分片存在重复时间戳时读取抛异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_duplicate_timestamps_across_shards_raise",
+  "automationType": "python",
+  "plmDescription": "验证跨分片存在重复时间戳时读取抛异常"
+ },
+ "TsFile-531": {
+  "name": "合并后元数据 count 为各分片点数之和",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_merged_series_count_sums_shard_counts",
+  "automationType": "python",
+  "plmDescription": "验证合并后元数据 count 为各分片点数之和"
+ },
+ "TsFile-530": {
+  "name": "多文件含同名序列(不同日期分片)时自动合并为一条连续序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_same_series_across_shards_merges_into_one",
+  "automationType": "python",
+  "plmDescription": "验证多文件含同名序列(不同日期分片)时自动合并为一条连续序列"
+ },
+ "TsFile-529": {
+  "name": "loc 内序列整数索引越界抛 IndexError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_out_of_range_series_index_raises",
+  "automationType": "python",
+  "plmDescription": "验证 loc 内序列整数索引越界抛 IndexError"
+ },
+ "TsFile-528": {
+  "name": "序列指定含非 int/str 元素时抛 TypeError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_invalid_series_specifier_raises_type_error",
+  "automationType": "python",
+  "plmDescription": "验证序列指定含非 int/str 元素时抛 TypeError"
+ },
+ "TsFile-527": {
+  "name": "时间索引非 slice/int 时抛 TypeError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_invalid_time_index_raises_type_error",
+  "automationType": "python",
+  "plmDescription": "验证时间索引非 slice/int 时抛 TypeError"
+ },
+ "TsFile-526": {
+  "name": "loc 传参不是 (time, series) 二元组时报错",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_requires_two_arguments",
+  "automationType": "python",
+  "plmDescription": "验证 loc 传参不是 (time, series) 二元组时报错"
+ },
+ "TsFile-525": {
+  "name": "data[0]、data[0:10]、data[0,1]",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_indexing",
+  "automationType": "python",
+  "plmDescription": "验证 data[0]、data[0:10]、data[0,1] 索引"
+ },
+ "TsFile-524": {
+  "name": "len(data) 返回行数 N",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_row_count",
+  "automationType": "python",
+  "plmDescription": "验证 len(data) 返回行数 N"
+ },
+ "TsFile-523": {
+  "name": "AlignedTimeseries",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_aligned_result_exposes_attributes",
+  "automationType": "python",
+  "plmDescription": "验证 AlignedTimeseries 的 timestamps/values/series_names/shape 属性"
+ },
+ "TsFile-522": {
+  "name": "带 NaN 时对齐结果不超出请求时间范围",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_alignment_stays_within_requested_bounds",
+  "automationType": "python",
+  "plmDescription": "验证带 NaN 时对齐结果不超出请求时间范围"
+ },
+ "TsFile-521": {
+  "name": "同一序列被重复指定(名+索引/同名两次)时去重不报错",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_repeated_series_specifiers_do_not_raise",
+  "automationType": "python",
+  "plmDescription": "验证同一序列被重复指定(名+索引/同名两次)时去重不报错"
+ },
+ "TsFile-520": {
+  "name": "df.loc[:, [-1]] 负序列索引",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_negative_series_index",
+  "automationType": "python",
+  "plmDescription": "验证 df.loc[:, [-1]] 负序列索引"
+ },
+ "TsFile-519": {
+  "name": "时间片开区间 [:end]、[start:]、[:] 正常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_open_time_slices_and_empty_range",
+  "automationType": "python",
+  "plmDescription": "验证时间片开区间 [:end]、[start:]、[:] 正常"
+ },
+ "TsFile-518": {
+  "name": "df.loc[t, [...]] 单时间戳查询",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_single_timestamp_query",
+  "automationType": "python",
+  "plmDescription": "验证 df.loc[t, [...]] 单时间戳查询"
+ },
+ "TsFile-517": {
+  "name": "序列指定支持名称与整数索引混用",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_accepts_mixed_name_and_index_specifiers",
+  "automationType": "python",
+  "plmDescription": "验证序列指定支持名称与整数索引混用"
+ },
+ "TsFile-516": {
+  "name": "跨设备且时间轴不同的序列对齐，缺失填 NaN",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_cross_device_timelines_align_by_timestamp",
+  "automationType": "python",
+  "plmDescription": "验证跨设备且时间轴不同的序列对齐，缺失填 NaN"
+ },
+ "TsFile-514": {
+  "name": "结果列顺序严格按请求的序列顺序",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_column_order_follows_requested_series",
+  "automationType": "python",
+  "plmDescription": "验证结果列顺序严格按请求的序列顺序"
+ },
+ "TsFile-513": {
+  "name": "多序列按时间戳并集对齐、缺失位置填 NaN",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_union_aligns_sparse_timestamps_with_nan",
+  "automationType": "python",
+  "plmDescription": "验证多序列按时间戳并集对齐、缺失位置填 NaN"
+ },
+ "TsFile-512": {
+  "name": "df.loc[start:end, [names]] 返回",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_loc_range_query_returns_aligned_timeseries",
+  "automationType": "python",
+  "plmDescription": "验证 df.loc[start:end, [names]] 返回 AlignedTimeseries"
+ },
+ "TsFile-495": {
+  "name": "子集视图复用父对象 readers、不重复打开文件",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_subset_view_reuses_parent_readers",
+  "automationType": "python",
+  "plmDescription": "验证子集视图复用父对象 readers、不重复打开文件"
+ },
+ "TsFile-494": {
+  "name": "传入不支持的 key 类型抛 TypeError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_unsupported_key_type_raises",
+  "automationType": "python",
+  "plmDescription": "验证传入不支持的 key 类型抛 TypeError"
+ },
+ "TsFile-493": {
+  "name": "整数列表含越界索引抛 IndexError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_out_of_range_raises",
+  "automationType": "python",
+  "plmDescription": "验证整数列表含越界索引抛 IndexError"
+ },
+ "TsFile-492": {
+  "name": "整数列表含非整数元素抛 TypeError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_with_non_integer_raises",
+  "automationType": "python",
+  "plmDescription": "验证整数列表含非整数元素抛 TypeError"
+ },
+ "TsFile-491": {
+  "name": "df[[0,2,5]] 返回指定位置的视图",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_list_returns_positional_view",
+  "automationType": "python",
+  "plmDescription": "验证 df[[0,2,5]] 返回指定位置的视图"
+ },
+ "TsFile-490": {
+  "name": "df[0:3] 返回 TsFileDataFrame 视图",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_slice_returns_subset_view",
+  "automationType": "python",
+  "plmDescription": "验证 df[0:3] 返回 TsFileDataFrame 视图"
+ },
+ "TsFile-489": {
+  "name": "按不存在的序列名取值抛 KeyError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_unknown_name_raises_key_error",
+  "automationType": "python",
+  "plmDescription": "验证按不存在的序列名取值抛 KeyError"
+ },
+ "TsFile-488": {
+  "name": "整数索引越界抛 IndexError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_index_out_of_range_raises",
+  "automationType": "python",
+  "plmDescription": "验证整数索引越界抛 IndexError"
+ },
+ "TsFile-487": {
+  "name": "df[-1] 负索引取末条序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_negative_index_returns_last_series",
+  "automationType": "python",
+  "plmDescription": "验证 df[-1] 负索引取末条序列"
+ },
+ "TsFile-486": {
+  "name": "df[0] 按位置索引取序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_position_index_returns_timeseries",
+  "automationType": "python",
+  "plmDescription": "验证 df[0] 按位置索引取序列"
+ },
+ "TsFile-485": {
+  "name": "df[name] 按完整树路径返回 Timeseries",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_getitem_name_returns_timeseries_handle",
+  "automationType": "python",
+  "plmDescription": "验证 df[name] 按完整树路径返回 Timeseries 懒加载句柄"
+ },
+ "TsFile-484": {
+  "name": "布尔过滤无命中时返回空视图",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_boolean_filter_without_match_returns_empty_view",
+  "automationType": "python",
+  "plmDescription": "验证布尔过滤无命中时返回空视图"
+ },
+ "TsFile-483": {
+  "name": "df[df['_col_2']=='d1']",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_boolean_filter_returns_subset_view",
+  "automationType": "python",
+  "plmDescription": "验证 df[df['_col_2']=='d1'] 按设备名分段元数据布尔过滤返回子集视图"
+ },
+ "TsFile-482": {
+  "name": "访问不存在的列名抛 KeyError",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_unknown_column_raises_key_error",
+  "automationType": "python",
+  "plmDescription": "验证访问不存在的列名抛 KeyError"
+ },
+ "TsFile-481": {
+  "name": "df['start_time']/['end_time']/",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_time_and_count_columns_projection",
+  "automationType": "python",
+  "plmDescription": "验证 df['start_time']/['end_time']/['count'] 可投影"
+ },
+ "TsFile-480": {
+  "name": "树模型下访问表模型 df['table'] 列抛",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_table_column_is_unavailable",
+  "automationType": "python",
+  "plmDescription": "验证树模型下访问表模型 df['table'] 列抛 KeyError"
+ },
+ "TsFile-479": {
+  "name": "df['_col_3'] 返回设备名第三分段值",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_col3_column_projection",
+  "automationType": "python",
+  "plmDescription": "验证 df['_col_3'] 返回设备名第三分段值"
+ },
+ "TsFile-478": {
+  "name": "df['_col_1'] 返回设备名第一分段的 Series",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_col1_column_projection",
+  "automationType": "python",
+  "plmDescription": "验证 df['_col_1'] 返回设备名第一分段的 Series"
+ },
+ "TsFile-477": {
+  "name": "df['field'] 返回各序列物理量名称",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_metadata_field_column_projection",
+  "automationType": "python",
+  "plmDescription": "验证 df['field'] 返回各序列物理量名称的 pandas.Series"
+ },
+ "TsFile-467": {
+  "name": "非法/无法解析的前缀返回空列表而非抛错",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_invalid_prefix_returns_empty",
+  "automationType": "python",
+  "plmDescription": "验证非法/无法解析的前缀返回空列表而非抛错"
+ },
+ "TsFile-466": {
+  "name": "前缀无匹配时返回空列表",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_unmatched_prefix_returns_empty",
+  "automationType": "python",
+  "plmDescription": "验证前缀无匹配时返回空列表"
+ },
+ "TsFile-465": {
+  "name": "前缀匹配按设备名分段位置感知，不做纯字符串前缀",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_prefix_matches_by_segment",
+  "automationType": "python",
+  "plmDescription": "验证前缀匹配按设备名分段位置感知，不做纯字符串前缀"
+ },
+ "TsFile-464": {
+  "name": "按设备名前缀筛选序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_device_prefix",
+  "automationType": "python",
+  "plmDescription": "验证按设备名前缀筛选序列"
+ },
+ "TsFile-463": {
+  "name": "按 root 前缀筛选序列",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_filters_by_root_prefix",
+  "automationType": "python",
+  "plmDescription": "验证按 root 前缀筛选序列"
+ },
+ "TsFile-462": {
+  "name": "不传前缀时返回全部序列名",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_without_prefix_returns_all",
+  "automationType": "python",
+  "plmDescription": "验证不传前缀时返回全部序列名"
+ },
+ "TsFile-456": {
+  "name": "短设备名在设备名分段列 _col_i 末尾按左对齐补",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_metadata_pads_short_device_segments",
+  "automationType": "python",
+  "plmDescription": "验证短设备名在设备名分段列 _col_i 末尾按左对齐补 None"
+ },
+ "TsFile-455": {
+  "name": "不同设备名可有不同分段数(k>=1)",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_list_timeseries_lists_every_series_name_depth",
+  "automationType": "python",
+  "plmDescription": "验证不同设备名可有不同分段数(k>=1)"
+ },
+ "TsFile-454": {
+  "name": "树模型序列名映射为 root.{设备名分段_1}...",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_series_names_flatten_device_segments",
+  "automationType": "python",
+  "plmDescription": "验证树模型序列名映射为 root.{设备名分段_1}...{设备名分段_k}.{物理量名称} 扁平字符串"
+ },
+ "TsFile-453": {
+  "name": "初始化仅扫描元数据、不读取实际数值",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_initialization_only_scans_metadata",
+  "automationType": "python",
+  "plmDescription": "验证初始化仅扫描元数据、不读取实际数值"
+ },
+ "TsFile-452": {
+  "name": "加载集合中不存在任何数值序列时抛异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_load_without_any_numeric_series_raises",
+  "automationType": "python",
+  "plmDescription": "验证加载集合中不存在任何数值序列时抛异常"
+ },
+ "TsFile-451": {
+  "name": "空表模型分片与树模型文件位于同一加载集合时仍按树表混用处理",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_empty_table_shard_mixed_with_tree_file_raises_model_conflict",
+  "automationType": "python",
+  "plmDescription": "验证空表模型分片与树模型文件位于同一加载集合时仍按树表混用处理"
+ },
+ "TsFile-450": {
+  "name": "首个文件为树模型、后续文件为表模型时同样报混用错误",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_tree_then_table_model_mix",
+  "automationType": "python",
+  "plmDescription": "验证首个文件为树模型、后续文件为表模型时同样报混用错误"
+ },
+ "TsFile-449": {
+  "name": "同一加载集合中混入表模型与树模型文件时加载阶段抛异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_rejects_table_then_tree_model_mix",
+  "automationType": "python",
+  "plmDescription": "验证同一加载集合中混入表模型与树模型文件时加载阶段抛异常"
+ },
+ "TsFile-448": {
+  "name": "加载集合全部为树模型文件时 model 判定为 tree",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_model_identified_as_tree",
+  "automationType": "python",
+  "plmDescription": "验证加载集合全部为树模型文件时 model 判定为 tree"
+ },
+ "TsFile-447": {
+  "name": "相对路径被归一化为绝对路径",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_relative_path_normalized_to_absolute",
+  "automationType": "python",
+  "plmDescription": "验证相对路径被归一化为绝对路径"
+ },
+ "TsFile-446": {
+  "name": "目录中非 .tsfile 后缀文件被忽略",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_ignores_non_tsfile_files",
+  "automationType": "python",
+  "plmDescription": "验证目录中非 .tsfile 后缀文件被忽略"
+ },
+ "TsFile-445": {
+  "name": "指定不存在的文件路径时抛异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_missing_file_path_raises",
+  "automationType": "python",
+  "plmDescription": "验证指定不存在的文件路径时抛异常"
+ },
+ "TsFile-444": {
+  "name": "目录下无任何 .tsfile 时抛异常",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_empty_directory_raises",
+  "automationType": "python",
+  "plmDescription": "验证目录下无任何 .tsfile 时抛异常"
+ },
+ "TsFile-443": {
+  "name": "目录下的多级子目录中的 .tsfile 也能被递归找到",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_searches_nested_subdirectories",
+  "automationType": "python",
+  "plmDescription": "验证目录下的多级子目录中的 .tsfile 也能被递归找到"
+ },
+ "TsFile-442": {
+  "name": "传入目录时递归查找目录下所有 .tsfile 并加载",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_directory_load_finds_all_tsfiles",
+  "automationType": "python",
+  "plmDescription": "验证传入目录时递归查找目录下所有 .tsfile 并加载"
+ },
+ "TsFile-441": {
+  "name": "传入多个 .tsfile 组成的列表可一次性加载",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_file_list_loads_multiple_files",
+  "automationType": "python",
+  "plmDescription": "验证传入多个 .tsfile 组成的列表可一次性加载"
+ },
+ "TsFile-440": {
+  "name": "传入单个 .tsfile 文件路径可加载树模型数据",
+  "nodeId": "tests/tree/test_tsfile_dataframe_tree_model.py::test_tree_single_file_path_loads",
+  "automationType": "python",
+  "plmDescription": "验证传入单个 .tsfile 文件路径可加载树模型数据"
+ },
+ "TsFile-439": {
+  "name": "test_iterator_query [paramId=1000-100]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_iterator_query[1000-100]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_iterator_query[1000-100]\nparamId: 1000-100"
+ },
+ "TsFile-438": {
+  "name": "test_max_row_num [paramId=-10-0]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[-10-0]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_max_row_num[-10-0]\nparamId: -10-0"
+ },
+ "TsFile-437": {
+  "name": "test_max_row_num [paramId=0-0]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[0-0]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_max_row_num[0-0]\nparamId: 0-0"
+ },
+ "TsFile-436": {
+  "name": "test_max_row_num [paramId=1000-100]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[1000-100]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_max_row_num[1000-100]\nparamId: 1000-100"
+ },
+ "TsFile-435": {
+  "name": "test_max_row_num [paramId=100-100]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[100-100]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_max_row_num[100-100]\nparamId: 100-100"
+ },
+ "TsFile-434": {
+  "name": "test_max_row_num [paramId=50-50]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[50-50]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_max_row_num[50-50]\nparamId: 50-50"
+ },
+ "TsFile-433": {
+  "name": "test_time_range [paramId=-50-50-51]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[-50-50-51]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[-50-50-51]\nparamId: -50-50-51"
+ },
+ "TsFile-432": {
+  "name": "test_time_range [paramId=-10-10-11]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[-10-10-11]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[-10-10-11]\nparamId: -10-10-11"
+ },
+ "TsFile-431": {
+  "name": "test_time_range [paramId=10--10-0]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[10--10-0]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[10--10-0]\nparamId: 10--10-0"
+ },
+ "TsFile-430": {
+  "name": "test_time_range [paramId=-5--5-0]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[-5--5-0]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[-5--5-0]\nparamId: -5--5-0"
+ },
+ "TsFile-429": {
+  "name": "test_time_range [paramId=5-5-1]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[5-5-1]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[5-5-1]\nparamId: 5-5-1"
+ },
+ "TsFile-428": {
+  "name": "test_time_range [paramId=None--5-0]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[None--5-0]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[None--5-0]\nparamId: None--5-0"
+ },
+ "TsFile-427": {
+  "name": "test_time_range [paramId=None-5-6]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[None-5-6]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[None-5-6]\nparamId: None-5-6"
+ },
+ "TsFile-426": {
+  "name": "test_time_range [paramId=-10-None-100]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[-10-None-100]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_time_range[-10-None-100]\nparamId: -10-None-100"
+ },
+ "TsFile-425": {
+  "name": "test_single_column_query [paramId=Value7-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value7-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value7-<lambda>]\nparamId: Value7-<lambda>"
+ },
+ "TsFile-424": {
+  "name": "test_single_column_query [paramId=Value6-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value6-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value6-<lambda>]\nparamId: Value6-<lambda>"
+ },
+ "TsFile-423": {
+  "name": "test_single_column_query [paramId=Value5-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value5-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value5-<lambda>]\nparamId: Value5-<lambda>"
+ },
+ "TsFile-422": {
+  "name": "test_single_column_query [paramId=Value4-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value4-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value4-<lambda>]\nparamId: Value4-<lambda>"
+ },
+ "TsFile-421": {
+  "name": "test_single_column_query [paramId=Value3-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value3-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value3-<lambda>]\nparamId: Value3-<lambda>"
+ },
+ "TsFile-420": {
+  "name": "test_single_column_query [paramId=Value2-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value2-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value2-<lambda>]\nparamId: Value2-<lambda>"
+ },
+ "TsFile-419": {
+  "name": "test_single_column_query [paramId=Value1-<lambda>]",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Value1-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/to_dataframe_table_test.py::test_single_column_query[Value1-<lambda>]\nparamId: Value1-<lambda>"
+ },
+ "TsFile-418": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature]\nparamId: uppercase_table_and_field_are_normalized-Weather-tag_columns8-tag_values8-Temperature-weather.DeviceA.temperature"
+ },
+ "TsFile-417": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature]\nparamId: chinese_tag_value-weather-tag_columns7-tag_values7-temperature-weather.\\u8bbe\\u5907A.temperature"
+ },
+ "TsFile-416": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature]\nparamId: uppercase_tag_value-weather-tag_columns6-tag_values6-temperature-weather.DeviceA.temperature"
+ },
+ "TsFile-415": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature]\nparamId: multi_tag_mixed-weather-tag_columns5-tag_values5-temperature-weather.bei\\\\.jing.dev a.temperature"
+ },
+ "TsFile-414": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space]\nparamId: field_name_space-weather-tag_columns4-tag_values4-temp space-weather.dev.temp space"
+ },
+ "TsFile-413": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature]\nparamId: field_name_dot-weather-tag_columns3-tag_values3-temp.erature-weather.dev.temp\\\\.erature"
+ },
+ "TsFile-412": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature]\nparamId: tag_value_backquoted_dot-weather-tag_columns2-tag_values2-temperature-weather.`dev\\\\.a`.temperature"
+ },
+ "TsFile-411": {
+  "name": "test_table_series_name_variants_round_trip_all_dataframe_apis [paramId=tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature]\nparamId: tag_value_space-weather-tag_columns1-tag_values1-temperature-weather.dev a.temperature"
+ },
+ "TsFile-410": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=three_tags_sparse_mixed-tag_columns6-rows6-8]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_sparse_mixed-tag_columns6-rows6-8]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_sparse_mixed-tag_columns6-rows6-8]\nparamId: three_tags_sparse_mixed-tag_columns6-rows6-8"
+ },
+ "TsFile-409": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=three_tags_middle_null-tag_columns5-rows5-4]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_middle_null-tag_columns5-rows5-4]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[three_tags_middle_null-tag_columns5-rows5-4]\nparamId: three_tags_middle_null-tag_columns5-rows5-4"
+ },
+ "TsFile-408": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=two_tags_all_null-tag_columns4-rows4-2]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_all_null-tag_columns4-rows4-2]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_all_null-tag_columns4-rows4-2]\nparamId: two_tags_all_null-tag_columns4-rows4-2"
+ },
+ "TsFile-407": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=two_tags_trailing_null-tag_columns3-rows3-4]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_trailing_null-tag_columns3-rows3-4]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_trailing_null-tag_columns3-rows3-4]\nparamId: two_tags_trailing_null-tag_columns3-rows3-4"
+ },
+ "TsFile-406": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=two_tags_leading_null-tag_columns2-rows2-4]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_leading_null-tag_columns2-rows2-4]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[two_tags_leading_null-tag_columns2-rows2-4]\nparamId: two_tags_leading_null-tag_columns2-rows2-4"
+ },
+ "TsFile-405": {
+  "name": "test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc [paramId=single_tag_mixed_null-tag_columns1-rows1-4]",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_mixed_null-tag_columns1-rows1-4]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_mixed_null-tag_columns1-rows1-4]\nparamId: single_tag_mixed_null-tag_columns1-rows1-4"
+ },
+ "TsFile-404": {
+  "name": "test_time_column_invalid_type [paramId=float64-Exception]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[float64-Exception]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[float64-Exception]\nparamId: float64-Exception"
+ },
+ "TsFile-403": {
+  "name": "test_time_column_names [paramId=!@#-!@#]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[!@#-!@#]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_time_column_names[!@#-!@#]\nparamId: !@#-!@#"
+ },
+ "TsFile-402": {
+  "name": "test_time_column_names [paramId=123-123]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[123-123]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_time_column_names[123-123]\nparamId: 123-123"
+ },
+ "TsFile-401": {
+  "name": "test_time_column_names [paramId=\\u65f6\\u95f4-\\u65f6\\u95f4]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[\\u65f6\\u95f4-\\u65f6\\u95f4]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_time_column_names[\\u65f6\\u95f4-\\u65f6\\u95f4]\nparamId: \\u65f6\\u95f4-\\u65f6\\u95f4"
+ },
+ "TsFile-400": {
+  "name": "test_time_column_names [paramId=TIME-TIME]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[TIME-TIME]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_time_column_names[TIME-TIME]\nparamId: TIME-TIME"
+ },
+ "TsFile-399": {
+  "name": "test_table_names [paramId=!@#$%^&*()_+-=[]{};':\",./<>?]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[!@#$%^&*()_+-=[]{};':\",./<>?]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_table_names[!@#$%^&*()_+-=[]{};':\",./<>?]\nparamId: !@#$%^&*()_+-=[]{};':\",./<>?"
+ },
+ "TsFile-398": {
+  "name": "test_table_names [paramId=12345]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[12345]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_table_names[12345]\nparamId: 12345"
+ },
+ "TsFile-397": {
+  "name": "test_table_names [paramId=\\u6d4b\\u8bd5\\u8868]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[\\u6d4b\\u8bd5\\u8868]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_table_names[\\u6d4b\\u8bd5\\u8868]\nparamId: \\u6d4b\\u8bd5\\u8868"
+ },
+ "TsFile-396": {
+  "name": "test_table_names [paramId=TEST_TABLE]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[TEST_TABLE]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_table_names[TEST_TABLE]\nparamId: TEST_TABLE"
+ },
+ "TsFile-395": {
+  "name": "test_table_names [paramId=test_table]",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]",
+  "automationType": "python",
+  "plmDescription": "sourceNodeId: tests/table/dataframe_to_tsfile_test.py::test_table_names[test_table]\nparamId: test_table"
+ },
+ "TsFile-231": {
+  "name": "全数据类型查询转DataFrame",
+  "nodeId": "tests/tree/to_dataframe_tree_test.py::test_tree_all_datatype_query_to_dataframe_variants1",
+  "automationType": "python",
+  "plmDescription": "test tree all datatype query to dataframe variants1"
+ },
+ "TsFile-167": {
+  "name": "多设备全部物理量",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_multi_device_all_measurements",
+  "automationType": "python",
+  "plmDescription": "test multi device all measurements"
+ },
+ "TsFile-166": {
+  "name": "多设备相同物理量",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_multi_device_common_measurements",
+  "automationType": "python",
+  "plmDescription": "test multi device common measurements"
+ },
+ "TsFile-165": {
+  "name": "多设备不同物理量",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_multi_device_different_measurements",
+  "automationType": "python",
+  "plmDescription": "test multi device different measurements"
+ },
+ "TsFile-164": {
+  "name": "偏移量与行数组合",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_offset_and_limit_combination",
+  "automationType": "python",
+  "plmDescription": "test offset and limit combination"
+ },
+ "TsFile-163": {
+  "name": "行数限制超出行数",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_limit_exceeds_rows",
+  "automationType": "python",
+  "plmDescription": "test limit exceeds rows"
+ },
+ "TsFile-162": {
+  "name": "行数限制在范围内",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_limit_within_range",
+  "automationType": "python",
+  "plmDescription": "test limit within range"
+ },
+ "TsFile-161": {
+  "name": "零行数限制",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_limit_zero",
+  "automationType": "python",
+  "plmDescription": "test limit zero"
+ },
+ "TsFile-160": {
+  "name": "负行数限制",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_limit_negative",
+  "automationType": "python",
+  "plmDescription": "test limit negative"
+ },
+ "TsFile-159": {
+  "name": "偏移量超出行数",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_offset_exceeds_rows",
+  "automationType": "python",
+  "plmDescription": "test offset exceeds rows"
+ },
+ "TsFile-158": {
+  "name": "偏移量在范围内",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_offset_within_range",
+  "automationType": "python",
+  "plmDescription": "test offset within range"
+ },
+ "TsFile-157": {
+  "name": "零偏移量",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_offset_zero",
+  "automationType": "python",
+  "plmDescription": "test offset zero"
+ },
+ "TsFile-156": {
+  "name": "负偏移量",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_offset_negative",
+  "automationType": "python",
+  "plmDescription": "test offset negative"
+ },
+ "TsFile-155": {
+  "name": "物理量特殊字符",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_special_chars",
+  "automationType": "python",
+  "plmDescription": "test measurement names special chars"
+ },
+ "TsFile-154": {
+  "name": "物理量中文",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_chinese",
+  "automationType": "python",
+  "plmDescription": "test measurement names chinese"
+ },
+ "TsFile-153": {
+  "name": "物理量下划线",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_underscore",
+  "automationType": "python",
+  "plmDescription": "test measurement names underscore"
+ },
+ "TsFile-152": {
+  "name": "物理量数字",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_numbers",
+  "automationType": "python",
+  "plmDescription": "test measurement names numbers"
+ },
+ "TsFile-151": {
+  "name": "物理量大写",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_uppercase",
+  "automationType": "python",
+  "plmDescription": "test measurement names uppercase"
+ },
+ "TsFile-150": {
+  "name": "物理量小写",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_lowercase",
+  "automationType": "python",
+  "plmDescription": "test measurement names lowercase"
+ },
+ "TsFile-149": {
+  "name": "多测点名全部不存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_not_exist",
+  "automationType": "python",
+  "plmDescription": "test measurement names multi all not exist"
+ },
+ "TsFile-148": {
+  "name": "多测点名部分存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_partial_exist",
+  "automationType": "python",
+  "plmDescription": "test measurement names multi partial exist"
+ },
+ "TsFile-147": {
+  "name": "多物理量全部存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_multi_all_exist",
+  "automationType": "python",
+  "plmDescription": "test measurement names multi all exist"
+ },
+ "TsFile-146": {
+  "name": "单物理量不存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_not_exist",
+  "automationType": "python",
+  "plmDescription": "test measurement names single not exist"
+ },
+ "TsFile-145": {
+  "name": "单物理量存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_measurement_names_single_exist",
+  "automationType": "python",
+  "plmDescription": "test measurement names single exist"
+ },
+ "TsFile-144": {
+  "name": "设备ID特殊字符",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_special_chars",
+  "automationType": "python",
+  "plmDescription": "test device ids special chars"
+ },
+ "TsFile-143": {
+  "name": "设备ID中文",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_chinese",
+  "automationType": "python",
+  "plmDescription": "test device ids chinese"
+ },
+ "TsFile-142": {
+  "name": "设备ID下划线",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_underscore",
+  "automationType": "python",
+  "plmDescription": "test device ids underscore"
+ },
+ "TsFile-141": {
+  "name": "设备ID数字",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_numbers",
+  "automationType": "python",
+  "plmDescription": "test device ids numbers"
+ },
+ "TsFile-140": {
+  "name": "设备ID大写",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_uppercase",
+  "automationType": "python",
+  "plmDescription": "test device ids uppercase"
+ },
+ "TsFile-139": {
+  "name": "设备ID小写",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_lowercase",
+  "automationType": "python",
+  "plmDescription": "test device ids lowercase"
+ },
+ "TsFile-138": {
+  "name": "多设备ID全部不存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_not_exist",
+  "automationType": "python",
+  "plmDescription": "test device ids multi all not exist"
+ },
+ "TsFile-137": {
+  "name": "多设备ID部分存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_partial_exist",
+  "automationType": "python",
+  "plmDescription": "test device ids multi partial exist"
+ },
+ "TsFile-136": {
+  "name": "多设备ID全部存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_multi_all_exist",
+  "automationType": "python",
+  "plmDescription": "test device ids multi all exist"
+ },
+ "TsFile-135": {
+  "name": "单设备ID不存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_single_not_exist",
+  "automationType": "python",
+  "plmDescription": "test device ids single not exist"
+ },
+ "TsFile-134": {
+  "name": "单设备ID存在",
+  "nodeId": "tests/tree/query_tree_by_row_test.py::test_device_ids_single_exist",
+  "automationType": "python",
+  "plmDescription": "test device ids single exist"
+ },
+ "TsFile-133": {
+  "name": "列不存在查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_column_not_exist",
+  "automationType": "python",
+  "plmDescription": "test column not exist"
+ },
+ "TsFile-132": {
+  "name": "表不存在查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_table_not_exist",
+  "automationType": "python",
+  "plmDescription": "test table not exist"
+ },
+ "TsFile-131": {
+  "name": "迭代器全参数查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_iterator_with_all_params",
+  "automationType": "python",
+  "plmDescription": "test iterator with all params"
+ },
+ "TsFile-130": {
+  "name": "迭代器查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_iterator_query[20-20]",
+  "automationType": "python",
+  "plmDescription": "test iterator query"
+ },
+ "TsFile-129": {
+  "name": "最大行数查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_max_row_num[1-1]",
+  "automationType": "python",
+  "plmDescription": "test max row num"
+ },
+ "TsFile-128": {
+  "name": "时间范围查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_time_range[10-None-90]",
+  "automationType": "python",
+  "plmDescription": "test time range"
+ },
+ "TsFile-127": {
+  "name": "表名大写查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_table_name_uppercase",
+  "automationType": "python",
+  "plmDescription": "test table name uppercase"
+ },
+ "TsFile-126": {
+  "name": "表名小写查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_table_name_lowercase",
+  "automationType": "python",
+  "plmDescription": "test table name lowercase"
+ },
+ "TsFile-125": {
+  "name": "全列查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_all_columns_query",
+  "automationType": "python",
+  "plmDescription": "test all columns query"
+ },
+ "TsFile-124": {
+  "name": "双列查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_two_columns_query",
+  "automationType": "python",
+  "plmDescription": "test two columns query"
+ },
+ "TsFile-123": {
+  "name": "单列查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_single_column_query[Device1-<lambda>]",
+  "automationType": "python",
+  "plmDescription": "test single column query"
+ },
+ "TsFile-122": {
+  "name": "默认查询",
+  "nodeId": "tests/table/to_dataframe_table_test.py::test_default_query",
+  "automationType": "python",
+  "plmDescription": "test default query"
+ },
+ "TsFile-121": {
+  "name": "loc开放结束范围",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_open_ended_range",
+  "automationType": "python",
+  "plmDescription": "loc开放结束范围"
+ },
+ "TsFile-120": {
+  "name": "loc混合序列指定方式（索引和名称）",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_mixed_series_specifiers",
+  "automationType": "python",
+  "plmDescription": "loc混合序列指定方式（索引和名称）"
+ },
+ "TsFile-119": {
+  "name": "read_series_by_row带偏移的查询",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_with_offset",
+  "automationType": "python",
+  "plmDescription": "read_series_by_row带偏移的查询"
+ },
+ "TsFile-118": {
+  "name": "read_series_by_row大范围查询",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_read_series_by_row_large_range",
+  "automationType": "python",
+  "plmDescription": "read_series_by_row大范围查询"
+ },
+ "TsFile-117": {
+  "name": "多文件并行加载进度显示",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_multiple_files",
+  "automationType": "python",
+  "plmDescription": "多文件并行加载进度显示"
+ },
+ "TsFile-116": {
+  "name": "进度显示立即报告开始状态",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_show_progress_reports_start_immediately",
+  "automationType": "python",
+  "plmDescription": "进度显示立即报告开始状态"
+ },
+ "TsFile-115": {
+  "name": "空DataFrame的repr",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_empty_dataframe",
+  "automationType": "python",
+  "plmDescription": "空DataFrame的repr"
+ },
+ "TsFile-114": {
+  "name": "__repr__只构建预览行，不构建全部序列名",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_repr_only_builds_preview_rows",
+  "automationType": "python",
+  "plmDescription": "__repr__只构建预览行，不构建全部序列名"
+ },
+ "TsFile-113": {
+  "name": "list_timeseries前缀过滤跳过不匹配的序列",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_list_timeseries_prefix_skip_non_matching",
+  "automationType": "python",
+  "plmDescription": "list_timeseries前缀过滤跳过不匹配的序列"
+ },
+ "TsFile-112": {
+  "name": "尾部None值被修剪 - 修复后应该通过",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_trailing_none_trimmed",
+  "automationType": "python",
+  "plmDescription": "尾部None值被修剪 - 修复后应该通过"
+ },
+ "TsFile-111": {
+  "name": "稀疏tag值 - 修复后None值应该被跳过",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_none_values_should_be_skipped",
+  "automationType": "python",
+  "plmDescription": "稀疏tag值 - 修复后None值应该被跳过"
+ },
+ "TsFile-110": {
+  "name": "序列名在list/metadata/loc间闭环",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_table_series_name_variants_round_trip_all_dataframe_apis[tag_value_dot-weather-tag_columns0-tag_values0-temperature-weather.dev\\\\.a.temperature]",
+  "automationType": "python",
+  "plmDescription": "补充回归：验证表模型各类序列名在 list/metadata/getitem/loc 间可闭环。"
+ },
+ "TsFile-109": {
+  "name": "tag为null时list转loc不崩溃",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc[single_tag_all_null-tag_columns0-rows0-2]",
+  "automationType": "python",
+  "plmDescription": "补充回归：验证表模型 tag=null 时，list_timeseries 返回结果继续传给 loc 不再崩溃。"
+ },
+ "TsFile-108": {
+  "name": "稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_sparse_tags_with_none_values_current_behavior",
+  "automationType": "python",
+  "plmDescription": "稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）"
+ },
+ "TsFile-107": {
+  "name": "loc支持负索引序列",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_supports_negative_series_index",
+  "automationType": "python",
+  "plmDescription": "loc支持负索引序列"
+ },
+ "TsFile-106": {
+  "name": "loc保持请求的序列顺序",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_preserves_requested_series_order",
+  "automationType": "python",
+  "plmDescription": "loc保持请求的序列顺序"
+ },
+ "TsFile-105": {
+  "name": "loc单时间戳查询 - 含空值时保持精确时间窗口 - 修复后应该通过",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_single_timestamp_with_nulls",
+  "automationType": "python",
+  "plmDescription": "loc单时间戳查询 - 含空值时保持精确时间窗口 - 修复后应该通过"
+ },
+ "TsFile-104": {
+  "name": "loc时间范围边界 - 稀疏数据（部分字段有空值） - 修复后应该通过",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_loc_time_range_boundary_with_sparse_data",
+  "automationType": "python",
+  "plmDescription": "loc时间范围边界 - 稀疏数据（部分字段有空值） - 修复后应该通过"
+ },
+ "TsFile-103": {
+  "name": "单个空的TsFile文件 - 当前版本应该报错",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_single_empty_tsfile_raises_error",
+  "automationType": "python",
+  "plmDescription": "单个空的TsFile文件 - 当前版本应该报错"
+ },
+ "TsFile-102": {
+  "name": "空的TsFile shard被正确跳过 - 修复后应该通过",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBugFixValidation::test_empty_tsfile_shard_skipped",
+  "automationType": "python",
+  "plmDescription": "空的TsFile shard被正确跳过 - 修复后应该通过"
+ },
+ "TsFile-101": {
+  "name": "loc对齐查询 - 全范围查询性能",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_full_range",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 全范围查询性能"
+ },
+ "TsFile-100": {
+  "name": "对齐查询超大规模",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_large_series_count",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 大量序列的对齐性能"
+ },
+ "TsFile-99": {
+  "name": "对齐查询大规模",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_multiple_files_different_timestamps",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 多文件不同时间戳范围的合并对齐"
+ },
+ "TsFile-98": {
+  "name": "对齐查询中规模",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_medium_scale",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 中规模数据（数万时间戳）"
+ },
+ "TsFile-97": {
+  "name": "对齐查询小规模",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_loc_alignment_small_scale",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 小规模数据（数千时间戳）"
+ },
+ "TsFile-96": {
+  "name": "并行加载嵌套目录中的多个文件",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_nested_directory",
+  "automationType": "python",
+  "plmDescription": "并行加载嵌套目录中的多个文件"
+ },
+ "TsFile-95": {
+  "name": "多文件并行加载",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestPerformance::test_parallel_load_multiple_files",
+  "automationType": "python",
+  "plmDescription": "并行加载多个文件 - 自动使用线程池并行扫描元数据"
+ },
+ "TsFile-94": {
+  "name": "TIMESTAMP类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_timestamp_type",
+  "automationType": "python",
+  "plmDescription": "TIMESTAMP类型"
+ },
+ "TsFile-93": {
+  "name": "DOUBLE类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_double_type",
+  "automationType": "python",
+  "plmDescription": "DOUBLE类型"
+ },
+ "TsFile-92": {
+  "name": "FLOAT类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_float_type",
+  "automationType": "python",
+  "plmDescription": "FLOAT类型"
+ },
+ "TsFile-91": {
+  "name": "INT64类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int64_type",
+  "automationType": "python",
+  "plmDescription": "INT64类型"
+ },
+ "TsFile-90": {
+  "name": "INT32类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_int32_type",
+  "automationType": "python",
+  "plmDescription": "INT32类型"
+ },
+ "TsFile-89": {
+  "name": "BOOLEAN类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestAllDataTypesValue::test_boolean_type",
+  "automationType": "python",
+  "plmDescription": "BOOLEAN类型"
+ },
+ "TsFile-88": {
+  "name": "所有值都为空",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_all_null_values",
+  "automationType": "python",
+  "plmDescription": "所有值都为空"
+ },
+ "TsFile-87": {
+  "name": "关闭后访问",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_access_after_close",
+  "automationType": "python",
+  "plmDescription": "关闭后访问"
+ },
+ "TsFile-86": {
+  "name": "多次关闭DataFrame",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestBoundaryCases::test_close_dataframe_twice",
+  "automationType": "python",
+  "plmDescription": "多次关闭DataFrame"
+ },
+ "TsFile-85": {
+  "name": "序列名 - 不存在的Table前缀",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_series_names_nonexistent_table_prefix",
+  "automationType": "python",
+  "plmDescription": "序列名 - 不存在的Table前缀"
+ },
+ "TsFile-84": {
+  "name": "loc索引（多列查询）",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index2",
+  "automationType": "python",
+  "plmDescription": "使用索引"
+ },
+ "TsFile-83": {
+  "name": "loc索引（范围查询）",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_index1",
+  "automationType": "python",
+  "plmDescription": "使用索引"
+ },
+ "TsFile-82": {
+  "name": "时间切片 - 全超出",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_all_exceed",
+  "automationType": "python",
+  "plmDescription": "时间切片 - 全超出"
+ },
+ "TsFile-81": {
+  "name": "时间切片 - 右切片超出",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_right_exceed",
+  "automationType": "python",
+  "plmDescription": "时间切片 - 右切片超出"
+ },
+ "TsFile-80": {
+  "name": "时间切片 - 左切片超出",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_left_exceed",
+  "automationType": "python",
+  "plmDescription": "时间切片 - 左切片超出"
+ },
+ "TsFile-79": {
+  "name": "时间切片 - 不超出范围",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_time_slice_within_range",
+  "automationType": "python",
+  "plmDescription": "时间切片 - 不超出范围"
+ },
+ "TsFile-78": {
+  "name": "对齐含空值合并去重",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_loc_alignment_with_null_values",
+  "automationType": "python",
+  "plmDescription": "loc对齐查询 - 含空值时的合并去重和NaN填充性能"
+ },
+ "TsFile-77": {
+  "name": "对齐序列基础",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameLoc::test_AlignedTimeseries_Basic",
+  "automationType": "python",
+  "plmDescription": "AlignedTimeseries Basic"
+ },
+ "TsFile-76": {
+  "name": "序列名访问 - 不存在的序列名",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name_nonexistent",
+  "automationType": "python",
+  "plmDescription": "序列名访问 - 不存在的序列名"
+ },
+ "TsFile-75": {
+  "name": "序列名访问",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_name",
+  "automationType": "python",
+  "plmDescription": "序列名访问"
+ },
+ "TsFile-74": {
+  "name": "索引越界报错",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_out_of_range",
+  "automationType": "python",
+  "plmDescription": "索引访问 - 超出实际数量的索引 预期报错索引越界"
+ },
+ "TsFile-73": {
+  "name": "索引访问 - 负索引从后往前取",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_negative",
+  "automationType": "python",
+  "plmDescription": "索引访问 - 负索引从后往前取"
+ },
+ "TsFile-72": {
+  "name": "索引访问 - 存在的索引",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTimeseries::test_timeseries_index_valid",
+  "automationType": "python",
+  "plmDescription": "索引访问 - 存在的索引"
+ },
+ "TsFile-71": {
+  "name": "特殊列名",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_special_column_name",
+  "automationType": "python",
+  "plmDescription": "special column name"
+ },
+ "TsFile-70": {
+  "name": "Table前缀 - 不存在的表",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_nonexistent",
+  "automationType": "python",
+  "plmDescription": "Table前缀 - 不存在的表"
+ },
+ "TsFile-69": {
+  "name": "Table前缀 - 数字",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_numbers",
+  "automationType": "python",
+  "plmDescription": "Table前缀 - 数字"
+ },
+ "TsFile-68": {
+  "name": "Table前缀 - 中文",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_chinese",
+  "automationType": "python",
+  "plmDescription": "Table前缀 - 中文"
+ },
+ "TsFile-67": {
+  "name": "Table前缀 - 小写英文",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_lowercase",
+  "automationType": "python",
+  "plmDescription": "Table前缀 - 小写英文"
+ },
+ "TsFile-66": {
+  "name": "Table前缀 - 大写英文",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_list_timeseries_table_prefix_uppercase",
+  "automationType": "python",
+  "plmDescription": "Table前缀 - 大写英文"
+ },
+ "TsFile-65": {
+  "name": "不同tag创建设备",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_multiple_devices",
+  "automationType": "python",
+  "plmDescription": "多设备 - 不同 tag 组合会创建不同的设备"
+ },
+ "TsFile-64": {
+  "name": "没有FIELD列的表，没有有效序列会报错",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_field_table",
+  "automationType": "python",
+  "plmDescription": "没有FIELD列的表，没有有效序列会报错"
+ },
+ "TsFile-63": {
+  "name": "没有TAG列的表",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_len_no_tag_table",
+  "automationType": "python",
+  "plmDescription": "没有TAG列的表"
+ },
+ "TsFile-62": {
+  "name": "单设备所有类型",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFrameBasic::test_all_types",
+  "automationType": "python",
+  "plmDescription": "单设备所有类型"
+ },
+ "TsFile-61": {
+  "name": "目录内无tsfile文件",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_without_tsfile",
+  "automationType": "python",
+  "plmDescription": "目录内无tsfile文件"
+ },
+ "TsFile-60": {
+  "name": "嵌套目录路径，包含非 TsFile 文件",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nested_directory_path_contains_non_tsfile",
+  "automationType": "python",
+  "plmDescription": "嵌套目录路径，包含非 TsFile 文件"
+ },
+ "TsFile-59": {
+  "name": "目录路径，包含非TsFile文件",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_contains_non_tsfile",
+  "automationType": "python",
+  "plmDescription": "目录路径，包含非TsFile文件"
+ },
+ "TsFile-58": {
+  "name": "目录路径，每个文件序列名一样",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_different_timeseries",
+  "automationType": "python",
+  "plmDescription": "目录路径，每个文件序列名一样"
+ },
+ "TsFile-57": {
+  "name": "目录路径，每个文件序列名不一样",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_directory_path_same_timeseries",
+  "automationType": "python",
+  "plmDescription": "目录路径，每个文件序列名不一样"
+ },
+ "TsFile-56": {
+  "name": "不存在的文件路径",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_nonexistent_file_path",
+  "automationType": "python",
+  "plmDescription": "不存在的文件路径"
+ },
+ "TsFile-55": {
+  "name": "多文件同名序列不重复时间戳",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_different_timestamp",
+  "automationType": "python",
+  "plmDescription": "多条文件路径 - 相同时间序列不重复时间戳"
+ },
+ "TsFile-54": {
+  "name": "多条文件路径 - 相同时间序列重复时间戳",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_same_timeseries_same_timestamp",
+  "automationType": "python",
+  "plmDescription": "多条文件路径 - 相同时间序列重复时间戳"
+ },
+ "TsFile-53": {
+  "name": "多条文件路径 - 不同时间序列重复时间戳",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_multiple_file_paths_different_timeseries_same_timestamp",
+  "automationType": "python",
+  "plmDescription": "多条文件路径 - 不同时间序列重复时间戳"
+ },
+ "TsFile-52": {
+  "name": "单条文件路径",
+  "nodeId": "tests/table/test_tsfile_dataset.py::TestTsFileDataFramePaths::test_single_file_path",
+  "automationType": "python",
+  "plmDescription": "单条文件路径"
+ },
+ "TsFile-51": {
+  "name": "偏移与限制组合",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_offset_and_limit_combination",
+  "automationType": "python",
+  "plmDescription": "test offset and limit combination"
+ },
+ "TsFile-50": {
+  "name": "限制超出行数",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_limit_exceeds_rows",
+  "automationType": "python",
+  "plmDescription": "test limit exceeds rows"
+ },
+ "TsFile-49": {
+  "name": "限制在范围内",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_limit_within_range",
+  "automationType": "python",
+  "plmDescription": "test limit within range"
+ },
+ "TsFile-48": {
+  "name": "零行数限制",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_limit_zero",
+  "automationType": "python",
+  "plmDescription": "test limit zero"
+ },
+ "TsFile-47": {
+  "name": "负行数限制",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_limit_negative",
+  "automationType": "python",
+  "plmDescription": "test limit negative"
+ },
+ "TsFile-46": {
+  "name": "偏移超出行数",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_offset_exceeds_rows",
+  "automationType": "python",
+  "plmDescription": "test offset exceeds rows"
+ },
+ "TsFile-45": {
+  "name": "偏移在范围内",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_offset_within_range",
+  "automationType": "python",
+  "plmDescription": "test offset within range"
+ },
+ "TsFile-44": {
+  "name": "零偏移量",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_offset_zero",
+  "automationType": "python",
+  "plmDescription": "test offset zero"
+ },
+ "TsFile-43": {
+  "name": "负偏移量",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_offset_negative",
+  "automationType": "python",
+  "plmDescription": "test offset negative"
+ },
+ "TsFile-42": {
+  "name": "列名空白",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_whitespace",
+  "automationType": "python",
+  "plmDescription": "test column names whitespace"
+ },
+ "TsFile-41": {
+  "name": "查询列名为空",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_empty",
+  "automationType": "python",
+  "plmDescription": "test column names empty"
+ },
+ "TsFile-40": {
+  "name": "列名特殊字符",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_special_chars",
+  "automationType": "python",
+  "plmDescription": "test column names special chars"
+ },
+ "TsFile-39": {
+  "name": "列名中文",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_chinese",
+  "automationType": "python",
+  "plmDescription": "test column names chinese"
+ },
+ "TsFile-38": {
+  "name": "列名下划线",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_underscore",
+  "automationType": "python",
+  "plmDescription": "test column names underscore"
+ },
+ "TsFile-37": {
+  "name": "列名含数字",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_numbers",
+  "automationType": "python",
+  "plmDescription": "test column names numbers"
+ },
+ "TsFile-36": {
+  "name": "列名大写",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_uppercase",
+  "automationType": "python",
+  "plmDescription": "test column names uppercase"
+ },
+ "TsFile-35": {
+  "name": "列名小写",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_lowercase",
+  "automationType": "python",
+  "plmDescription": "test column names lowercase"
+ },
+ "TsFile-34": {
+  "name": "列类型字段",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_type_field",
+  "automationType": "python",
+  "plmDescription": "test column type field"
+ },
+ "TsFile-33": {
+  "name": "列类型tag",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_type_tag",
+  "automationType": "python",
+  "plmDescription": "test column type tag"
+ },
+ "TsFile-32": {
+  "name": "多设备查询",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_multi_device_query",
+  "automationType": "python",
+  "plmDescription": "test multi device query"
+ },
+ "TsFile-31": {
+  "name": "多列部分存在",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_multi_partial_exist",
+  "automationType": "python",
+  "plmDescription": "test column names multi partial exist"
+ },
+ "TsFile-30": {
+  "name": "多列全存在",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_multi_all_exist",
+  "automationType": "python",
+  "plmDescription": "test column names multi all exist"
+ },
+ "TsFile-29": {
+  "name": "单列不存在",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_single_not_exist",
+  "automationType": "python",
+  "plmDescription": "test column names single not exist"
+ },
+ "TsFile-28": {
+  "name": "单列存在",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_column_names_single_exist",
+  "automationType": "python",
+  "plmDescription": "test column names single exist"
+ },
+ "TsFile-27": {
+  "name": "表名不存在",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_not_exist",
+  "automationType": "python",
+  "plmDescription": "test table name not exist"
+ },
+ "TsFile-26": {
+  "name": "表名特殊字符",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_special_chars",
+  "automationType": "python",
+  "plmDescription": "test table name special chars"
+ },
+ "TsFile-25": {
+  "name": "表名中文",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_chinese",
+  "automationType": "python",
+  "plmDescription": "test table name chinese"
+ },
+ "TsFile-24": {
+  "name": "表名下划线",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_underscore",
+  "automationType": "python",
+  "plmDescription": "test table name underscore"
+ },
+ "TsFile-23": {
+  "name": "表名含数字",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_numbers",
+  "automationType": "python",
+  "plmDescription": "test table name numbers"
+ },
+ "TsFile-22": {
+  "name": "表名大写",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_uppercase",
+  "automationType": "python",
+  "plmDescription": "test table name uppercase"
+ },
+ "TsFile-21": {
+  "name": "表名小写",
+  "nodeId": "tests/table/query_table_by_row_test.py::test_table_name_lowercase",
+  "automationType": "python",
+  "plmDescription": "test table name lowercase"
+ },
+ "TsFile-20": {
+  "name": "DataFrame互转",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_from_to_dataframe",
+  "automationType": "python",
+  "plmDescription": "test dataframe from to dataframe"
+ },
+ "TsFile-19": {
+  "name": "时间列未设置",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_set_without_time_column",
+  "automationType": "python",
+  "plmDescription": "test time column not set without time column"
+ },
+ "TsFile-18": {
+  "name": "列名未指定",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_column_name_none",
+  "automationType": "python",
+  "plmDescription": "test column name none"
+ },
+ "TsFile-17": {
+  "name": "写入列名为空",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_column_name_empty",
+  "automationType": "python",
+  "plmDescription": "test column name empty"
+ },
+ "TsFile-16": {
+  "name": "列名重复",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_column_duplicate",
+  "automationType": "python",
+  "plmDescription": "test column duplicate"
+ },
+ "TsFile-15": {
+  "name": "时间列类型无效",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_invalid_type[str-TypeError]",
+  "automationType": "python",
+  "plmDescription": "test time column invalid type"
+ },
+ "TsFile-14": {
+  "name": "时间列不存在",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_not_exist",
+  "automationType": "python",
+  "plmDescription": "test time column not exist"
+ },
+ "TsFile-13": {
+  "name": "时间列int32",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_int32",
+  "automationType": "python",
+  "plmDescription": "test time column int32"
+ },
+ "TsFile-12": {
+  "name": "时间列名",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_time_column_names[time-time]",
+  "automationType": "python",
+  "plmDescription": "test time column names"
+ },
+ "TsFile-11": {
+  "name": "目录路径",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_directory_path",
+  "automationType": "python",
+  "plmDescription": "test directory path"
+ },
+ "TsFile-10": {
+  "name": "已存在文件路径",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_existing_file_path",
+  "automationType": "python",
+  "plmDescription": "test existing file path"
+ },
+ "TsFile-9": {
+  "name": "表名未设置",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_name_not_set",
+  "automationType": "python",
+  "plmDescription": "test table name not set"
+ },
+ "TsFile-8": {
+  "name": "表名列表",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_table_names[TestTable]",
+  "automationType": "python",
+  "plmDescription": "test table names"
+ },
+ "TsFile-7": {
+  "name": "None值DataFrame",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_none",
+  "automationType": "python",
+  "plmDescription": "test dataframe none"
+ },
+ "TsFile-6": {
+  "name": "空DataFrame",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_empty",
+  "automationType": "python",
+  "plmDescription": "test dataframe empty"
+ },
+ "TsFile-5": {
+  "name": "DataFrame值计数不一致",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_values_count_inconsistent",
+  "automationType": "python",
+  "plmDescription": "test dataframe values count inconsistent"
+ },
+ "TsFile-4": {
+  "name": "DataFrame无空值",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_no_null",
+  "automationType": "python",
+  "plmDescription": "test dataframe no null"
+ },
+ "TsFile-3": {
+  "name": "DataFrame跨分片",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_cross_partition",
+  "automationType": "python",
+  "plmDescription": "test dataframe cross partition"
+ },
+ "TsFile-2": {
+  "name": "DataFrame全空值",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_all_null",
+  "automationType": "python",
+  "plmDescription": "test dataframe all null"
+ },
+ "TsFile-1": {
+  "name": "DataFrame部分空值",
+  "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_partial_null",
+  "automationType": "python",
+  "plmDescription": "test dataframe partial null"
+ }
+}

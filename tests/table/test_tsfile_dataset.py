@@ -192,6 +192,7 @@ def create_tsfile2(file_path, table_name, num_rows=100):
 class TestTsFileDataFramePaths:
     """测试TsFileDataFrame - 加载文件/目录"""
 
+    # 用例 PYTHON-TABLE-052：单条文件路径
     def test_single_file_path(self, tsfile_path):
         """测试单条文件路径"""
         # 1. 创建文件
@@ -201,6 +202,7 @@ class TestTsFileDataFramePaths:
             # 3. 验证结果
             assert len(tsdf) == 6, f"Expected 6 series, got {len(tsdf)}"
 
+    # 用例 PYTHON-TABLE-053：多条文件路径 - 不同时间序列重复时间戳
     def test_multiple_file_paths_different_timeseries_same_timestamp(self, tsfile_path, tsfile_path2):
         """测试多条文件路径 - 不同时间序列重复时间戳"""
         # 1. 创建文件
@@ -211,6 +213,7 @@ class TestTsFileDataFramePaths:
             # 3. 验证结果
             assert len(tsdf) == 12, f"Expected 12 series, got {len(tsdf)}"
 
+    # 用例 PYTHON-TABLE-054：多条文件路径 - 相同时间序列重复时间戳
     def test_multiple_file_paths_same_timeseries_same_timestamp(self, tsfile_path, tsfile_path2):
         """测试多条文件路径 - 相同时间序列重复时间戳"""
         # 1. 创建文件
@@ -220,6 +223,7 @@ class TestTsFileDataFramePaths:
         with pytest.raises(ValueError, match="Duplicate timestamp"):
             TsFileDataFrame([tsfile_path, tsfile_path2], show_progress=False)
 
+    # 用例 PYTHON-TABLE-055：多文件同名序列不重复时间戳
     def test_multiple_file_paths_same_timeseries_different_timestamp(self, tsfile_path, tsfile_path2):
         """测试多条文件路径 - 相同时间序列不重复时间戳"""
         # 1. 创建文件
@@ -233,12 +237,14 @@ class TestTsFileDataFramePaths:
             assert len(tsdf) == 6, f"Expected 6 series, got {len(tsdf)}"
             assert len(tsdf[0][0:40]) == 40
 
+    # 用例 PYTHON-TABLE-056：不存在的文件路径
     def test_nonexistent_file_path(self, tmp_path):
         """测试不存在的文件路径"""
         nonexistent_path = str(tmp_path / "nonexistent.tsfile")
         with pytest.raises(FileNotFoundError):
             TsFileDataFrame(nonexistent_path, show_progress=False)
 
+    # 用例 PYTHON-TABLE-057：目录路径，每个文件序列名不一样
     def test_directory_path_same_timeseries(self, test_dir, tsfile_path):
         """测试目录路径，每个文件序列名不一样"""
         # 1. 创建文件
@@ -252,6 +258,7 @@ class TestTsFileDataFramePaths:
             # 3. 验证结果
             assert len(tsdf) == 12, f"Expected 12 series, got {len(tsdf)}"
 
+    # 用例 PYTHON-TABLE-058：目录路径，每个文件序列名一样
     def test_directory_path_different_timeseries(self, test_dir, tsfile_path):
         """测试目录路径，每个文件序列名一样"""
         # 1. 创建文件
@@ -264,6 +271,7 @@ class TestTsFileDataFramePaths:
         with pytest.raises(ValueError, match="Duplicate timestamp"):
             TsFileDataFrame(test_dir, show_progress=False)
 
+    # 用例 PYTHON-TABLE-059：目录路径，包含非TsFile文件
     def test_directory_path_contains_non_tsfile(self, test_dir, tsfile_path):
         """测试目录路径，包含非TsFile文件"""
         # 1. 创建TsFile文件
@@ -288,6 +296,7 @@ class TestTsFileDataFramePaths:
             # 4. 验证结果
             assert len(tsdf) == 12, f"Expected 12 series, got {len(tsdf)}"
 
+    # 用例 PYTHON-TABLE-060：嵌套目录路径，包含非 TsFile 文件
     def test_nested_directory_path_contains_non_tsfile(self, test_dir, tsfile_path):
         """测试嵌套目录路径，包含非 TsFile 文件"""
         # 1. 创建嵌套目录结构
@@ -327,6 +336,7 @@ class TestTsFileDataFramePaths:
             assert "table_1" in series_list[6]
             assert "table_2" in series_list[12]
 
+    # 用例 PYTHON-TABLE-061：目录内无tsfile文件
     def test_directory_without_tsfile(self, tmp_path):
         """测试目录内无tsfile文件"""
         empty_dir = str(tmp_path / "empty_dir")
@@ -342,6 +352,7 @@ class TestTsFileDataFramePaths:
 class TestTsFileDataFrameBasic:
     """测试TsFileDataFrame - 内部函数方法（）"""
 
+    # 用例 PYTHON-TABLE-062：单设备所有类型
     def test_all_types(self, tsfile_path):
         """测试单设备所有类型"""
         field_columns = ["boolean_field", "int32_field", "int64_field", "float_field", "double_field",
@@ -371,18 +382,21 @@ class TestTsFileDataFrameBasic:
             assert tsdf[2:4][0].name == "test_table.Device1_中文_.Device1_中文_.int64_field"
             assert tsdf[4:100][0].name == "test_table.Device1_中文_.Device1_中文_.double_field"
 
+    # 用例 PYTHON-TABLE-063：没有TAG列的表
     def test_len_no_tag_table(self, tsfile_path):
         """测试没有TAG列的表"""
         create_tsfile1(tsfile_path, TABLE_NAME, [], [], FIELD_COLUMNS, FIELD_TYPES, row_num=20)
         with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
             assert len(tsdf) == 6
 
+    # 用例 PYTHON-TABLE-064：没有FIELD列的表，没有有效序列会报错
     def test_len_no_field_table(self, tsfile_path):
         """测试没有FIELD列的表，没有有效序列会报错"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, [], [], row_num=20)
         with  pytest.raises(ValueError, match="No valid time series found in the provided TsFile files"):
             TsFileDataFrame(tsfile_path, show_progress=False)
 
+    # 用例 PYTHON-TABLE-065：不同tag创建设备
     def test_len_multiple_devices(self, tsfile_path):
         """测试多设备 - 不同 tag 组合会创建不同的设备"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20,
@@ -390,6 +404,7 @@ class TestTsFileDataFrameBasic:
         with TsFileDataFrame(tsfile_path, show_progress=False) as tsdf:
             assert len(tsdf) > 6, f"Expected more than 6 series due to multiple devices, got {len(tsdf)}"
 
+    # 用例 PYTHON-TABLE-066：Table前缀 - 大写英文
     def test_list_timeseries_table_prefix_uppercase(self, tsfile_path):
         """测试Table前缀 - 大写英文"""
         create_tsfile1(tsfile_path, "TABLE1", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -397,6 +412,7 @@ class TestTsFileDataFrameBasic:
             series_list = tsdf.list_timeseries("TABLE1".lower())
             assert len(series_list) == 6
 
+    # 用例 PYTHON-TABLE-067：Table前缀 - 小写英文
     def test_list_timeseries_table_prefix_lowercase(self, tsfile_path):
         """测试Table前缀 - 小写英文"""
         create_tsfile1(tsfile_path, "lowercase_table", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -404,6 +420,7 @@ class TestTsFileDataFrameBasic:
             series_list = tsdf.list_timeseries("lowercase_table")
             assert len(series_list) == 6
 
+    # 用例 PYTHON-TABLE-068：Table前缀 - 中文
     def test_list_timeseries_table_prefix_chinese(self, tsfile_path):
         """测试Table前缀 - 中文"""
         create_tsfile1(tsfile_path, "测试表", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -411,6 +428,7 @@ class TestTsFileDataFrameBasic:
             series_list = tsdf.list_timeseries("测试表")
             assert len(series_list) == 6
 
+    # 用例 PYTHON-TABLE-069：Table前缀 - 数字
     def test_list_timeseries_table_prefix_numbers(self, tsfile_path):
         """测试Table前缀 - 数字"""
         create_tsfile1(tsfile_path, "123456", TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -418,6 +436,7 @@ class TestTsFileDataFrameBasic:
             series_list = tsdf.list_timeseries("123456")
             assert len(series_list) == 6
 
+    # 用例 PYTHON-TABLE-070：Table前缀 - 不存在的表
     def test_list_timeseries_table_prefix_nonexistent(self, tsfile_path):
         """测试Table前缀 - 不存在的表"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -425,6 +444,7 @@ class TestTsFileDataFrameBasic:
             series_list = tsdf.list_timeseries("nonexistent_table")
             assert len(series_list) == 0
 
+    # 用例 PYTHON-TABLE-071：特殊列名
     def test_special_column_name(self, tsfile_path):
         table_name = "table."
         create_tsfile1(tsfile_path, table_name, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -440,6 +460,7 @@ class TestTsFileDataFrameBasic:
 class TestTimeseries:
     """测试Timeseries - 序列访问"""
 
+    # 用例 PYTHON-TABLE-072：索引访问 - 存在的索引
     def test_timeseries_index_valid(self, tsfile_path):
         """测试索引访问 - 存在的索引"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20,
@@ -454,6 +475,7 @@ class TestTimeseries:
                 assert len(ts[0:len(ts)]) == 20
                 assert ts.timestamps[0] == 10
 
+    # 用例 PYTHON-TABLE-073：索引访问 - 负索引从后往前取
     def test_timeseries_index_negative(self, tsfile_path):
         """测试索引访问 - 负索引从后往前取"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -462,6 +484,7 @@ class TestTimeseries:
             assert ts.name == "test_table.Device1_中文_.Device1_中文_.double_field"
             assert len(ts) == 20
 
+    # 用例 PYTHON-TABLE-074：索引越界报错
     def test_timeseries_index_out_of_range(self, tsfile_path):
         """测试索引访问 - 超出实际数量的索引 预期报错索引越界"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -469,6 +492,7 @@ class TestTimeseries:
             with pytest.raises(IndexError):
                 print(tsdf[100])
 
+    # 用例 PYTHON-TABLE-075：序列名访问
     def test_timeseries_name(self, tsfile_path):
         """测试序列名访问"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -477,6 +501,7 @@ class TestTimeseries:
             assert ts.name == tsdf.list_timeseries()[0]
             assert len(ts) == 20
 
+    # 用例 PYTHON-TABLE-076：序列名访问 - 不存在的序列名
     def test_timeseries_name_nonexistent(self, tsfile_path):
         """测试序列名访问 - 不存在的序列名"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -492,6 +517,7 @@ class TestTimeseries:
 class TestTsFileDataFrameLoc:
     """测试TsFileDataFrame.loc - 高性能对齐查询"""
 
+    # 用例 PYTHON-TABLE-077：对齐序列基础
     def test_AlignedTimeseries_Basic(self, tsfile_path):
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=40,
                        is_contains_null_values=False)
@@ -510,6 +536,7 @@ class TestTsFileDataFrameLoc:
             # print(data)
 
 
+    # 用例 PYTHON-TABLE-078：对齐含空值合并去重
     def test_loc_alignment_with_null_values(self, tsfile_path):
         """测试loc对齐查询 - 含空值时的合并去重和NaN填充性能"""
         import time
@@ -533,6 +560,7 @@ class TestTsFileDataFrameLoc:
             # 含空值的查询时间应该合理
             assert query_time < 3.0, f"Loc query with null values took too long: {query_time}s"
 
+    # 用例 PYTHON-TABLE-079：时间切片 - 不超出范围
     def test_loc_time_slice_within_range(self, tsfile_path):
         """测试时间切片 - 不超出范围"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=40, is_contains_null_values=False)
@@ -541,6 +569,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[0:20, series_names]
             assert len(data) == 21
 
+    # 用例 PYTHON-TABLE-080：时间切片 - 左切片超出
     def test_loc_time_slice_left_exceed(self, tsfile_path):
         """测试时间切片 - 左切片超出"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20, is_contains_null_values=False)
@@ -549,6 +578,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[-100:10, series_names]
             assert len(data) == 11
 
+    # 用例 PYTHON-TABLE-081：时间切片 - 右切片超出
     def test_loc_time_slice_right_exceed(self, tsfile_path):
         """测试时间切片 - 右切片超出"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20, is_contains_null_values=False)
@@ -557,6 +587,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[10:100, series_names]
             assert len(data) == 10
 
+    # 用例 PYTHON-TABLE-082：时间切片 - 全超出
     def test_loc_time_slice_all_exceed(self, tsfile_path):
         """测试时间切片 - 全超出"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20, is_contains_null_values=False)
@@ -565,6 +596,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[100:200, series_names]
             assert len(data) == 0
 
+    # 用例 PYTHON-TABLE-083：使用索引
     def test_loc_index1(self, tsfile_path):
         """测试使用索引"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20, is_contains_null_values=False)
@@ -572,6 +604,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[6:15, [0, 1]]
             assert len(data) == 10
 
+    # 用例 PYTHON-TABLE-084：使用索引
     def test_loc_index2(self, tsfile_path):
         """测试使用索引"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20, is_contains_null_values=False)
@@ -579,6 +612,7 @@ class TestTsFileDataFrameLoc:
             data = tsdf.loc[0:10, [0, 1, 2, 3, 4, 5]]
             assert len(data) == 11
 
+    # 用例 PYTHON-TABLE-085：序列名 - 不存在的Table前缀
     def test_loc_series_names_nonexistent_table_prefix(self, tsfile_path):
         """测试序列名 - 不存在的Table前缀"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -594,6 +628,7 @@ class TestTsFileDataFrameLoc:
 class TestBoundaryCases:
     """测试特殊情况"""
 
+    # 用例 PYTHON-TABLE-086：多次关闭DataFrame
     def test_close_dataframe_twice(self, tsfile_path):
         """测试多次关闭DataFrame"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -601,6 +636,7 @@ class TestBoundaryCases:
         df.close()
         df.close()
 
+    # 用例 PYTHON-TABLE-087：关闭后访问
     def test_access_after_close(self, tsfile_path):
         """测试关闭后访问"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, FIELD_COLUMNS, FIELD_TYPES, row_num=20)
@@ -609,6 +645,7 @@ class TestBoundaryCases:
         with pytest.raises(RuntimeError, match="closed"):
             print(df[0])
 
+    # 用例 PYTHON-TABLE-088：所有值都为空
     def test_all_null_values(self, tsfile_path):
         """测试所有值都为空"""
         columns = [
@@ -641,6 +678,7 @@ class TestBoundaryCases:
 class TestAllDataTypesValue:
     """测试所有数据类型"""
 
+    # 用例 PYTHON-TABLE-089：BOOLEAN类型
     def test_boolean_type(self, tsfile_path):
         """测试BOOLEAN类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["bool_field"], [TSDataType.BOOLEAN],
@@ -650,6 +688,7 @@ class TestAllDataTypesValue:
         assert len(series) == 20
         df.close()
 
+    # 用例 PYTHON-TABLE-090：INT32类型
     def test_int32_type(self, tsfile_path):
         """测试INT32类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["int32_field"], [TSDataType.INT32],
@@ -659,6 +698,7 @@ class TestAllDataTypesValue:
         assert len(series) == 20
         df.close()
 
+    # 用例 PYTHON-TABLE-091：INT64类型
     def test_int64_type(self, tsfile_path):
         """测试INT64类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["int64_field"], [TSDataType.INT64],
@@ -668,6 +708,7 @@ class TestAllDataTypesValue:
         assert len(series) == 20
         df.close()
 
+    # 用例 PYTHON-TABLE-092：FLOAT类型
     def test_float_type(self, tsfile_path):
         """测试FLOAT类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["float_field"], [TSDataType.FLOAT],
@@ -677,6 +718,7 @@ class TestAllDataTypesValue:
         assert len(series) == 20
         df.close()
 
+    # 用例 PYTHON-TABLE-093：DOUBLE类型
     def test_double_type(self, tsfile_path):
         """测试DOUBLE类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["double_field"], [TSDataType.DOUBLE],
@@ -686,6 +728,7 @@ class TestAllDataTypesValue:
         assert len(series) == 20
         df.close()
 
+    # 用例 PYTHON-TABLE-094：TIMESTAMP类型
     def test_timestamp_type(self, tsfile_path):
         """测试TIMESTAMP类型"""
         create_tsfile1(tsfile_path, TABLE_NAME, TAG_COLUMNS, TAG_TYPES, ["timestamp_field"], [TSDataType.TIMESTAMP],
@@ -705,6 +748,7 @@ class TestPerformance:
 
     # ==================== 并行加载测试 ====================
 
+    # 用例 PYTHON-TABLE-095：多文件并行加载
     def test_parallel_load_multiple_files(self, test_dir):
         """测试并行加载多个文件 - 自动使用线程池并行扫描元数据"""
         import time
@@ -727,6 +771,7 @@ class TestPerformance:
             assert len(tsdf[0].timestamps) == 10000
             assert load_time < 10.0, f"Parallel load took too long: {load_time}s for {file_count} files"
 
+    # 用例 PYTHON-TABLE-096：并行加载嵌套目录中的多个文件
     def test_parallel_load_nested_directory(self, test_dir):
         """测试并行加载嵌套目录中的多个文件"""
         import time
@@ -757,6 +802,7 @@ class TestPerformance:
             assert load_time < 15.0, f"Nested directory load took too long: {load_time}s"
 
     # ==================== 对齐查询瓶颈测试 ====================
+    # 用例 PYTHON-TABLE-097：对齐查询小规模
     def test_loc_alignment_small_scale(self, tsfile_path):
         """测试loc对齐查询 - 小规模数据（数千时间戳）"""
         import time
@@ -780,6 +826,7 @@ class TestPerformance:
             # 小规模查询应该很快
             assert query_time < 1.0, f"Small scale loc query took too long: {query_time}s"
 
+    # 用例 PYTHON-TABLE-098：对齐查询中规模
     def test_loc_alignment_medium_scale(self, tsfile_path):
         """测试loc对齐查询 - 中规模数据（数万时间戳）"""
         import time
@@ -804,6 +851,7 @@ class TestPerformance:
             print(f"Medium scale loc query time: {query_time}s for {5001} timestamps")
             assert query_time < 5.0, f"Medium scale loc query took too long: {query_time}s"
 
+    # 用例 PYTHON-TABLE-099：对齐查询大规模
     def test_loc_alignment_multiple_files_different_timestamps(self, test_dir):
         """测试loc对齐查询 - 多文件不同时间戳范围的合并对齐"""
         import time
@@ -832,6 +880,7 @@ class TestPerformance:
             assert data.shape == (2001, 6)
             assert query_time < 5.0, f"Multi-file loc alignment took too long: {query_time}s"
 
+    # 用例 PYTHON-TABLE-100：对齐查询超大规模
     def test_loc_alignment_large_series_count(self, tsfile_path):
         """测试loc对齐查询 - 大量序列的对齐性能"""
         import time
@@ -860,6 +909,7 @@ class TestPerformance:
             assert data.shape == (1001, 20)
             assert query_time < 3.0, f"Large series count loc alignment took too long: {query_time}s"
 
+    # 用例 PYTHON-TABLE-101：loc对齐查询 - 全范围查询性能
     def test_loc_alignment_full_range(self, tsfile_path):
         """测试loc对齐查询 - 全范围查询性能"""
         import time
@@ -893,6 +943,7 @@ class TestBugFixValidation:
 
     # ==================== 空 TsFile 加载问题修复 ====================
 
+    # 用例 PYTHON-TABLE-102：空的TsFile shard被正确跳过 - 修复后应该通过
     def test_empty_tsfile_shard_skipped(self, tmp_path):
         """测试空的TsFile shard被正确跳过 - 修复后应该通过"""
         # 1. 创建一个空的TsFile文件
@@ -920,6 +971,7 @@ class TestBugFixValidation:
             assert len(series_list) == 1
             assert TABLE_NAME.lower() in series_list[0]
 
+    # 用例 PYTHON-TABLE-103：单个空的TsFile文件 - 当前版本应该报错
     def test_single_empty_tsfile_raises_error(self, tmp_path):
         """测试单个空的TsFile文件 - 当前版本应该报错"""
         empty_path = str(tmp_path / "empty.tsfile")
@@ -939,6 +991,7 @@ class TestBugFixValidation:
 
     # ==================== loc 时间范围边界问题修复 ====================
 
+    # 用例 PYTHON-TABLE-104：loc时间范围边界 - 稀疏数据（部分字段有空值） - 修复后应该通过
     def test_loc_time_range_boundary_with_sparse_data(self, tmp_path):
         """测试loc时间范围边界 - 稀疏数据（部分字段有空值） - 修复后应该通过"""
         path = str(tmp_path / "sparse.tsfile")
@@ -972,6 +1025,7 @@ class TestBugFixValidation:
             assert data.timestamps[1] == np.int64(2)
             assert data.shape == (2, 2)
 
+    # 用例 PYTHON-TABLE-105：loc单时间戳查询 - 含空值时保持精确时间窗口 - 修复后应该通过
     def test_loc_single_timestamp_with_nulls(self, tmp_path):
         """测试loc单时间戳查询 - 含空值时保持精确时间窗口 - 修复后应该通过"""
         path = str(tmp_path / "single_point.tsfile")
@@ -1002,6 +1056,7 @@ class TestBugFixValidation:
             assert data.timestamps[0] == np.int64(1)
             assert data.shape == (1, 2)
 
+    # 用例 PYTHON-TABLE-106：loc保持请求的序列顺序
     def test_loc_preserves_requested_series_order(self, tmp_path):
         """测试loc保持请求的序列顺序"""
         path = str(tmp_path / "order.tsfile")
@@ -1038,6 +1093,7 @@ class TestBugFixValidation:
             # 第二列应该是 temperature
             assert data.values[0, 1] == 10.0
 
+    # 用例 PYTHON-TABLE-107：loc支持负索引序列
     def test_loc_supports_negative_series_index(self, tmp_path):
         """测试loc支持负索引序列"""
         path = str(tmp_path / "negative_index.tsfile")
@@ -1068,6 +1124,7 @@ class TestBugFixValidation:
             assert data.timestamps[1] == np.int64(101)
             assert data.shape == (2, 1)
 
+    # 用例 PYTHON-TABLE-108：稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）
     def test_sparse_tags_with_none_values_current_behavior(self, tsfile_path):
         """测试稀疏tag值 - 当前版本行为（空值的TAG列显示为'null'）"""
         create_tsfile2(tsfile_path, TABLE_NAME)
@@ -1153,6 +1210,7 @@ class TestBugFixValidation:
         ],
         ids=lambda case: case if isinstance(case, str) else None,
     )
+    # 用例 PYTHON-TABLE-109：tag为null时list转loc不崩溃
     def test_nullable_tag_values_list_timeseries_paths_do_not_crash_loc(
         self, tmp_path, case_name, tag_columns, rows, expected_series_count
     ):
@@ -1280,6 +1338,7 @@ class TestBugFixValidation:
         ],
         ids=lambda case: case if isinstance(case, str) else None,
     )
+    # 用例 PYTHON-TABLE-110：序列名在list/metadata/loc间闭环
     def test_table_series_name_variants_round_trip_all_dataframe_apis(
         self, tmp_path, case_name, table_name, tag_columns, tag_values, field_name, expected_series
     ):
@@ -1326,6 +1385,7 @@ class TestBugFixValidation:
             assert "count" in rendered
 
 
+    # 用例 PYTHON-TABLE-111：稀疏tag值 - 修复后None值应该被跳过
     def test_sparse_tags_none_values_should_be_skipped(self, tmp_path):
         """测试稀疏tag值 - 修复后None值应该被跳过"""
         path = str(tmp_path / "sparse_tags.tsfile")
@@ -1351,6 +1411,7 @@ class TestBugFixValidation:
             series_list = tsdf.list_timeseries()
             assert len(series_list) == 3
 
+    # 用例 PYTHON-TABLE-112：尾部None值被修剪 - 修复后应该通过
     def test_sparse_tags_trailing_none_trimmed(self, tmp_path):
         """测试尾部None值被修剪 - 修复后应该通过"""
         path = str(tmp_path / "trailing_none.tsfile")
@@ -1378,6 +1439,7 @@ class TestBugFixValidation:
             assert len(series_list) == 1
             assert "weather.device_a.temperature" == series_list[0]
 
+    # 用例 PYTHON-TABLE-113：list_timeseries前缀过滤跳过不匹配的序列
     def test_list_timeseries_prefix_skip_non_matching(self, tmp_path):
         """测试list_timeseries前缀过滤跳过不匹配的序列"""
         path = str(tmp_path / "prefix_filter.tsfile")
@@ -1391,6 +1453,7 @@ class TestBugFixValidation:
 
     # ==================== Preview 性能优化测试 ====================
 
+    # 用例 PYTHON-TABLE-114：__repr__只构建预览行，不构建全部序列名
     def test_repr_only_builds_preview_rows(self, tmp_path, monkeypatch):
         """测试__repr__只构建预览行，不构建全部序列名"""
         path = str(tmp_path / "preview.tsfile")
@@ -1413,6 +1476,7 @@ class TestBugFixValidation:
                 # 恢复原状态
                 tsdf._index.series = original_series
 
+    # 用例 PYTHON-TABLE-115：空DataFrame的repr
     def test_repr_empty_dataframe(self, tmp_path):
         """测试空DataFrame的repr"""
         path = str(tmp_path / "empty_repr.tsfile")
@@ -1431,6 +1495,7 @@ class TestBugFixValidation:
 
     # ==================== 进度显示测试 ====================
 
+    # 用例 PYTHON-TABLE-116：进度显示立即报告开始状态
     def test_show_progress_reports_start_immediately(self, tmp_path, capsys):
         """测试进度显示立即报告开始状态"""
         path = str(tmp_path / "progress.tsfile")
@@ -1444,6 +1509,7 @@ class TestBugFixValidation:
         stderr = capsys.readouterr().err
         assert "Loading" in stderr or "done" in stderr
 
+    # 用例 PYTHON-TABLE-117：多文件并行加载进度显示
     def test_show_progress_multiple_files(self, tmp_path, capsys):
         """测试多文件并行加载进度显示"""
         path1 = str(tmp_path / "part1.tsfile")
@@ -1462,6 +1528,7 @@ class TestBugFixValidation:
 
     # ==================== query_by_row 跨边界问题测试 ====================
 
+    # 用例 PYTHON-TABLE-118：read_series_by_row大范围查询
     def test_read_series_by_row_large_range(self, tmp_path):
         """测试read_series_by_row大范围查询"""
         path = str(tmp_path / "large_range.tsfile")
@@ -1476,6 +1543,7 @@ class TestBugFixValidation:
             assert ts.timestamps[0] == 0
             assert ts.timestamps[99] == 99
 
+    # 用例 PYTHON-TABLE-119：read_series_by_row带偏移的查询
     def test_read_series_by_row_with_offset(self, tmp_path):
         """测试read_series_by_row带偏移的查询"""
         path = str(tmp_path / "offset_query.tsfile")
@@ -1493,6 +1561,7 @@ class TestBugFixValidation:
 
     # ==================== 混合边界情况测试 ====================
 
+    # 用例 PYTHON-TABLE-120：loc混合序列指定方式（索引和名称）
     def test_loc_mixed_series_specifiers(self, tmp_path):
         """测试loc混合序列指定方式（索引和名称）"""
         path = str(tmp_path / "mixed_spec.tsfile")
@@ -1525,6 +1594,7 @@ class TestBugFixValidation:
             assert "temperature" in data.series_names[0]
             assert "humidity" in data.series_names[1]
 
+    # 用例 PYTHON-TABLE-121：loc开放结束范围
     def test_loc_open_ended_range(self, tmp_path):
         """测试loc开放结束范围"""
         path = str(tmp_path / "open_range.tsfile")

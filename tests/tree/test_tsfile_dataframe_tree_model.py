@@ -176,32 +176,71 @@ def _assert_timeseries_metadata(ts, name, count, start_time, end_time):
     }
 
 
-def test_tree_loads_single_file_and_model_metadata(tmp_path):
-    """用例 1、9、15：验证单个树模型文件可加载为 tree，且序列清单和展示表头符合树模型元数据规则。"""
+# 用例 PYTHON-TREE-035：单文件加载为tree且表头符合规则
+# ── 由 test_tree_loads_single_file_and_model_metadata 拆分而来（3 个）──
+def test_tree_single_file_path_loads(tmp_path):
+    """用例 1：验证传入单个 .tsfile 文件路径可加载树模型数据。"""
     # 1. 生成包含 2 个设备、3 条数值序列的树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
 
-    # 2. 加载单个树模型文件
+    # 2. 加载单个树模型文件，校验序列数量与单文件展开展示
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
-        # 3. 校验模型类型、序列数量和序列清单
-        assert tsdf.model == "tree"
         assert len(tsdf) == 3
+        assert "TsFileDataFrame(tree model, 3 time series, 1 files)" in repr(tsdf)
+
+def test_tree_model_identified_as_tree(tmp_path):
+    """用例 9：验证加载集合全部为树模型文件时 model 判定为 tree。"""
+    # 1. 生成包含 2 个设备、3 条数值序列的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载单个树模型文件，校验模型类型判定
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert tsdf.model == "tree"
+
+def test_tree_series_names_flatten_device_segments(tmp_path):
+    """用例 15：验证树模型序列名映射为 root.{设备名分段_1}...{设备名分段_k}.{物理量名称} 扁平字符串。"""
+    # 1. 生成包含 2 个设备、3 条数值序列的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件，校验序列清单按扁平路径展开
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert sorted(tsdf.list_timeseries()) == [
             "root.ln.wf01.wt01.status",
             "root.ln.wf01.wt01.temperature",
             "root.ln.wf02.wt02.status",
         ]
 
-        # 4. 校验展示内容使用树模型元数据列，不出现表模型 table 列
+        # 3. 校验展示内容使用树模型元数据列（设备名分段 + 物理量名称），不出现表模型 table 列
         rendered = repr(tsdf)
-        assert "TsFileDataFrame(tree model, 3 time series, 1 files)" in rendered
         assert "_col_1" in rendered and "_col_2" in rendered and "_col_3" in rendered
         assert "table" not in rendered.splitlines()[1]
 
 
-def test_tree_loads_file_list_and_recursive_directory(tmp_path):
-    """用例 2-4、7：验证文件列表和目录递归两种入口都能加载树模型文件，并忽略非 .tsfile 文件。"""
+# ── 由 test_tree_loads_file_list_and_recursive_directory 拆分而来（4 个）──
+def test_tree_file_list_loads_multiple_files(tmp_path):
+    """用例 2：验证传入多个 .tsfile 组成的列表可一次性加载。"""
+    # 1. 构造两个树模型TsFile文件
+    root_dir = tmp_path / "tree_data"
+    sub_dir = root_dir / "sub"
+    sub_dir.mkdir(parents=True)
+    first = root_dir / "b.tsfile"
+    second = sub_dir / "a.tsfile"
+    _write_tree_rows(first, {"root.b.device": [("m1", TSDataType.DOUBLE)]}, 10)
+    _write_tree_rows(second, {"root.a.device": [("m1", TSDataType.DOUBLE)]}, 0)
+
+    # 2. 按文件列表加载，确认两个文件均参与合并
+    with TsFileDataFrame([str(first), str(second)], show_progress=False) as listed:
+        assert len(listed) == 2
+        assert sorted(listed.list_timeseries()) == [
+            "root.a.device.m1",
+            "root.b.device.m1",
+        ]
+
+def test_tree_directory_load_finds_all_tsfiles(tmp_path):
+    """用例 3：验证传入目录时递归查找目录下所有 .tsfile 并加载。"""
     # 1. 构造包含子目录的测试目录和两个树模型TsFile文件
     root_dir = tmp_path / "tree_data"
     sub_dir = root_dir / "sub"
@@ -210,13 +249,8 @@ def test_tree_loads_file_list_and_recursive_directory(tmp_path):
     second = sub_dir / "a.tsfile"
     _write_tree_rows(first, {"root.b.device": [("m1", TSDataType.DOUBLE)]}, 10)
     _write_tree_rows(second, {"root.a.device": [("m1", TSDataType.DOUBLE)]}, 0)
-    (root_dir / "ignore.txt").write_text("not a tsfile", encoding="utf-8")
 
-    # 2. 按文件列表加载，确认两个文件均参与合并
-    with TsFileDataFrame([str(first), str(second)], show_progress=False) as listed:
-        assert len(listed) == 2
-
-    # 3. 按目录递归加载，确认只加载 .tsfile 且路径被归一化
+    # 2. 按目录递归加载，确认目录下所有 .tsfile 都被加载且路径被归一化
     with TsFileDataFrame(str(root_dir), show_progress=False) as from_dir:
         assert sorted(from_dir.list_timeseries()) == [
             "root.a.device.m1",
@@ -224,49 +258,105 @@ def test_tree_loads_file_list_and_recursive_directory(tmp_path):
         ]
         assert all(Path(path).is_absolute() for path in from_dir._paths)
 
+def test_tree_directory_load_searches_nested_subdirectories(tmp_path):
+    """用例 4：验证目录下的多级子目录中的 .tsfile 也能被递归找到。"""
+    # 1. 构造带两级子目录的测试目录，最深层放置树模型TsFile文件
+    root_dir = tmp_path / "tree_data"
+    nested_dir = root_dir / "level1" / "level2"
+    nested_dir.mkdir(parents=True)
+    nested = nested_dir / "deep.tsfile"
+    _write_tree_rows(nested, {"root.deep.device": [("m1", TSDataType.DOUBLE)]})
 
-def test_tree_load_path_errors_and_relative_path(tmp_path, monkeypatch):
-    """用例 5、6、8：验证空目录、缺失文件的错误信息，以及相对路径会归一化为绝对路径后加载。"""
+    # 2. 按目录加载，确认深层子目录中的文件也被递归加载
+    with TsFileDataFrame(str(root_dir), show_progress=False) as from_dir:
+        assert from_dir.list_timeseries() == ["root.deep.device.m1"]
+
+def test_tree_directory_load_ignores_non_tsfile_files(tmp_path):
+    """用例 7：验证目录中非 .tsfile 后缀文件被忽略。"""
+    # 1. 构造目录，混合放置树模型TsFile文件和多种非 .tsfile 文件
+    root_dir = tmp_path / "tree_data"
+    root_dir.mkdir(parents=True)
+    valid = root_dir / "valid.tsfile"
+    _write_tree_rows(valid, {"root.b.device": [("m1", TSDataType.DOUBLE)]})
+    (root_dir / "ignore.txt").write_text("not a tsfile", encoding="utf-8")
+    (root_dir / "ignore.tsfile.bak").write_text("not a tsfile", encoding="utf-8")
+
+    # 2. 按目录加载，确认只有 .tsfile 文件参与加载
+    with TsFileDataFrame(str(root_dir), show_progress=False) as from_dir:
+        assert [Path(path).name for path in from_dir._paths] == ["valid.tsfile"]
+        assert from_dir.list_timeseries() == ["root.b.device.m1"]
+
+
+# ── 由 test_tree_load_path_errors_and_relative_path 拆分而来（3 个）──
+def test_tree_empty_directory_raises(tmp_path):
+    """用例 5：验证目录下无任何 .tsfile 时抛异常。"""
     # 1. 构造空目录并校验无 .tsfile 文件时报错
     empty_dir = tmp_path / "empty"
     empty_dir.mkdir()
     with pytest.raises(FileNotFoundError, match="No .tsfile files found"):
         TsFileDataFrame(str(empty_dir), show_progress=False)
 
-    # 2. 校验缺失文件路径时报错
+def test_tree_missing_file_path_raises(tmp_path):
+    """用例 6：验证指定不存在的文件路径时抛异常。"""
+    # 1. 指定不存在的文件路径并校验报错
     with pytest.raises(FileNotFoundError, match="TsFile not found"):
         TsFileDataFrame(str(tmp_path / "missing.tsfile"), show_progress=False)
 
-    # 3. 生成树模型TsFile文件并切换到临时目录
+def test_tree_relative_path_normalized_to_absolute(tmp_path, monkeypatch):
+    """用例 8：验证相对路径被归一化为绝对路径。"""
+    # 1. 生成树模型TsFile文件并切换到临时目录
     path = tmp_path / "relative.tsfile"
     _write_tree_rows(path, {"root.rel.device": [("m1", TSDataType.DOUBLE)]})
     monkeypatch.chdir(tmp_path)
 
-    # 4. 使用相对路径加载，确认内部路径归一化为绝对路径
+    # 2. 使用相对路径加载，确认内部路径归一化为绝对路径
     with TsFileDataFrame("relative.tsfile", show_progress=False) as tsdf:
         assert tsdf._paths == [os.path.abspath("relative.tsfile")]
         assert tsdf.list_timeseries() == ["root.rel.device.m1"]
 
 
-def test_tree_rejects_mixed_table_and_tree_models(tmp_path):
-    """用例 10、11：验证同一加载集合中同时存在表模型和树模型时会稳定抛出混用错误。"""
+# ── 由 test_tree_rejects_mixed_table_and_tree_models 拆分而来（2 个）──
+def test_tree_rejects_table_then_tree_model_mix(tmp_path):
+    """用例 10：验证同一加载集合中混入表模型与树模型文件时加载阶段抛异常。"""
     # 1. 分别生成树模型和表模型TsFile文件
     tree_path = tmp_path / "tree.tsfile"
     table_path = tmp_path / "table.tsfile"
     _write_tree_file(tree_path)
     _write_weather_table(table_path)
 
-    # 2. 表模型在前、树模型在后时，应抛出树表混用错误
+    # 2. 表模型在前、树模型在后时，加载阶段即抛出树表混用错误
     with pytest.raises(ValueError, match="Mixed table-model and tree-model"):
         TsFileDataFrame([str(table_path), str(tree_path)], show_progress=False)
 
-    # 3. 树模型在前、表模型在后时，也应抛出树表混用错误
+def test_tree_rejects_tree_then_table_model_mix(tmp_path):
+    """用例 11：验证首个文件为树模型、后续文件为表模型时同样报混用错误。"""
+    # 1. 分别生成树模型和表模型TsFile文件
+    tree_path = tmp_path / "tree.tsfile"
+    table_path = tmp_path / "table.tsfile"
+    _write_tree_file(tree_path)
+    _write_weather_table(table_path)
+
+    # 2. 树模型在前、表模型在后时，同样抛出树表混用错误
     with pytest.raises(ValueError, match="Mixed table-model and tree-model"):
         TsFileDataFrame([str(tree_path), str(table_path)], show_progress=False)
 
 
-def test_tree_empty_and_no_numeric_inputs_report_stable_errors(tmp_path):
-    """用例 13、115、116：验证空树文件和仅包含非数值测点的树文件会给出明确错误，而不是生成空视图。"""
+# ── 由 test_tree_empty_and_no_numeric_inputs_report_stable_errors 拆分而来（3 个）──
+def test_tree_load_without_any_numeric_series_raises(tmp_path):
+    """用例 13：验证加载集合中不存在任何数值序列时抛异常。"""
+    # 1. 生成仅包含非数值测点的树模型TsFile文件
+    string_only = tmp_path / "string_only.tsfile"
+    _write_tree_rows(
+        string_only,
+        {"root.a.b": [("status", TSDataType.STRING)]},
+    )
+
+    # 2. 加载非数值测点文件，校验加载集合无数值序列时报错而不是生成空视图
+    with pytest.raises(ValueError, match="No numeric measurements found"):
+        TsFileDataFrame(str(string_only), show_progress=False)
+
+def test_tree_empty_file_without_device_metadata_raises(tmp_path):
+    """用例 115：验证树模型文件没有任何设备名元数据时加载失败。"""
     # 1. 生成空树模型TsFile文件
     empty_tree = tmp_path / "empty_tree.tsfile"
     writer = TsFileWriter(str(empty_tree))
@@ -276,16 +366,18 @@ def test_tree_empty_and_no_numeric_inputs_report_stable_errors(tmp_path):
     with pytest.raises(ValueError, match="No devices found in tree-model TsFile"):
         TsFileDataFrame(str(empty_tree), show_progress=False)
 
-    # 3. 生成仅包含非数值测点的树模型TsFile文件
-    string_only = tmp_path / "string_only.tsfile"
-    _write_tree_rows(
-        string_only,
-        {"root.a.b": [("status", TSDataType.STRING)]},
-    )
+def test_tree_string_or_text_only_measurements_are_non_numeric(tmp_path):
+    """用例 116：验证树模型仅含 STRING 或 TEXT 物理量时被整体判定为无数值序列。"""
+    # 1. 分别生成仅含 STRING 和仅含 TEXT 物理量的树模型TsFile文件
+    string_only = tmp_path / "string_only_measurement.tsfile"
+    text_only = tmp_path / "text_only_measurement.tsfile"
+    _write_tree_rows(string_only, {"root.a.b": [("status", TSDataType.STRING)]})
+    _write_tree_rows(text_only, {"root.a.b": [("note", TSDataType.TEXT)]})
 
-    # 4. 加载非数值测点文件，校验无数值测点时报错
-    with pytest.raises(ValueError, match="No numeric measurements found"):
-        TsFileDataFrame(str(string_only), show_progress=False)
+    # 2. 加载两个文件，校验 STRING 和 TEXT 物理量都会被整体判定为无数值序列
+    for path in (string_only, text_only):
+        with pytest.raises(ValueError, match="No numeric measurements found"):
+            TsFileDataFrame(str(path), show_progress=False)
 
 
 def test_tree_rejects_multiple_root_segments_in_one_file(tmp_path):
@@ -305,8 +397,10 @@ def test_tree_rejects_multiple_root_segments_in_one_file(tmp_path):
         TsFileDataFrame(str(path), show_progress=False)
 
 
-def test_tree_list_timeseries_prefix_is_segment_aware(tmp_path):
-    """用例 23-28：验证 list_timeseries 的前缀匹配按设备名分段生效，不把 root.dbx 误判为 root.db。"""
+# 用例 PYTHON-TREE-041：list_timeseries前缀匹配
+# ── 由 test_tree_list_timeseries_prefix_is_segment_aware 拆分而来（6 个）──
+def test_tree_list_timeseries_without_prefix_returns_all(tmp_path):
+    """用例 23：验证不传前缀时返回全部序列名。"""
     # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_rows(
@@ -318,7 +412,71 @@ def test_tree_list_timeseries_prefix_is_segment_aware(tmp_path):
         },
     )
 
-    # 2. 加载文件并按 root.db 前缀筛选
+    # 2. 加载文件，校验不传前缀时返回全部序列名
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries()) == [
+            "root.db.d1.s1",
+            "root.db.d1.s2",
+            "root.db.d2.s1",
+            "root.dbx.d1.s1",
+        ]
+
+def test_tree_list_timeseries_filters_by_root_prefix(tmp_path):
+    """用例 24：验证按 root 前缀筛选序列。"""
+    # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.db.d1": [("s1", TSDataType.DOUBLE), ("s2", TSDataType.DOUBLE)],
+            "root.db.d2": [("s1", TSDataType.DOUBLE)],
+            "root.dbx.d1": [("s1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件并按 root 前缀筛选，校验 root 下所有序列均被命中
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries("root")) == [
+            "root.db.d1.s1",
+            "root.db.d1.s2",
+            "root.db.d2.s1",
+            "root.dbx.d1.s1",
+        ]
+
+def test_tree_list_timeseries_filters_by_device_prefix(tmp_path):
+    """用例 25：验证按设备名前缀筛选序列。"""
+    # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.db.d1": [("s1", TSDataType.DOUBLE), ("s2", TSDataType.DOUBLE)],
+            "root.db.d2": [("s1", TSDataType.DOUBLE)],
+            "root.dbx.d1": [("s1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件并按设备名前缀筛选，只返回对应设备名下序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries("root.db.d1")) == [
+            "root.db.d1.s1",
+            "root.db.d1.s2",
+        ]
+
+def test_tree_list_timeseries_prefix_matches_by_segment(tmp_path):
+    """用例 26：验证前缀匹配按设备名分段位置感知，不做纯字符串前缀。"""
+    # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.db.d1": [("s1", TSDataType.DOUBLE), ("s2", TSDataType.DOUBLE)],
+            "root.db.d2": [("s1", TSDataType.DOUBLE)],
+            "root.dbx.d1": [("s1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件并按库名前缀筛选，校验不把 root.dbx 误判为 root.db
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert sorted(tsdf.list_timeseries("root.db")) == [
             "root.db.d1.s1",
@@ -326,14 +484,41 @@ def test_tree_list_timeseries_prefix_is_segment_aware(tmp_path):
             "root.db.d2.s1",
         ]
 
-        # 3. 按设备名前缀筛选，只返回对应设备名下序列
-        assert sorted(tsdf.list_timeseries("root.db.d1")) == [
-            "root.db.d1.s1",
-            "root.db.d1.s2",
-        ]
+        # 3. 反向校验 root.dbx 分段只命中自身设备名下的序列
+        assert tsdf.list_timeseries("root.dbx") == ["root.dbx.d1.s1"]
 
-        # 4. 校验缺失前缀和非法转义前缀不会误匹配
+def test_tree_list_timeseries_unmatched_prefix_returns_empty(tmp_path):
+    """用例 27：验证前缀无匹配时返回空列表。"""
+    # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.db.d1": [("s1", TSDataType.DOUBLE), ("s2", TSDataType.DOUBLE)],
+            "root.db.d2": [("s1", TSDataType.DOUBLE)],
+            "root.dbx.d1": [("s1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件并校验缺失前缀不会误匹配任何序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert tsdf.list_timeseries("root.none") == []
+
+def test_tree_list_timeseries_invalid_prefix_returns_empty(tmp_path):
+    """用例 28：验证非法/无法解析的前缀返回空列表而非抛错。"""
+    # 1. 生成包含 root.db 和 root.dbx 两类设备名的树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.db.d1": [("s1", TSDataType.DOUBLE), ("s2", TSDataType.DOUBLE)],
+            "root.db.d2": [("s1", TSDataType.DOUBLE)],
+            "root.dbx.d1": [("s1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件并校验非法转义前缀返回空列表而不抛错
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert tsdf.list_timeseries("root.db\\") == []
 
 
@@ -365,6 +550,7 @@ def test_tree_list_timeseries_filters_different_device_names(tmp_path):
         assert tsdf.list_timeseries("root.db.device_c") == ["root.db.device_c.s2"]
 
 
+# 用例 PYTHON-TREE-043：同设备不同物理量可区分
 def test_tree_list_timeseries_filters_different_measurement_names(tmp_path):
     """用例 141：验证 list_timeseries 可区分同一设备名下的不同物理量名称。"""
     # 1. 生成同一设备名下包含多个物理量名称的树模型TsFile文件
@@ -398,6 +584,7 @@ def test_tree_list_timeseries_filters_different_measurement_names(tmp_path):
         ]
 
 
+# 用例 PYTHON-TREE-044：list_timeseries按库名分段匹配
 def test_tree_list_timeseries_filters_different_database_names(tmp_path):
     """用例 142：验证 list_timeseries 可区分不同数据库名，且数据库名前缀按分段匹配。"""
     # 1. 生成不同数据库名下设备名和物理量名称相同的树模型TsFile文件
@@ -426,8 +613,33 @@ def test_tree_list_timeseries_filters_different_database_names(tmp_path):
         assert tsdf.list_timeseries("root.db") == []
 
 
-def test_tree_list_timeseries_handles_different_series_name_depths(tmp_path):
-    """用例 16、143：验证 list_timeseries 可处理不同序列名深度，并按中间设备名前缀筛选。"""
+# 用例 PYTHON-TREE-045：list_timeseries按中间设备名前缀筛选
+# ── 由 test_tree_list_timeseries_handles_different_series_name_depths 拆分而来（2 个）──
+def test_tree_list_timeseries_lists_every_series_name_depth(tmp_path):
+    """用例 16：验证不同设备名可有不同分段数(k>=1)。"""
+    # 1. 生成设备名深度不同的树模型TsFile文件
+    path = tmp_path / "list_timeseries_depths.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.depth": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area.line": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area.line.unit": [("m1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件，确认 k=1 到 k=4 的设备名分段数可共存且序列名全部返回
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries("root.depth")) == [
+            "root.depth.area.line.m1",
+            "root.depth.area.line.unit.m1",
+            "root.depth.area.m1",
+            "root.depth.m1",
+        ]
+
+def test_tree_list_timeseries_filters_by_middle_device_prefix(tmp_path):
+    """用例 143：验证不同序列名深度的树模型序列可完整列出并按中间设备名前缀筛选。"""
     # 1. 生成设备名深度不同的树模型TsFile文件
     path = tmp_path / "list_timeseries_depths.tsfile"
     _write_tree_rows(
@@ -442,22 +654,14 @@ def test_tree_list_timeseries_handles_different_series_name_depths(tmp_path):
 
     # 2. 加载文件
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
-        # 3. 校验不同深度序列名全部返回
-        assert sorted(tsdf.list_timeseries("root.depth")) == [
-            "root.depth.area.line.m1",
-            "root.depth.area.line.unit.m1",
-            "root.depth.area.m1",
-            "root.depth.m1",
-        ]
-
-        # 4. 校验中间设备名前缀命中自身及更深设备名下序列
+        # 3. 校验中间设备名前缀命中自身及更深设备名下序列
         assert sorted(tsdf.list_timeseries("root.depth.area")) == [
             "root.depth.area.line.m1",
             "root.depth.area.line.unit.m1",
             "root.depth.area.m1",
         ]
 
-        # 5. 校验完整序列名前缀只返回单条序列
+        # 4. 校验完整序列名前缀只返回单条序列
         assert tsdf.list_timeseries("root.depth.area.line.unit.m1") == [
             "root.depth.area.line.unit.m1"
         ]
@@ -490,6 +694,7 @@ def test_tree_list_timeseries_handles_different_series_counts(tmp_path):
         assert tsdf.list_timeseries("root.count.d00") == ["root.count.d00.m1"]
 
 
+# 用例 PYTHON-TREE-047：metadata区分库下设备名
 def test_tree_list_timeseries_metadata_filters_different_device_names(tmp_path):
     """用例 145：验证 list_timeseries_metadata 可区分同一数据库名下的不同设备名。"""
     # 1. 生成同一数据库名下包含多个设备名的树模型TsFile文件
@@ -524,6 +729,7 @@ def test_tree_list_timeseries_metadata_filters_different_device_names(tmp_path):
         assert filtered.loc["root.db.device_a.s1", "_col_2"] == "device_a"
 
 
+# 用例 PYTHON-TREE-048：metadata区分设备下物理量
 def test_tree_list_timeseries_metadata_filters_different_measurement_names(tmp_path):
     """用例 146：验证 list_timeseries_metadata 可区分同一设备名下的不同物理量名称。"""
     # 1. 生成同一设备名下包含多个物理量名称的树模型TsFile文件
@@ -560,6 +766,7 @@ def test_tree_list_timeseries_metadata_filters_different_measurement_names(tmp_p
         assert exact.loc["root.db.device_a.temperature", "field"] == "temperature"
 
 
+# 用例 PYTHON-TREE-049：metadata按库名分段匹配
 def test_tree_list_timeseries_metadata_filters_different_database_names(tmp_path):
     """用例 147：验证 list_timeseries_metadata 可区分不同数据库名，且数据库名前缀按分段匹配。"""
     # 1. 生成不同数据库名下设备名和物理量名称相同的树模型TsFile文件
@@ -596,8 +803,39 @@ def test_tree_list_timeseries_metadata_filters_different_database_names(tmp_path
         assert list(empty.columns) == list(meta.columns)
 
 
-def test_tree_list_timeseries_metadata_handles_different_series_name_depths(tmp_path):
-    """用例 17、148：验证 list_timeseries_metadata 可处理不同序列名深度和浅层设备名补 NaN。"""
+# 用例 PYTHON-TREE-050：序列元数据不同深度
+# ── 由 test_tree_list_timeseries_metadata_handles_different_series_name_depths 拆分而来（2 个）──
+def test_tree_list_timeseries_metadata_pads_short_device_segments(tmp_path):
+    """用例 17：验证短设备名在设备名分段列 _col_i 末尾按左对齐补 None。"""
+    # 1. 生成设备名深度不同的树模型TsFile文件
+    path = tmp_path / "metadata_depths.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.depth": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area.line": [("m1", TSDataType.DOUBLE)],
+            "root.depth.area.line.unit": [("m1", TSDataType.DOUBLE)],
+        },
+    )
+
+    # 2. 加载文件，校验不同深度序列元数据全部返回，且全局设备名分段列扩展到最深
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        meta = tsdf.list_timeseries_metadata("root.depth")
+        assert sorted(meta.index.tolist()) == [
+            "root.depth.area.line.m1",
+            "root.depth.area.line.unit.m1",
+            "root.depth.area.m1",
+            "root.depth.m1",
+        ]
+        assert "_col_4" in meta.columns
+
+        # 3. 校验浅层设备名按左对齐占用分段列，末尾补 None
+        assert pd.isna(meta.loc["root.depth.m1", "_col_2"])
+        assert meta.loc["root.depth.area.line.unit.m1", "_col_4"] == "unit"
+
+def test_tree_list_timeseries_metadata_filters_by_middle_device_prefix(tmp_path):
+    """用例 148：验证不同序列名深度的树模型元数据可完整返回并按中间设备名前缀筛选。"""
     # 1. 生成设备名深度不同的树模型TsFile文件
     path = tmp_path / "metadata_depths.tsfile"
     _write_tree_rows(
@@ -612,27 +850,16 @@ def test_tree_list_timeseries_metadata_handles_different_series_name_depths(tmp_
 
     # 2. 加载文件
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
-        # 3. 校验不同深度序列元数据全部返回，且全局设备名分段列扩展到最深
-        meta = tsdf.list_timeseries_metadata("root.depth")
-        assert sorted(meta.index.tolist()) == [
-            "root.depth.area.line.m1",
-            "root.depth.area.line.unit.m1",
-            "root.depth.area.m1",
-            "root.depth.m1",
-        ]
-        assert "_col_4" in meta.columns
-        assert pd.isna(meta.loc["root.depth.m1", "_col_2"])
-        assert meta.loc["root.depth.area.line.unit.m1", "_col_4"] == "unit"
-
-        # 4. 校验中间设备名前缀命中自身及更深设备名下序列
+        # 3. 校验中间设备名前缀命中自身及更深设备名下序列的完整元数据
         area = tsdf.list_timeseries_metadata("root.depth.area")
         assert sorted(area.index.tolist()) == [
             "root.depth.area.line.m1",
             "root.depth.area.line.unit.m1",
             "root.depth.area.m1",
         ]
+        assert "_col_4" in area.columns
 
-        # 5. 校验完整序列名前缀只返回单条元数据
+        # 4. 校验完整序列名前缀只返回单条元数据
         exact = tsdf.list_timeseries_metadata("root.depth.area.line.unit.m1")
         assert exact.index.tolist() == ["root.depth.area.line.unit.m1"]
 
@@ -666,6 +893,7 @@ def test_tree_list_timeseries_metadata_handles_different_series_counts(tmp_path)
         assert meta.loc["root.count.d00.m1", "_col_2"] == "d00"
 
 
+# 用例 PYTHON-TREE-052：元数据DataFrame列结构与CSV导出
 def test_tree_metadata_dataframe_columns_filter_and_export(tmp_path):
     """用例 29-37：验证元数据 DataFrame 的列结构、时间列类型、前缀过滤、空结果和 CSV 导出能力。"""
     # 1. 生成基础树模型TsFile文件
@@ -715,26 +943,80 @@ def test_tree_metadata_dataframe_columns_filter_and_export(tmp_path):
         assert "root.ln.wf01.wt01.status" in csv_path.read_text(encoding="utf-8")
 
 
-def test_tree_metadata_column_projection_and_boolean_filter(tmp_path):
-    """用例 38-45：验证元数据列投影、树模型 table 列不可用、未知列报错，以及布尔过滤返回子视图。"""
+# 用例 PYTHON-TREE-053：元数据列投影与布尔过滤子视图
+# ── 由 test_tree_metadata_column_projection_and_boolean_filter 拆分而来（8 个）──
+def test_tree_metadata_field_column_projection(tmp_path):
+    """用例 38：验证 df['field'] 返回各序列物理量名称的 pandas.Series。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
 
-    # 2. 加载文件并按元数据列名投影
+    # 2. 加载文件并按元数据 field 列名投影
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert list(tsdf["field"]) == ["status", "temperature", "status"]
-        assert list(tsdf["_col_1"]) == ["ln", "ln", "ln"]
-        assert list(tsdf["_col_3"]) == ["wt01", "wt01", "wt02"]
-        assert list(tsdf["count"]) == [5, 5, 5]
 
-        # 3. 校验树模型不暴露 table 元数据列，未知列按序列查询失败
+def test_tree_metadata_col1_column_projection(tmp_path):
+    """用例 39：验证 df['_col_1'] 返回设备名第一分段的 Series。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并按设备名第一分段列名投影
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert list(tsdf["_col_1"]) == ["ln", "ln", "ln"]
+
+def test_tree_metadata_col3_column_projection(tmp_path):
+    """用例 40：验证 df['_col_3'] 返回设备名第三分段值。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并按设备名第三分段列名投影
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert list(tsdf["_col_3"]) == ["wt01", "wt01", "wt02"]
+
+def test_tree_metadata_table_column_is_unavailable(tmp_path):
+    """用例 41：验证树模型下访问表模型 df['table'] 列抛 KeyError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并校验树模型不暴露 table 元数据列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(KeyError):
             tsdf["table"]
+
+def test_tree_metadata_time_and_count_columns_projection(tmp_path):
+    """用例 42：验证 df['start_time']/['end_time']/['count'] 可投影。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并按时间列和统计列投影
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert list(tsdf["start_time"]) == [0, 0, 0]
+        assert list(tsdf["end_time"]) == [4, 4, 4]
+        assert list(tsdf["count"]) == [5, 5, 5]
+
+def test_tree_metadata_unknown_column_raises_key_error(tmp_path):
+    """用例 43：验证访问不存在的列名抛 KeyError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并校验未知列名按序列查询失败
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(KeyError, match="Series not found"):
             tsdf["unknown_column"]
 
-        # 4. 使用布尔条件筛选子集视图
+def test_tree_metadata_boolean_filter_returns_subset_view(tmp_path):
+    """用例 44：验证 df[df['_col_2']=='d1'] 按设备名分段元数据布尔过滤返回子集视图。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并使用布尔条件筛选子集视图
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         subset = tsdf[tsdf["_col_2"] == "wf01"]
         assert isinstance(subset, TsFileDataFrame)
         assert len(subset) == 2
@@ -743,14 +1025,22 @@ def test_tree_metadata_column_projection_and_boolean_filter(tmp_path):
             "root.ln.wf01.wt01.temperature",
         ]
 
-        # 5. 使用无命中布尔条件筛选，返回空子集视图
+def test_tree_metadata_boolean_filter_without_match_returns_empty_view(tmp_path):
+    """用例 45：验证布尔过滤无命中时返回空视图。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并使用无命中布尔条件筛选，返回空子集视图
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         empty_subset = tsdf[tsdf["_col_2"] == "missing"]
         assert len(empty_subset) == 0
         assert empty_subset.list_timeseries() == []
 
 
-def test_tree_lazy_metadata_projection_view_and_context_close(tmp_path, monkeypatch):
-    """用例 14、56、108：验证初始化和元数据投影不触发数据读取，子集视图复用 reader，with 退出会关闭根对象。"""
+# ── 由 test_tree_lazy_metadata_projection_view_and_context_close 拆分而来（3 个）──
+def test_tree_initialization_only_scans_metadata(tmp_path, monkeypatch):
+    """用例 14：验证初始化仅扫描元数据、不读取实际数值。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
@@ -781,56 +1071,209 @@ def test_tree_lazy_metadata_projection_view_and_context_close(tmp_path, monkeypa
         assert list(tsdf["count"]) == [5, 5, 5]
         assert read_calls == []
 
-        # 5. 构造子集视图，确认复用父对象 reader
-        subset = tsdf[0:2]
-        assert subset._readers is tsdf._readers
-        assert subset._root is tsdf
-
-        # 6. 读取子集序列，确认子集视图结果正确
-        np.testing.assert_array_equal(
-            subset["root.ln.wf01.wt01.temperature"][:2],
-            np.array([0.5, 1.5]),
-        )
-
-    # 7. 退出 with 后确认根对象已关闭并释放 reader
-    assert tsdf._closed
-    assert tsdf._readers == {}
-
-
-def test_tree_getitem_series_and_subset_validation(tmp_path):
-    """用例 46-56：验证按名称/索引取单序列、切片/列表取子集，以及越界和非法 key 的异常路径。"""
+def test_tree_subset_view_reuses_parent_readers(tmp_path):
+    """用例 56：验证子集视图复用父对象 readers、不重复打开文件。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
 
-    # 2. 加载文件并按名称/索引获取单序列
+    # 2. 加载文件，记录根对象已打开的 reader
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        readers = dict(tsdf._readers)
+
+        # 3. 构造子集视图，确认复用父对象 reader 且不重复打开文件
+        subset = tsdf[0:2]
+        assert subset._readers is tsdf._readers
+        assert subset._root is tsdf
+        assert len(tsdf._readers) == len(readers) == 1
+
+        # 4. 读取子集序列，确认子集视图结果正确且仍复用同一批 reader
+        np.testing.assert_array_equal(
+            subset["root.ln.wf01.wt01.temperature"][:2],
+            np.array([0.5, 1.5]),
+        )
+        assert list(tsdf._readers) == list(readers)
+
+def test_tree_context_exit_closes_root_and_releases_readers(tmp_path):
+    """用例 108：验证 with 语句退出后自动关闭并释放文件句柄。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 进入 with 期间 reader 处于打开状态
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert not tsdf._closed
+        assert tsdf._readers != {}
+
+    # 3. 退出 with 后确认根对象已关闭并释放 reader
+    assert tsdf._closed
+    assert tsdf._readers == {}
+
+    # 4. 关闭后访问序列应提示对象已关闭，避免继续使用已释放的文件句柄
+    with pytest.raises(RuntimeError, match="closed"):
+        tsdf["root.ln.wf01.wt01.status"]
+
+
+# ── 由 test_tree_getitem_series_and_subset_validation 拆分而来（10 个）──
+def test_tree_getitem_name_returns_timeseries_handle(tmp_path):
+    """用例 46：验证 df[name] 按完整树路径返回 Timeseries 懒加载句柄。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 按完整树路径取单条序列，校验句柄类型与名称
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         by_name = tsdf["root.ln.wf01.wt01.temperature"]
         assert isinstance(by_name, Timeseries)
         assert by_name.name == "root.ln.wf01.wt01.temperature"
-        assert isinstance(tsdf[0], Timeseries)
-        assert tsdf[-1].name == "root.ln.wf02.wt02.status"
 
-        # 3. 按切片和列表获取子集视图
+        # 3. 句柄保持懒加载：取到句柄时尚未读取该序列的时间戳
+        assert by_name._timestamps is None
+
+def test_tree_getitem_position_index_returns_timeseries(tmp_path):
+    """用例 47：验证 df[0] 按位置索引取序列。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 按位置索引取首条序列，校验句柄类型与解析到的序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        by_position = tsdf[0]
+        assert isinstance(by_position, Timeseries)
+        assert by_position.name == "root.ln.wf01.wt01.status"
+
+def test_tree_getitem_negative_index_returns_last_series(tmp_path):
+    """用例 48：验证 df[-1] 负索引取末条序列。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 按负索引取末条序列，校验句柄类型与解析到的序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        last = tsdf[-1]
+        assert isinstance(last, Timeseries)
+        assert last.name == "root.ln.wf02.wt02.status"
+
+def test_tree_getitem_index_out_of_range_raises(tmp_path):
+    """用例 49：验证整数索引越界抛 IndexError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 超出正向与负向边界的整数索引均抛 IndexError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        with pytest.raises(IndexError, match="out of range"):
+            tsdf[99]
+        with pytest.raises(IndexError, match="out of range"):
+            tsdf[-4]
+
+def test_tree_getitem_unknown_name_raises_key_error(tmp_path):
+    """用例 50：验证按不存在的序列名取值抛 KeyError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 路径不完整或测点不存在的序列名均抛 KeyError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        with pytest.raises(KeyError, match="Series not found"):
+            tsdf["root.ln.missing"]
+        with pytest.raises(KeyError, match="Series not found"):
+            tsdf["root.ln.wf01.wt01.no_such_measurement"]
+
+def test_tree_getitem_slice_returns_subset_view(tmp_path):
+    """用例 51：验证 df[0:3] 返回 TsFileDataFrame 视图。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 前段切片返回子集视图，视图长度与展示头均反映子集信息
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         subset = tsdf[0:2]
+        assert isinstance(subset, TsFileDataFrame)
         assert len(subset) == 2
         assert "subset of 3" in repr(subset)
+        assert subset.list_timeseries() == [
+            "root.ln.wf01.wt01.status",
+            "root.ln.wf01.wt01.temperature",
+        ]
+
+        # 3. 三元素切片同样返回视图，且序列清单与全量一致
+        full = tsdf[0:3]
+        assert isinstance(full, TsFileDataFrame)
+        assert len(full) == 3
+        assert full.list_timeseries() == tsdf.list_timeseries()
+
+def test_tree_getitem_index_list_returns_positional_view(tmp_path):
+    """用例 52：验证 df[[0,2,5]] 返回指定位置的视图。"""
+    # 1. 生成基础树模型TsFile文件（含 3 条序列）
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 按位置列表取第 1、3 条序列，校验视图类型与序列顺序
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert isinstance(tsdf[[0, 2]], TsFileDataFrame)
         assert [ts.name for ts in tsdf[[0, 2]]] == [
             "root.ln.wf01.wt01.status",
             "root.ln.wf02.wt02.status",
         ]
 
-        # 4. 校验越界、缺失序列和非法 key 的错误类型
-        with pytest.raises(IndexError, match="out of range"):
-            tsdf[99]
-        with pytest.raises(KeyError, match="Series not found"):
-            tsdf["root.ln.missing"]
+    # 3. 构造含 6 条序列的文件，校验一次取多个不连续位置
+    many_path = tmp_path / "many.tsfile"
+    _write_tree_rows(
+        many_path,
+        {
+            "root.m.dev": [
+                (f"m{i}", TSDataType.DOUBLE) for i in range(6)
+            ]
+        },
+    )
+    with TsFileDataFrame(str(many_path), show_progress=False) as many_df:
+        picked = many_df[[0, 2, 5]]
+        assert isinstance(picked, TsFileDataFrame)
+        assert picked.list_timeseries() == [
+            "root.m.dev.m0",
+            "root.m.dev.m2",
+            "root.m.dev.m5",
+        ]
+
+def test_tree_getitem_index_list_with_non_integer_raises(tmp_path):
+    """用例 53：验证整数列表含非整数元素抛 TypeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 列表中混入字符串或浮点数均抛 TypeError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(TypeError, match="List index must contain integers"):
             tsdf[[0, "bad"]]
+        with pytest.raises(TypeError, match="List index must contain integers"):
+            tsdf[[0, 1.5]]
+
+def test_tree_getitem_index_list_out_of_range_raises(tmp_path):
+    """用例 54：验证整数列表含越界索引抛 IndexError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 列表中含正向或负向越界索引均抛 IndexError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(IndexError, match="out of range"):
             tsdf[[0, 99]]
+        with pytest.raises(IndexError, match="out of range"):
+            tsdf[[0, -4]]
+
+def test_tree_getitem_unsupported_key_type_raises(tmp_path):
+    """用例 55：验证传入不支持的 key 类型抛 TypeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. dict 与 float 等不受支持的 key 类型均抛 TypeError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(TypeError, match="Unsupported key type"):
             tsdf[{"bad": "key"}]
+        with pytest.raises(TypeError, match="Unsupported key type"):
+            tsdf[1.5]
 
 
 def test_tree_getitem_index_forms_expose_series_metadata(tmp_path):
@@ -869,6 +1312,7 @@ def test_tree_getitem_index_forms_expose_series_metadata(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-057：布尔过滤子集仍可取元信息
 def test_tree_getitem_metadata_filtered_view_exposes_series_metadata(tmp_path):
     """用例 44、150：验证按元数据布尔过滤后的子集视图仍可获取 Timeseries 元信息。"""
     # 1. 生成基础树模型TsFile文件
@@ -912,6 +1356,7 @@ def test_tree_getitem_metadata_filtered_view_exposes_series_metadata(tmp_path):
         assert metadata.loc["root.ln.wf01.wt01.temperature", "count"] == 5
 
 
+# 用例 PYTHON-TREE-058：特殊设备名可按名称查看元信息
 def test_tree_getitem_named_series_variants_expose_metadata(tmp_path):
     """用例 46、152：验证普通、中文、反引号、点号转义和大小写设备名序列均可按名称查看元信息。"""
     # 1. 生成覆盖多类序列名规则的树模型TsFile文件
@@ -951,6 +1396,7 @@ def test_tree_getitem_named_series_variants_expose_metadata(tmp_path):
             )
 
 
+# 用例 PYTHON-TREE-059：切片子集视图
 def test_tree_getitem_slice_variants_return_metadata_ready_subsets(tmp_path):
     """用例 51、153：验证前段、中段、尾段、步长和空切片子集视图均符合预期。"""
     # 1. 生成基础树模型TsFile文件
@@ -994,8 +1440,10 @@ def test_tree_getitem_slice_variants_return_metadata_ready_subsets(tmp_path):
                 )
 
 
-def test_tree_getitem_list_variants_duplicates_and_errors(tmp_path):
-    """用例 52-55、154、155：验证列表子集的顺序、负索引、重复索引，以及越界和非法元素报错。"""
+# 用例 PYTHON-TREE-060：列表子集顺序/负索引/越界报错
+# ── 由 test_tree_getitem_list_variants_duplicates_and_errors 拆分而来（2 个）──
+def test_tree_getitem_list_respects_requested_order(tmp_path):
+    """用例 154：验证列表按请求索引顺序返回子集视图，并支持负索引混用后继续查看序列元信息。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
@@ -1023,7 +1471,24 @@ def test_tree_getitem_list_variants_duplicates_and_errors(tmp_path):
             "root.ln.wf02.wt02.status",
         ]
 
-        # 5. 列表全为同一个索引时，应保留重复序列视图
+        # 5. 负索引命中的序列仍可继续查看元信息
+        _assert_timeseries_metadata(
+            mixed_negative[1],
+            "root.ln.wf02.wt02.status",
+            count=5,
+            start_time=0,
+            end_time=4,
+        )
+
+def test_tree_getitem_repeated_index_view_and_invalid_entries(tmp_path):
+    """用例 155：验证列表全为同一个索引时保留重复序列视图，列表含越界索引或非整数时稳定报错。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        # 3. 列表全为同一个索引时，应保留重复序列视图
         repeated = tsdf[[1, 1, 1]]
         assert len(repeated) == 3
         assert repeated.list_timeseries() == [
@@ -1040,7 +1505,7 @@ def test_tree_getitem_list_variants_duplicates_and_errors(tmp_path):
                 end_time=4,
             )
 
-        # 6. 校验非法索引和非法列表元素的错误类型
+        # 4. 校验非法索引和非法列表元素的错误类型
         with pytest.raises(IndexError, match="out of range"):
             tsdf[-4]
         with pytest.raises(IndexError, match="out of range"):
@@ -1080,6 +1545,7 @@ def test_tree_timeseries_metadata_and_indexing(tmp_path):
             ts["bad"]
 
 
+# 用例 PYTHON-TREE-062：负索引切片与步长
 def test_tree_timeseries_additional_slice_and_aligned_indexing_forms(tmp_path):
     """用例 64-68、84-86：补充验证负索引切片、步长采样、时间戳切片，以及 AlignedTimeseries 的索引访问。"""
     # 1. 生成基础树模型TsFile文件
@@ -1114,6 +1580,7 @@ def test_tree_timeseries_additional_slice_and_aligned_indexing_forms(tmp_path):
         assert aligned[0, 1] == 0.0
 
 
+# 用例 PYTHON-TREE-063：timestamps缓存复用
 def test_tree_timeseries_timestamps_are_cached_but_values_are_read_on_demand(tmp_path):
     """用例 70：验证 Timeseries.timestamps 会缓存复用，而值读取仍按请求走底层行读取。"""
     # 1. 生成基础树模型TsFile文件
@@ -1152,60 +1619,295 @@ def test_tree_timeseries_timestamps_are_cached_but_values_are_read_on_demand(tmp
         assert row_calls == [(1, 2), (1, 2)]
 
 
-def test_tree_loc_alignment_forms_and_validation(tmp_path):
-    """用例 73、75、78-82、84-90：验证 .loc 基本对齐、单时间戳、负序列索引，以及参数校验错误类型。"""
+# 用例 PYTHON-TREE-064：.loc对齐、单时间戳、负索引与参数校验
+# ── 由 test_tree_loc_alignment_forms_and_validation 拆分而来（14 个）──
+def test_tree_loc_range_query_returns_aligned_timeseries(tmp_path):
+    """用例 73：验证 df.loc[start:end, [names]] 返回 AlignedTimeseries。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
 
-    # 2. 加载文件并执行基本 .loc 对齐查询
+    # 2. 执行带闭区间时间范围和序列名列表的 .loc 对齐查询
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         data = tsdf.loc[
             0:4,
             ["root.ln.wf01.wt01.temperature", "root.ln.wf01.wt01.status"],
         ]
 
-        # 3. 校验对齐结果的类型、形状、时间戳和值矩阵
+        # 3. 校验返回类型为对齐结果对象，且保留请求的序列
         assert isinstance(data, AlignedTimeseries)
+        assert data.series_names == [
+            "root.ln.wf01.wt01.temperature",
+            "root.ln.wf01.wt01.status",
+        ]
+
+def test_tree_loc_column_order_follows_requested_series(tmp_path):
+    """用例 75：验证结果列顺序严格按请求的序列顺序。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 先请求 status 再请求 temperature，结果列必须与该顺序一致
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        ordered = tsdf.loc[
+            0:4,
+            ["root.ln.wf01.wt01.status", "root.ln.wf01.wt01.temperature"],
+        ]
+        assert ordered.series_names == [
+            "root.ln.wf01.wt01.status",
+            "root.ln.wf01.wt01.temperature",
+        ]
+        np.testing.assert_array_equal(
+            ordered.values[:, 0], np.arange(5, dtype=np.float64)
+        )
+        np.testing.assert_array_equal(
+            ordered.values[:, 1], np.arange(5, dtype=np.float64) + 0.5
+        )
+
+        # 3. 调换请求顺序后各列随之调换，未被按序列名重新排序
+        swapped = tsdf.loc[
+            0:4,
+            ["root.ln.wf01.wt01.temperature", "root.ln.wf01.wt01.status"],
+        ]
+        assert swapped.series_names == [
+            "root.ln.wf01.wt01.temperature",
+            "root.ln.wf01.wt01.status",
+        ]
+        np.testing.assert_array_equal(
+            swapped.values[:, 0], np.arange(5, dtype=np.float64) + 0.5
+        )
+        np.testing.assert_array_equal(
+            swapped.values[:, 1], np.arange(5, dtype=np.float64)
+        )
+
+def test_tree_loc_accepts_mixed_name_and_index_specifiers(tmp_path):
+    """用例 78：验证序列指定支持名称与整数索引混用。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 同一次 .loc 请求中混用序列名与整数索引
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        mixed = tsdf.loc[0:2, ["root.ln.wf01.wt01.temperature", 0]]
+        assert mixed.series_names == [
+            "root.ln.wf01.wt01.temperature",
+            "root.ln.wf01.wt01.status",
+        ]
+
+        # 3. 两种指定形式解析出的序列都能取到正确取值
+        assert mixed.shape == (3, 2)
+        np.testing.assert_array_equal(
+            mixed.values, np.array([[0.5, 0.0], [1.5, 1.0], [2.5, 2.0]])
+        )
+
+def test_tree_loc_single_timestamp_query(tmp_path):
+    """用例 79：验证 df.loc[t, [...]] 单时间戳查询。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 以整数时间戳发起单点查询
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        single = tsdf.loc[1, [0, "root.ln.wf01.wt01.temperature"]]
+        assert isinstance(single, AlignedTimeseries)
+        assert single.shape == (1, 2)
+        np.testing.assert_array_equal(single.timestamps, np.array([1], dtype=np.int64))
+
+        # 3. 单点结果的取值来自请求时间戳所在行
+        np.testing.assert_array_equal(single.values, np.array([[1.0, 1.5]]))
+
+def test_tree_loc_open_time_slices_and_empty_range(tmp_path):
+    """用例 80：验证时间片开区间 [:end]、[start:]、[:] 正常。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 分别使用左开、右开和全开时间片查询
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        name = "root.ln.wf01.wt01.temperature"
+        np.testing.assert_array_equal(
+            tsdf.loc[:2, [name]].timestamps, np.array([0, 1, 2], dtype=np.int64)
+        )
+        np.testing.assert_array_equal(
+            tsdf.loc[2:, [name]].timestamps, np.array([2, 3, 4], dtype=np.int64)
+        )
+        np.testing.assert_array_equal(
+            tsdf.loc[:, [name]].timestamps, np.arange(5, dtype=np.int64)
+        )
+
+        # 3. 时间范围未命中任何数据时返回空对齐结果且形状稳定
+        empty = tsdf.loc[100:200, [name]]
+        assert isinstance(empty, AlignedTimeseries)
+        assert empty.shape == (0, 1)
+        assert empty.series_names == [name]
+        np.testing.assert_array_equal(empty.timestamps, np.array([], dtype=np.int64))
+
+def test_tree_loc_negative_series_index(tmp_path):
+    """用例 81：验证 df.loc[:, [-1]] 负序列索引。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 以负索引指定序列，校验解析到末条序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        negative = tsdf.loc[:, [-1]]
+        assert isinstance(negative, AlignedTimeseries)
+        assert negative.series_names == ["root.ln.wf02.wt02.status"]
+
+        # 3. 取值确实来自末条序列（root.ln.wf02.wt02.status 的值为 t*2）
+        np.testing.assert_array_equal(
+            negative.timestamps, np.arange(5, dtype=np.int64)
+        )
+        np.testing.assert_array_equal(
+            negative.values[:, 0], np.array([0.0, 2.0, 4.0, 6.0, 8.0])
+        )
+
+def test_tree_loc_repeated_series_specifiers_do_not_raise(tmp_path):
+    """用例 82：验证同一序列被重复指定(名+索引/同名两次)时去重不报错。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 同一序列分别以名称与整数索引指定，内部去重后不报错
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        name = "root.ln.wf01.wt01.temperature"
+        idx = tsdf.list_timeseries().index(name)
+        by_name_and_index = tsdf.loc[0:2, [name, idx]]
+        assert by_name_and_index.shape == (3, 2)
+        np.testing.assert_array_equal(
+            by_name_and_index.values, np.array([[0.5, 0.5], [1.5, 1.5], [2.5, 2.5]])
+        )
+
+        # 3. 同一个序列名重复两次同样不报错，两列取值一致
+        repeated = tsdf.loc[0:2, [name, name]]
+        assert repeated.shape == (3, 2)
+        np.testing.assert_array_equal(repeated.values[:, 0], repeated.values[:, 1])
+
+def test_tree_loc_aligned_result_exposes_attributes(tmp_path):
+    """用例 84：验证 AlignedTimeseries 的 timestamps/values/series_names/shape 属性。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 执行对齐查询并逐个校验结果对象的公开属性
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        data = tsdf.loc[
+            0:4,
+            ["root.ln.wf01.wt01.temperature", "root.ln.wf01.wt01.status"],
+        ]
+        assert data.series_names == [
+            "root.ln.wf01.wt01.temperature",
+            "root.ln.wf01.wt01.status",
+        ]
         assert data.shape == (5, 2)
         np.testing.assert_array_equal(data.timestamps, np.arange(5, dtype=np.int64))
         np.testing.assert_array_equal(
             data.values,
-            np.array(
-                [[0.5, 0.0], [1.5, 1.0], [2.5, 2.0], [3.5, 3.0], [4.5, 4.0]]
-            ),
+            np.array([[0.5, 0.0], [1.5, 1.0], [2.5, 2.0], [3.5, 3.0], [4.5, 4.0]]),
         )
 
-        # 4. 校验单时间戳查询和负序列索引查询
-        single = tsdf.loc[1, [0, "root.ln.wf01.wt01.temperature"]]
-        assert single.shape == (1, 2)
-        np.testing.assert_array_equal(single.timestamps, np.array([1], dtype=np.int64))
+def test_tree_loc_aligned_result_row_count(tmp_path):
+    """用例 85：验证 len(data) 返回行数 N。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
 
-        negative = tsdf.loc[:, [-1]]
-        assert negative.series_names == ["root.ln.wf02.wt02.status"]
+    # 2. 对齐结果的行数等于时间戳数量，也等于矩阵首维
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        data = tsdf.loc[
+            0:4,
+            ["root.ln.wf01.wt01.temperature", "root.ln.wf01.wt01.status"],
+        ]
+        assert len(data) == 5
+        assert len(data) == len(data.timestamps)
+        assert len(data) == data.shape[0]
 
-        # 5. 校验 .loc 参数格式、时间索引、序列参数和越界异常
+        # 3. 缩短时间范围后行数随之变化
+        trimmed = tsdf.loc[1:3, ["root.ln.wf01.wt01.temperature"]]
+        assert len(trimmed) == 3
+
+def test_tree_loc_aligned_result_indexing(tmp_path):
+    """用例 86：验证 data[0]、data[0:10]、data[0,1] 索引。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 单行索引、行切片和行列二元索引均按矩阵语义取值
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        data = tsdf.loc[
+            0:4,
+            ["root.ln.wf01.wt01.temperature", "root.ln.wf01.wt01.status"],
+        ]
+        np.testing.assert_array_equal(data[0], np.array([0.5, 0.0]))
+        assert data[0, 1] == 0.0
+        assert data[4, 0] == 4.5
+
+        # 3. 行切片范围超过实际行数时按可用行返回
+        np.testing.assert_array_equal(data[0:10], data.values)
+        assert data[0:10].shape == (5, 2)
+
+def test_tree_loc_requires_two_arguments(tmp_path):
+    """用例 87：验证 loc 传参不是 (time, series) 二元组时报错。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 只传时间片或传三个参数均抛 ValueError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(ValueError, match="requires exactly 2"):
             tsdf.loc[0]
+        with pytest.raises(ValueError, match="requires exactly 2"):
+            tsdf.loc[0:1]
+        with pytest.raises(ValueError, match="requires exactly 2"):
+            tsdf.loc[0:1, [0], [0]]
+
+def test_tree_loc_invalid_time_index_raises_type_error(tmp_path):
+    """用例 88：验证时间索引非 slice/int 时抛 TypeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 字符串和列表作为时间索引均抛 TypeError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(TypeError, match="Time index must be slice or int"):
             tsdf.loc["bad", [0]]
+        with pytest.raises(TypeError, match="Time index must be slice or int"):
+            tsdf.loc[[0, 1], [0]]
+
+def test_tree_loc_invalid_series_specifier_raises_type_error(tmp_path):
+    """用例 89：验证序列指定含非 int/str 元素时抛 TypeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 任意对象或浮点数作为序列指定元素均抛 TypeError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(TypeError, match="Series specifier must be int or str"):
             tsdf.loc[0:1, [object()]]
+        with pytest.raises(TypeError, match="Series specifier must be int or str"):
+            tsdf.loc[0:1, [0, 1.5]]
+
+def test_tree_loc_out_of_range_series_index_raises(tmp_path):
+    """用例 90：验证 loc 内序列整数索引越界抛 IndexError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 正向与负向越界的序列索引均抛 IndexError
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         with pytest.raises(IndexError, match="out of range"):
             tsdf.loc[0:1, [999]]
+        with pytest.raises(IndexError, match="out of range"):
+            tsdf.loc[0:1, [-99]]
+
+        # 3. 系列名无法解析时的 KeyError 同属序列指定错误（原多验证点函数中的同名断言）
         with pytest.raises(KeyError, match="Series not found"):
             tsdf.loc[0:1, ["root.no.such"]]
 
-        # 6. 校验空时间范围返回空 AlignedTimeseries 且形状稳定
-        empty = tsdf.loc[100:200, ["root.ln.wf01.wt01.temperature"]]
-        assert isinstance(empty, AlignedTimeseries)
-        assert empty.shape == (0, 1)
-        assert empty.series_names == ["root.ln.wf01.wt01.temperature"]
-        np.testing.assert_array_equal(empty.timestamps, np.array([], dtype=np.int64))
 
-
-def test_tree_loc_sparse_union_open_ranges_and_requested_bounds(tmp_path):
-    """用例 74、77、80、83：验证稀疏时间轴按时间戳并集对齐，缺失值填 NaN，且开区间不会越过请求边界。"""
+# ── 由 test_tree_loc_sparse_union_open_ranges_and_requested_bounds 拆分而来（3 个）──
+def test_tree_loc_union_aligns_sparse_timestamps_with_nan(tmp_path):
+    """用例 74：验证多序列按时间戳并集对齐、缺失位置填 NaN。"""
     # 1. 生成两个设备时间戳不完全重合的稀疏树模型TsFile文件
     path = tmp_path / "sparse.tsfile"
     _write_tree_points(
@@ -1226,16 +1928,65 @@ def test_tree_loc_sparse_union_open_ranges_and_requested_bounds(tmp_path):
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         aligned = tsdf.loc[0:2, ["root.a.d1.m1", "root.a.d2.m1"]]
 
-        # 3. 校验时间戳取并集，缺失值用 NaN 补齐
+        # 3. 校验时间戳取两个序列时间轴的并集
         np.testing.assert_array_equal(aligned.timestamps, np.array([0, 1, 2]))
-        assert aligned.values[0, 0] == 10.0
+
+        # 4. 校验缺失位置用 NaN 补齐
         assert np.isnan(aligned.values[0, 1])
+        assert np.isnan(aligned.values[2, 0])
+
+def test_tree_loc_cross_device_timelines_align_by_timestamp(tmp_path):
+    """用例 77：验证跨设备且时间轴不同的序列对齐，缺失填 NaN。"""
+    # 1. 生成两个设备时间戳不完全重合的稀疏树模型TsFile文件
+    path = tmp_path / "sparse.tsfile"
+    _write_tree_points(
+        path,
+        {
+            "root.a.d1": [("m1", TSDataType.DOUBLE)],
+            "root.a.d2": [("m1", TSDataType.DOUBLE)],
+        },
+        [
+            ("root.a.d1", 0, {"m1": 10.0}),
+            ("root.a.d1", 1, {"m1": 11.0}),
+            ("root.a.d2", 1, {"m1": 21.0}),
+            ("root.a.d2", 2, {"m1": 22.0}),
+        ],
+    )
+
+    # 2. 加载文件并执行跨设备 .loc 对齐查询
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        aligned = tsdf.loc[0:2, ["root.a.d1.m1", "root.a.d2.m1"]]
+
+        # 3. 校验各设备数值按各自时间轴落到对应列，跨设备不串值
+        assert aligned.values[0, 0] == 10.0
         assert aligned.values[1, 0] == 11.0
         assert aligned.values[1, 1] == 21.0
-        assert np.isnan(aligned.values[2, 0])
         assert aligned.values[2, 1] == 22.0
 
-        # 4. 校验左开/右开/全开时间范围不会越过请求边界
+        # 4. 校验时间轴不同留下的空位仍以 NaN 表示
+        assert np.isnan(aligned.values[0, 1])
+
+def test_tree_loc_alignment_stays_within_requested_bounds(tmp_path):
+    """用例 83：验证带 NaN 时对齐结果不超出请求时间范围。"""
+    # 1. 生成两个设备时间戳不完全重合的稀疏树模型TsFile文件
+    path = tmp_path / "sparse.tsfile"
+    _write_tree_points(
+        path,
+        {
+            "root.a.d1": [("m1", TSDataType.DOUBLE)],
+            "root.a.d2": [("m1", TSDataType.DOUBLE)],
+        },
+        [
+            ("root.a.d1", 0, {"m1": 10.0}),
+            ("root.a.d1", 1, {"m1": 11.0}),
+            ("root.a.d2", 1, {"m1": 21.0}),
+            ("root.a.d2", 2, {"m1": 22.0}),
+        ],
+    )
+
+    # 2. 加载文件
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        # 3. 校验左开/右开/全开时间范围不会越过请求边界（原用例 80 的断言）
         np.testing.assert_array_equal(
             tsdf.loc[:1, ["root.a.d1.m1"]].timestamps, np.array([0, 1])
         )
@@ -1246,7 +1997,7 @@ def test_tree_loc_sparse_union_open_ranges_and_requested_bounds(tmp_path):
             tsdf.loc[:, ["root.a.d1.m1"]].timestamps, np.array([0, 1])
         )
 
-        # 5. 校验显式闭区间裁剪后的时间戳和值
+        # 4. 校验显式闭区间裁剪后的时间戳和值，缺失位置为 NaN 且不越界
         clipped = tsdf.loc[1:2, ["root.a.d1.m1", "root.a.d2.m1"]]
         np.testing.assert_array_equal(clipped.timestamps, np.array([1, 2]))
         assert np.isnan(clipped.values[1, 0])
@@ -1273,9 +2024,8 @@ def test_tree_loc_cross_device_alignment_preserves_values(tmp_path):
         )
 
 
-@pytest.mark.skip(
-    reason="已知产品缺陷：跨设备且物理量名不同时 .loc 对齐查询第二列返回 NaN，暂时跳过以避免影响仓库自动化"
-)
+# [去 skip 裸跑] 已知缺陷：跨设备且物理量名不同时 .loc 对齐查询第二列返回 NaN（失败即缺陷证据；验证期再按 AGENTS.md 挂 xfail(strict=True)）
+# 用例 PYTHON-TREE-067：跨设备不同物理量.loc读取真实值
 def test_tree_loc_cross_device_different_measurements_preserves_values(tmp_path):
     """用例 76、77、130：回归验证跨设备且物理量名不同时 .loc 对齐查询仍能读取各自真实值。"""
     # 1. 生成基础树模型TsFile文件
@@ -1297,8 +2047,10 @@ def test_tree_loc_cross_device_different_measurements_preserves_values(tmp_path)
         )
 
 
-def test_tree_loc_dedups_repeated_series_specifiers(tmp_path):
-    """用例 82、126-128：验证 .loc 内重复指定同一序列时，内部可去重但输出仍保留请求中的重复列位置。"""
+# 用例 PYTHON-TREE-068：.loc重复序列去重保留列位置
+# ── 由 test_tree_loc_dedups_repeated_series_specifiers 拆分而来（3 个）──
+def test_tree_loc_dedups_name_and_index_specifier(tmp_path):
+    """用例 126：验证 .loc 内同一序列用名称和整数索引重复指定时内部去重但输出保留请求列。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
@@ -1308,14 +2060,42 @@ def test_tree_loc_dedups_repeated_series_specifiers(tmp_path):
         name = "root.ln.wf01.wt01.temperature"
         idx = tsdf.list_timeseries().index(name)
 
-        # 3. 使用名称和索引重复指定同一序列，确认输出保留两列
+        # 3. 使用名称和索引重复指定同一序列，确认输出保留两列且数值一致
         repeated = tsdf.loc[0:2, [name, idx]]
         assert repeated.shape == (3, 2)
         np.testing.assert_array_equal(
             repeated.values, np.array([[0.5, 0.5], [1.5, 1.5], [2.5, 2.5]])
         )
 
-        # 4. 将重复序列夹在其它序列中，确认输出列顺序稳定
+def test_tree_loc_repeated_series_name_keeps_requested_columns(tmp_path):
+    """用例 127：验证 .loc 同一个序列名重复两次时不报错且结果列数符合请求。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并获取目标序列名称
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        name = "root.ln.wf01.wt01.temperature"
+
+        # 3. 同一序列名重复两次，确认不报错且结果列数与请求一致
+        duplicated = tsdf.loc[0:2, [name, name]]
+        assert duplicated.shape == (3, 2)
+        assert duplicated.series_names == [name, name]
+        np.testing.assert_array_equal(
+            duplicated.values, np.array([[0.5, 0.5], [1.5, 1.5], [2.5, 2.5]])
+        )
+
+def test_tree_loc_repeated_specifier_keeps_column_positions(tmp_path):
+    """用例 128：验证重复序列夹在其它序列中时结果列顺序和重复列位置不被去重打乱。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 加载文件并获取目标序列名称
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        name = "root.ln.wf01.wt01.temperature"
+
+        # 3. 将重复序列夹在其它序列中，确认输出列顺序稳定、重复列位置不被去重打乱
         mixed = tsdf.loc[0:2, [name, "root.ln.wf01.wt01.status", name]]
         assert mixed.series_names == [
             "root.ln.wf01.wt01.temperature",
@@ -1358,6 +2138,7 @@ def test_tree_loc_duplicate_specifiers_read_underlying_device_once(tmp_path, mon
         np.testing.assert_array_equal(aligned.values[:, 0], aligned.values[:, 2])
 
 
+# 用例 PYTHON-TREE-070：合法树路径均可参与.loc对齐查询
 def test_tree_loc_named_series_variants_align_by_tree_path_rules(tmp_path):
     """用例 19-21、73、78：验证命名规则场景下，各类合法树路径均可参与 .loc 对齐查询。"""
     # 1. 生成覆盖普通、中文、反引号、点号转义和大小写设备名的树模型TsFile文件
@@ -1416,6 +2197,7 @@ def test_tree_loc_named_series_variants_align_by_tree_path_rules(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-071：元数据过滤子集可.loc对齐查询
 def test_tree_loc_metadata_filtered_subset_aligns_series(tmp_path):
     """用例 44、73、150：验证元数据过滤得到的子集视图仍可执行 .loc 对齐查询。"""
     # 1. 生成基础树模型TsFile文件
@@ -1442,6 +2224,7 @@ def test_tree_loc_metadata_filtered_subset_aligns_series(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-072：跨文件并集按时间戳补齐NaN
 def test_tree_loc_cross_file_field_union_aligns_missing_values(tmp_path):
     """用例 74、95、117-119：验证跨文件合并和物理量并集场景下 .loc 对齐会按时间戳补齐 NaN。"""
     # 1. 生成两个同设备分片：m1 跨文件延续，m2/m3 分别只存在于其中一个文件
@@ -1495,25 +2278,70 @@ def test_tree_loc_cross_file_field_union_aligns_missing_values(tmp_path):
         )
 
 
-def test_tree_merges_identical_series_across_files(tmp_path):
-    """用例 91、92、94：验证多个文件中同名序列按时间分片合并为一条逻辑序列，并累加 count。"""
+# 用例 PYTHON-TREE-073：同名序列按时间分片合并并累加count
+# ── 由 test_tree_merges_identical_series_across_files 拆分而来（3 个）──
+def test_tree_same_series_across_shards_merges_into_one(tmp_path):
+    """用例 91：验证多文件含同名序列(不同日期分片)时自动合并为一条连续序列。"""
     # 1. 生成两个包含同名序列、时间范围不重叠的树模型TsFile文件
     path1 = tmp_path / "t1.tsfile"
     path2 = tmp_path / "t2.tsfile"
     _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=0)
     _write_tree_rows(path2, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=10)
 
-    # 2. 按文件列表加载并确认同名序列合并为一条逻辑序列
+    # 2. 按文件列表加载并确认同名序列合并为一条连续逻辑序列
     with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
         assert tsdf.list_timeseries() == ["root.a.b.m1"]
-        ts = tsdf["root.a.b.m1"]
 
-        # 3. 校验合并后的长度、时间戳和 metadata count
+        # 3. 校验合并后的长度和跨分片连续的时间轴
+        ts = tsdf["root.a.b.m1"]
         assert len(ts) == 6
         np.testing.assert_array_equal(
             ts.timestamps, np.array([0, 1, 2, 10, 11, 12], dtype=np.int64)
         )
-        assert tsdf.list_timeseries_metadata().loc["root.a.b.m1", "count"] == 6
+
+def test_tree_merged_series_count_sums_shard_counts(tmp_path):
+    """用例 92：验证合并后元数据 count 为各分片点数之和。"""
+    # 1. 生成两个包含同名序列、时间范围不重叠的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
+    _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=0)
+    _write_tree_rows(path2, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=10)
+
+    # 2. 分别加载两个分片，记录各分片点数
+    with TsFileDataFrame(str(path1), show_progress=False) as first:
+        first_count = first.list_timeseries_metadata().loc["root.a.b.m1", "count"]
+    with TsFileDataFrame(str(path2), show_progress=False) as second:
+        second_count = second.list_timeseries_metadata().loc["root.a.b.m1", "count"]
+    assert first_count == 3
+    assert second_count == 3
+
+    # 3. 合并加载后确认元数据 count 为各分片点数之和
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        merged_count = tsdf.list_timeseries_metadata().loc["root.a.b.m1", "count"]
+        assert merged_count == first_count + second_count == 6
+
+def test_tree_same_device_and_measurement_across_files_merge(tmp_path):
+    """用例 94：验证两树文件相同设备名和物理量名称、时间不相交时合并为一条序列。"""
+    # 1. 生成两个包含同名序列、时间范围不重叠的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
+    _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=0)
+    _write_tree_rows(path2, {"root.a.b": [("m1", TSDataType.DOUBLE)]}, t_start=10)
+
+    # 2. 分别加载两个文件，确认设备名和物理量名称完全相同
+    with TsFileDataFrame(str(path1), show_progress=False) as only_first:
+        assert only_first.list_timeseries() == ["root.a.b.m1"]
+    with TsFileDataFrame(str(path2), show_progress=False) as only_second:
+        assert only_second.list_timeseries() == ["root.a.b.m1"]
+
+    # 3. 同时加载两个文件，确认时间不相交时合并为一条序列并覆盖两个分片的时间段
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        assert tsdf.list_timeseries() == ["root.a.b.m1"]
+        ts = tsdf["root.a.b.m1"]
+        assert len(ts) == 6
+        np.testing.assert_array_equal(
+            ts.timestamps, np.array([0, 1, 2, 10, 11, 12], dtype=np.int64)
+        )
 
 
 def test_tree_duplicate_timestamps_across_shards_raise(tmp_path):
@@ -1529,6 +2357,7 @@ def test_tree_duplicate_timestamps_across_shards_raise(tmp_path):
         TsFileDataFrame([str(path1), str(path2)], show_progress=False)
 
 
+# 用例 PYTHON-TREE-075：重叠时间范围分片流式归并读取
 def test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge(
     tmp_path, monkeypatch
 ):
@@ -1579,8 +2408,10 @@ def test_tree_overlap_slice_uses_row_stream_without_full_timestamp_merge(
         assert row_calls
 
 
-def test_tree_unions_field_subsets_and_preserves_local_field_mapping(tmp_path):
-    """用例 95、117-119、125：验证多文件字段并集按首次出现顺序扩展，且 reader-local 字段索引不会串列。"""
+# 用例 PYTHON-TREE-076：多文件字段并集扩展
+# ── 由 test_tree_unions_field_subsets_and_preserves_local_field_mapping 拆分而来（5 个）──
+def test_tree_union_takes_field_name_union_across_files(tmp_path):
+    """用例 95：验证同设备名不同物理量名称子集跨文件时取物理量名称并集。"""
     # 1. 准备两个字段集合不同但设备路径相同的树模型TsFile文件
     path1 = tmp_path / "t1.tsfile"
     path2 = tmp_path / "t2.tsfile"
@@ -1609,16 +2440,91 @@ def test_tree_unions_field_subsets_and_preserves_local_field_mapping(tmp_path):
         value_func=values,
     )
 
-    # 5. 加载两个文件，校验全局字段并集顺序和序列清单
+    # 5. 加载两个文件，校验序列清单取两个文件的物理量名称并集
     with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
-        assert tsdf._index.table_entries["root"].field_columns == ("m1", "m3", "m2")
         assert sorted(tsdf.list_timeseries()) == [
             "root.a.b.m1",
             "root.a.b.m2",
             "root.a.b.m3",
         ]
 
-        # 6. 分别读取 m1/m2/m3，确认 reader-local 字段索引映射正确
+def test_tree_union_field_columns_expand_in_first_seen_order(tmp_path):
+    """用例 117：验证多个树模型文件物理量名称集合不同时全局物理量名称列表按首次出现顺序扩展。"""
+    # 1. 准备两个字段集合不同但设备路径相同的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
+
+    # 2. 定义按测点名生成不同值的函数，方便验证字段不串列
+    def values(_device, name, _dtype, t):
+        if name == "m1":
+            return 100.0 + t
+        if name == "m2":
+            return 200.0 + t
+        return 300.0 + t
+
+    # 3. 写入第一个文件，包含 m1 和 m3
+    _write_tree_rows(
+        path1,
+        {"root.a.b": [("m1", TSDataType.DOUBLE), ("m3", TSDataType.DOUBLE)]},
+        t_start=0,
+        value_func=values,
+    )
+
+    # 4. 写入第二个文件，包含 m2 和 m1，顺序与第一个文件不同
+    _write_tree_rows(
+        path2,
+        {"root.a.b": [("m2", TSDataType.DOUBLE), ("m1", TSDataType.DOUBLE)]},
+        t_start=10,
+        value_func=values,
+    )
+
+    # 5. 加载两个文件，校验全局物理量名称列表按首次出现顺序扩展
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        assert tsdf._index.table_entries["root"].field_columns == ("m1", "m3", "m2")
+
+def test_tree_union_maps_global_field_index_to_local_shard(tmp_path):
+    """用例 118：验证多树文件物理量名称顺序或子集不同时按物理量名称映射全局索引。"""
+    # 1. 准备两个字段集合不同但设备路径相同的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
+
+    # 2. 定义按测点名生成不同值的函数，方便验证字段不串列
+    def values(_device, name, _dtype, t):
+        if name == "m1":
+            return 100.0 + t
+        if name == "m2":
+            return 200.0 + t
+        return 300.0 + t
+
+    # 3. 写入第一个文件，包含 m1 和 m3
+    _write_tree_rows(
+        path1,
+        {"root.a.b": [("m1", TSDataType.DOUBLE), ("m3", TSDataType.DOUBLE)]},
+        t_start=0,
+        value_func=values,
+    )
+
+    # 4. 写入第二个文件，包含 m2 和 m1，顺序与第一个文件不同
+    _write_tree_rows(
+        path2,
+        {"root.a.b": [("m2", TSDataType.DOUBLE), ("m1", TSDataType.DOUBLE)]},
+        t_start=10,
+        value_func=values,
+    )
+
+    # 5. 加载两个文件，校验全局索引按物理量名称映射到各自分片的局部字段
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        m2_ref = tsdf._resolve_series_name("root.a.b.m2")
+        assert m2_ref == (0, 2)
+        shards = tsdf._index.series_shards[m2_ref]
+        assert len(shards) == 1
+        reader, device_id, local_field_idx = shards[0]
+        assert (
+            reader.get_series_info_by_ref(device_id, local_field_idx)["column_name"]
+            == "m2"
+        )
+
+        # 6. 分别读取 m1/m2，确认 reader-local 字段索引映射正确
         np.testing.assert_array_equal(
             tsdf["root.a.b.m1"][:],
             np.array([100.0, 101.0, 102.0, 110.0, 111.0, 112.0]),
@@ -1626,33 +2532,151 @@ def test_tree_unions_field_subsets_and_preserves_local_field_mapping(tmp_path):
         np.testing.assert_array_equal(
             tsdf["root.a.b.m2"][:], np.array([210.0, 211.0, 212.0])
         )
+
+def test_tree_union_of_field_subsets_loads_instead_of_rejecting(tmp_path):
+    """用例 119：验证同一设备名在不同树文件中拥有不同物理量名称子集时使用物理量名称并集而非拒绝加载。"""
+    # 1. 准备两个字段集合不同但设备路径相同的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
+
+    # 2. 定义按测点名生成不同值的函数，方便验证字段不串列
+    def values(_device, name, _dtype, t):
+        if name == "m1":
+            return 100.0 + t
+        if name == "m2":
+            return 200.0 + t
+        return 300.0 + t
+
+    # 3. 写入第一个文件，包含 m1 和 m3
+    _write_tree_rows(
+        path1,
+        {"root.a.b": [("m1", TSDataType.DOUBLE), ("m3", TSDataType.DOUBLE)]},
+        t_start=0,
+        value_func=values,
+    )
+
+    # 4. 写入第二个文件，包含 m2 和 m1，顺序与第一个文件不同
+    _write_tree_rows(
+        path2,
+        {"root.a.b": [("m2", TSDataType.DOUBLE), ("m1", TSDataType.DOUBLE)]},
+        t_start=10,
+        value_func=values,
+    )
+
+    # 5. 加载两个文件，校验两个文件的物理量名称子集按并集合并而不是拒绝加载
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries()) == [
+            "root.a.b.m1",
+            "root.a.b.m2",
+            "root.a.b.m3",
+        ]
+
+        # 6. 只存在于第一个文件的物理量仍可按名称读取
         np.testing.assert_array_equal(
             tsdf["root.a.b.m3"][:], np.array([300.0, 301.0, 302.0])
         )
 
+def test_tree_union_registers_only_fields_owned_by_device(tmp_path):
+    """用例 125：验证树模型内部元数据合并存在物理量名称并集时只注册设备名真实拥有的物理量。"""
+    # 1. 准备两个字段集合不同但设备路径相同的树模型TsFile文件
+    path1 = tmp_path / "t1.tsfile"
+    path2 = tmp_path / "t2.tsfile"
 
-def test_tree_unions_different_depths_and_short_paths_stay_resolvable(tmp_path):
-    """用例 96、120、121：验证不同设备深度 union 后全局 _col_i 扩展，浅层路径补 NaN 且仍可按短路径读取。"""
+    # 2. 定义按测点名生成不同值的函数，方便验证字段不串列
+    def values(_device, name, _dtype, t):
+        if name == "m1":
+            return 100.0 + t
+        if name == "m2":
+            return 200.0 + t
+        return 300.0 + t
+
+    # 3. 写入第一个文件，包含 m1 和 m3
+    _write_tree_rows(
+        path1,
+        {"root.a.b": [("m1", TSDataType.DOUBLE), ("m3", TSDataType.DOUBLE)]},
+        t_start=0,
+        value_func=values,
+    )
+
+    # 4. 写入第二个文件，包含 m2 和 m1，顺序与第一个文件不同
+    _write_tree_rows(
+        path2,
+        {"root.a.b": [("m2", TSDataType.DOUBLE), ("m1", TSDataType.DOUBLE)]},
+        t_start=10,
+        value_func=values,
+    )
+
+    # 5. 加载两个文件，校验逻辑序列数等于并集物理量数而不是文件数乘物理量数
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        assert len(tsdf) == 3
+
+        # 6. 每个逻辑序列只登记真正持有它的分片，未拥有的物理量不会挂到别的文件上
+        expected_shards = {"root.a.b.m1": 2, "root.a.b.m2": 1, "root.a.b.m3": 1}
+        for name, expected_count in expected_shards.items():
+            shards = tsdf._index.series_shards[tsdf._resolve_series_name(name)]
+            assert len(shards) == expected_count
+            field_name = name.split(".")[-1]
+            for reader, device_id, local_field_idx in shards:
+                assert (
+                    reader.get_series_info_by_ref(device_id, local_field_idx)[
+                        "column_name"
+                    ]
+                    == field_name
+                )
+
+
+# ── 由 test_tree_unions_different_depths_and_short_paths_stay_resolvable 拆分而来（3 个）──
+def test_tree_union_pads_shallow_device_segments_with_nan(tmp_path):
+    """用例 96：验证不同最大设备名深度的树文件合并时全局设备名分段布局取并集、较浅设备名补 None。"""
     # 1. 生成浅层设备和深层设备两个树模型TsFile文件
     path1 = tmp_path / "shallow.tsfile"
     path2 = tmp_path / "deep.tsfile"
     _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]})
     _write_tree_rows(path2, {"root.a.b.c": [("m1", TSDataType.DOUBLE)]})
 
-    # 2. 加载两个文件并校验不同深度序列都可识别
+    # 2. 加载两个文件并获取全局元数据
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        meta = tsdf.list_timeseries_metadata()
+
+        # 3. 校验全局布局取并集扩展到 _col_3，浅层设备名按左对齐占用分段列、末尾补 None
+        assert "_col_3" in meta.columns
+        assert meta.loc["root.a.b.m1", "_col_1"] == "a"
+        assert meta.loc["root.a.b.m1", "_col_2"] == "b"
+        assert pd.isna(meta.loc["root.a.b.m1", "_col_3"])
+
+def test_tree_union_extends_segment_layout_to_deepest_device(tmp_path):
+    """用例 120：验证多树文件设备名深度不同时全局设备名分段布局扩展到最深设备名。"""
+    # 1. 生成浅层设备和深层设备两个树模型TsFile文件
+    path1 = tmp_path / "shallow.tsfile"
+    path2 = tmp_path / "deep.tsfile"
+    _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]})
+    _write_tree_rows(path2, {"root.a.b.c": [("m1", TSDataType.DOUBLE)]})
+
+    # 2. 加载两个文件并校验不同深度的序列都可识别
     with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
         assert sorted(tsdf.list_timeseries()) == ["root.a.b.c.m1", "root.a.b.m1"]
 
-        # 3. 校验全局 _col_i 扩展，短路径末尾补 NaN
+        # 3. 校验全局设备名分段布局扩展到最深设备名，最深分段落在 _col_3
         meta = tsdf.list_timeseries_metadata()
         assert "_col_3" in meta.columns
         assert meta.loc["root.a.b.c.m1", "_col_3"] == "c"
-        assert pd.isna(meta.loc["root.a.b.m1", "_col_3"])
 
-        # 4. 校验短路径仍可按原路径读取值
-        np.testing.assert_array_equal(tsdf["root.a.b.m1"][:], np.array([0.5, 1.5, 2.5]))
+def test_tree_union_short_path_stays_resolvable(tmp_path):
+    """用例 121：验证不同深度 union 后浅层设备名补 NaN 只用于展示和元数据不进入逻辑路径解析。"""
+    # 1. 生成浅层设备和深层设备两个树模型TsFile文件
+    path1 = tmp_path / "shallow.tsfile"
+    path2 = tmp_path / "deep.tsfile"
+    _write_tree_rows(path1, {"root.a.b": [("m1", TSDataType.DOUBLE)]})
+    _write_tree_rows(path2, {"root.a.b.c": [("m1", TSDataType.DOUBLE)]})
 
-        # 5. 校验前缀 root.a.b 能同时命中浅层和深层序列
+    # 2. 加载两个文件
+    with TsFileDataFrame([str(path1), str(path2)], show_progress=False) as tsdf:
+        # 3. 校验短路径仍可按原路径读取值，补齐的 None 不进入逻辑路径解析
+        values = tsdf["root.a.b.m1"][:]
+        np.testing.assert_array_equal(values, np.array([0.5, 1.5, 2.5]))
+        assert not np.isnan(values).any()
+
+        # 4. 校验前缀 root.a.b 能同时命中浅层和深层序列
         assert sorted(tsdf.list_timeseries("root.a.b")) == [
             "root.a.b.c.m1",
             "root.a.b.m1",
@@ -1683,15 +2707,75 @@ def test_tree_union_repr_and_show_keep_tree_headers(tmp_path, capsys):
         assert "table" not in shown.splitlines()[1]
 
 
-def test_tree_omits_non_numeric_measurements_and_keeps_nan_values(tmp_path):
-    """用例 98-100：验证非数值测点不暴露为序列，数值测点中的 NaN 保留且不影响其它值读取。"""
-    # 1. 手动生成同时包含数值测点和字符串测点的树模型TsFile文件
+# 用例 PYTHON-TREE-079：非数值测点不暴露，NaN保留
+# ── 由 test_tree_omits_non_numeric_measurements_and_keeps_nan_values 拆分而来（3 个）──
+def test_tree_numeric_measurements_read_as_float64(tmp_path):
+    """用例 98：验证 BOOLEAN、INT32、INT64、FLOAT、DOUBLE、TIMESTAMP 树模型物理量均可由数值面读取并统一输出 float64。"""
+
+    # 1. 生成同时包含六种数值物理量的树模型TsFile文件
+    path = tmp_path / "numeric_types.tsfile"
+
+    def value_func(device, name, dtype, t):
+        if name == "flag":
+            return bool(t % 2)
+        if name == "epoch":
+            return 1000 + t
+        return _default_value(name, dtype, t)
+
+    _write_tree_rows(
+        path,
+        {
+            "root.types.dev": [
+                ("flag", TSDataType.BOOLEAN),
+                ("i32_m", TSDataType.INT32),
+                ("i64_m", TSDataType.INT64),
+                ("f32_m", TSDataType.FLOAT),
+                ("f64_m", TSDataType.DOUBLE),
+                ("epoch", TSDataType.TIMESTAMP),
+            ]
+        },
+        value_func=value_func,
+    )
+
+    # 2. 加载文件，确认六种数值物理量都暴露为序列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        assert sorted(tsdf.list_timeseries()) == [
+            "root.types.dev.epoch",
+            "root.types.dev.f32_m",
+            "root.types.dev.f64_m",
+            "root.types.dev.flag",
+            "root.types.dev.i32_m",
+            "root.types.dev.i64_m",
+        ]
+
+        # 3. 校验各类型数值面读数并统一输出 float64
+        expected_values = {
+            "flag": [0.0, 1.0, 0.0],
+            "i32_m": [0.0, 1.0, 2.0],
+            "i64_m": [0.0, 10.0, 20.0],
+            "f32_m": [0.5, 1.5, 2.5],
+            "f64_m": [0.5, 1.5, 2.5],
+            "epoch": [1000.0, 1001.0, 1002.0],
+        }
+        for name, expected in expected_values.items():
+            values = tsdf[f"root.types.dev.{name}"][:]
+            assert values.dtype == np.float64
+            np.testing.assert_array_equal(values, np.array(expected, dtype=np.float64))
+
+def test_tree_omits_non_numeric_measurements(tmp_path):
+    """用例 99：验证 TEXT、DATE、BLOB、STRING 树模型物理量均被过滤、不作为序列暴露。"""
+    import datetime
+
+    # 1. 手动生成同时包含数值测点和非数值测点的树模型TsFile文件
     path = tmp_path / "mixed.tsfile"
     writer = TsFileWriter(str(path))
     writer.register_timeseries("root.a.b", TimeseriesSchema("temp", TSDataType.DOUBLE))
+    writer.register_timeseries("root.a.b", TimeseriesSchema("note", TSDataType.TEXT))
     writer.register_timeseries("root.a.b", TimeseriesSchema("status", TSDataType.STRING))
+    writer.register_timeseries("root.a.b", TimeseriesSchema("day", TSDataType.DATE))
+    writer.register_timeseries("root.a.b", TimeseriesSchema("blob", TSDataType.BLOB))
 
-    # 2. 写入数值测点，其中包含一个 NaN 值
+    # 2. 写入数值测点和各非数值测点
     for t, value in enumerate([0.5, float("nan"), 2.5]):
         writer.write_row_record(
             RowRecord(
@@ -1699,20 +2783,42 @@ def test_tree_omits_non_numeric_measurements_and_keeps_nan_values(tmp_path):
                 t,
                 [
                     Field("temp", value, TSDataType.DOUBLE),
+                    Field("note", f"note-{t}", TSDataType.TEXT),
                     Field("status", "ok", TSDataType.STRING),
+                    Field("day", datetime.date(2024, 1, 1 + t), TSDataType.DATE),
+                    Field("blob", b"\x01\x02", TSDataType.BLOB),
                 ],
             )
         )
     writer.close()
 
-    # 3. 加载文件并确认只暴露数值测点
+    # 3. 加载文件并确认只暴露数值测点，非数值测点均不作为序列暴露
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         assert tsdf.list_timeseries() == ["root.a.b.temp"]
-        with pytest.raises(KeyError):
-            tsdf["root.a.b.status"]
+        for measurement in ("note", "status", "day", "blob"):
+            with pytest.raises(KeyError):
+                tsdf[f"root.a.b.{measurement}"]
 
-        # 4. 读取数值测点，确认 NaN 原样保留
-        values = tsdf["root.a.b.temp"][:]
+def test_tree_nan_values_are_preserved(tmp_path):
+    """用例 100：验证空值以 NaN 保留、不被丢弃或改写。"""
+    # 1. 手动生成包含空值的数值测点树模型TsFile文件
+    path = tmp_path / "nan.tsfile"
+    writer = TsFileWriter(str(path))
+    writer.register_timeseries("root.a.b", TimeseriesSchema("temp", TSDataType.DOUBLE))
+    for t, value in enumerate([0.5, float("nan"), 2.5]):
+        writer.write_row_record(
+            RowRecord("root.a.b", t, [Field("temp", value, TSDataType.DOUBLE)])
+        )
+    writer.close()
+
+    # 2. 读取数值测点，确认 NaN 不被丢弃：长度和时间轴均覆盖空值所在时刻
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        ts = tsdf["root.a.b.temp"]
+        assert len(ts) == 3
+        np.testing.assert_array_equal(ts.timestamps, np.array([0, 1, 2], dtype=np.int64))
+
+        # 3. 校验空值原样保留为 NaN，前后数值不被改写
+        values = ts[:]
         assert values[0] == 0.5
         assert np.isnan(values[1])
         assert values[2] == 2.5
@@ -1734,6 +2840,7 @@ def test_tree_escaped_measurement_name_can_be_resolved(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-081：IoTDB合法节点按路径规则展示读取
 def test_tree_iotdb_unquoted_identifier_names_are_preserved(tmp_path):
     """用例 19：验证 IoTDB 非反引号合法节点按 root + 设备路径 + 物理量规则展示并读取。"""
     # 1. 生成包含字母、数字、下划线、中文和最短设备路径的树模型TsFile文件
@@ -1770,6 +2877,7 @@ def test_tree_iotdb_unquoted_identifier_names_are_preserved(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-082：反引号特殊节点原样展示可读取
 def test_tree_iotdb_backquoted_identifier_names_are_preserved(tmp_path):
     """用例 20：验证 IoTDB 反引号包裹的特殊路径节点会原样展示并可按完整路径读取。"""
     # 1. 生成包含反引号特殊节点的树模型TsFile文件
@@ -1807,6 +2915,7 @@ def test_tree_iotdb_backquoted_identifier_names_are_preserved(tmp_path):
             )
 
 
+# 用例 PYTHON-TREE-083：路径大小写敏感，不同视为不同序列
 def test_tree_iotdb_identifier_names_are_case_sensitive(tmp_path):
     """用例 21：验证 IoTDB 路径节点大小写敏感，设备路径段和物理量名大小写不同均视为不同序列。"""
     # 1. 生成包含大小写差异设备路径段的树模型TsFile文件
@@ -1870,9 +2979,8 @@ def test_tree_iotdb_identifier_names_are_case_sensitive(tmp_path):
         )
 
 
-@pytest.mark.skip(
-    reason="已知产品缺陷：CSV 用例 21 中大写物理量 root.case.d1.Temperature 按完整路径读取为空，暂时跳过以避免影响仓库自动化"
-)
+# [去 skip 裸跑] 已知缺陷：大写物理量 root.case.d1.Temperature 按完整路径读取为空（失败即缺陷证据；验证期再按 AGENTS.md 挂 xfail(strict=True)）
+# 用例 PYTHON-TREE-084：大写物理量名称读取
 def test_tree_iotdb_uppercase_measurement_can_be_read_by_full_path(tmp_path):
     """用例 21：回归验证 IoTDB 合法大写物理量名称可按完整路径读取真实数据。"""
     # 1. 生成同一设备下大小写不同物理量名的树模型TsFile文件
@@ -1886,9 +2994,8 @@ def test_tree_iotdb_uppercase_measurement_can_be_read_by_full_path(tmp_path):
         )
 
 
-@pytest.mark.skip(
-    reason="已知产品缺陷：大写物理量 root.case.d1.Temperature 参与 .loc 对齐查询返回空结果，暂时跳过以避免影响仓库自动化"
-)
+# [去 skip 裸跑] 已知缺陷：大写物理量 root.case.d1.Temperature 参与 .loc 对齐查询返回空结果（失败即缺陷证据；验证期再按 AGENTS.md 挂 xfail(strict=True)）
+# 用例 PYTHON-TREE-085：大写物理量可参与.loc对齐查询
 def test_tree_loc_uppercase_measurement_can_align_by_full_path(tmp_path):
     """用例 21、73：回归验证 IoTDB 合法大写物理量名称可参与 .loc 对齐查询。"""
     # 1. 生成同一设备下大小写不同物理量名的树模型TsFile文件
@@ -1914,6 +3021,7 @@ def test_tree_loc_uppercase_measurement_can_align_by_full_path(tmp_path):
         )
 
 
+# 用例 PYTHON-TREE-086：list_timeseries特殊路径列出筛选
 def test_tree_list_timeseries_handles_iotdb_naming_rules(tmp_path):
     """用例 22：验证 list_timeseries 对非反引号、反引号、点号转义和大小写路径均能正确列出和筛选。"""
     # 1. 生成覆盖多类 IoTDB 命名规则的树模型TsFile文件
@@ -1976,6 +3084,7 @@ def test_tree_list_timeseries_handles_iotdb_naming_rules(tmp_path):
         assert tsdf.list_timeseries("root.case.device") == []
 
 
+# 用例 PYTHON-TREE-087：树模型序列名闭环验证
 def test_tree_series_name_variants_round_trip_all_dataframe_apis(tmp_path):
     """用例 18-22、29-37、46、57-73、84-86、101-107、150、152：补充验证各类树模型序列名在浏览、元数据、取数和 .loc 中可闭环。"""
     # 1. 构造当前可闭环读取的序列名矩阵；大写物理量由 strict xfail 用例单独跟踪。
@@ -2091,6 +3200,7 @@ def test_tree_series_name_variants_round_trip_all_dataframe_apis(tmp_path):
         np.testing.assert_allclose(tsdf["root.prefix.ab.m"][:], np.array([10.0, 20.0]))
 
 
+# 用例 PYTHON-TREE-088：路径含点号时读取给出明确异常
 def test_tree_series_name_dot_device_segment_reports_clear_error_from_dataframe_api(tmp_path):
     """用例 131：补充验证设备路径段包含点号时，list_timeseries 返回路径后的读取路径给出明确异常。"""
     # 1. 构造反引号设备路径段包含点号的树模型文件。
@@ -2111,47 +3221,78 @@ def test_tree_series_name_dot_device_segment_reports_clear_error_from_dataframe_
             tsdf.loc[:, series]
 
 
-def test_tree_repr_show_and_aligned_display_are_truncated(tmp_path, capsys):
-    """用例 101-104、106、107、133、135：验证 DataFrame 和 AlignedTimeseries 展示会按 max_rows 截断，避免大结果全量输出。"""
+# 用例 PYTHON-TREE-089：DataFrame展示截断
+# ── 由 test_tree_repr_show_and_aligned_display_are_truncated 拆分而来（8 个）──
+def test_tree_repr_truncates_long_series_list(tmp_path):
+    """用例 101：验证 print(df) 最多输出 20 行、超出头尾截断。"""
     # 1. 生成 30 个设备的树模型TsFile文件，用于触发展示截断
     path = tmp_path / "many.tsfile"
-    devices = {
-        f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)]
-        for i in range(30)
-    }
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
     _write_tree_rows(path, devices, t_count=2)
 
     # 2. 加载文件并校验 DataFrame repr 的截断展示
     with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         rendered = repr(tsdf)
         assert "30 time series" in rendered
-        assert "_col_1" in rendered
-        assert "field" in rendered
-        assert "count" in rendered
-        assert "1970-01-01 08:00:00.001" in rendered
-        assert ".000" not in rendered
         assert "..." in rendered
 
-        # 3. 调用 DataFrame.show(max_rows)，校验输出表头、截断和毫秒时间格式
+        # 3. 校验最多只渲染 20 行序列
+        rendered_rows = [
+            line for line in rendered.splitlines() if "1970-01-01" in line
+        ]
+        assert len(rendered_rows) == 20
+
+def test_tree_show_limits_rendered_rows(tmp_path, capsys):
+    """用例 102：验证 df.show(max_rows) 控制最大输出行数。"""
+    # 1. 生成 30 个设备的树模型TsFile文件，用于触发展示截断
+    path = tmp_path / "many.tsfile"
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
+    _write_tree_rows(path, devices, t_count=2)
+
+    # 2. 加载文件并调用 DataFrame.show(max_rows)，校验输出表头和截断
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
         tsdf.show(max_rows=6)
         df_show = capsys.readouterr().out
         assert "TsFileDataFrame(tree model" in df_show
-        assert "_col_1" in df_show
         assert "..." in df_show
-        assert "1970-01-01 08:00:00.001" in df_show
 
-        # 4. 执行对齐查询并校验 AlignedTimeseries.show 的截断展示
-        aligned = tsdf.loc[0:1, [0, 1]]
-        aligned.show(max_rows=1)
-        aligned_show = capsys.readouterr().out
-        assert "AlignedTimeseries" in aligned_show
-        assert "time" in aligned_show
-        assert "root.db.d00.m1" in aligned_show
-        assert "root.db.d01.m1" in aligned_show
-        assert "..." in aligned_show
-        assert "1970-01-01 08:00:00.001" in aligned_show
+def test_tree_display_headers_expose_tree_model_columns(tmp_path, capsys):
+    """用例 103：验证树模型展示表头包含设备名分段列 _col_i 与物理量名称列 field。"""
+    # 1. 生成 30 个设备的树模型TsFile文件，用于触发展示截断
+    path = tmp_path / "many.tsfile"
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
+    _write_tree_rows(path, devices, t_count=2)
 
-    # 5. 生成稀疏时间轴文件，用于校验展示中的 NaN 和毫秒格式
+    # 2. 加载文件并校验 repr 表头使用树模型元数据列
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        rendered = repr(tsdf)
+        assert "_col_1" in rendered
+        assert "field" in rendered
+        assert "count" in rendered
+
+        # 3. 校验 show 输出同样保留树模型元数据列
+        tsdf.show(max_rows=6)
+        df_show = capsys.readouterr().out
+        assert "_col_1" in df_show
+
+def test_tree_subset_repr_header_reports_subset_size(tmp_path):
+    """用例 104：验证视图 repr 头部显示 subset of N。"""
+    # 1. 生成 30 个设备的树模型TsFile文件
+    path = tmp_path / "many.tsfile"
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
+    _write_tree_rows(path, devices, t_count=2)
+
+    # 2. 加载文件并构造子集视图，校验 repr 头部标注子集大小
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        subset = tsdf[0:2]
+        assert (
+            "TsFileDataFrame(tree model, 2 time series, subset of 30)"
+            in repr(subset)
+        )
+
+def test_tree_aligned_repr_prints_readable_table(tmp_path):
+    """用例 106：验证 print(data) 输出可读的对齐表格并自动截断。"""
+    # 1. 生成稀疏时间轴文件，用于校验展示中的 NaN 和可读表格
     sparse_path = tmp_path / "display_sparse.tsfile"
     _write_tree_points(
         sparse_path,
@@ -2165,17 +3306,118 @@ def test_tree_repr_show_and_aligned_display_are_truncated(tmp_path, capsys):
         ],
     )
 
-    # 6. 加载稀疏文件并校验 AlignedTimeseries repr 展示内容
+    # 2. 加载稀疏文件并校验 AlignedTimeseries repr 表格内容
     with TsFileDataFrame(str(sparse_path), show_progress=False) as tsdf:
-        sparse_aligned = tsdf.loc[1:2, ["root.a.d1.m1", "root.a.d2.m1"]]
-        rendered_sparse = repr(sparse_aligned)
+        rendered_sparse = repr(tsdf.loc[1:2, ["root.a.d1.m1", "root.a.d2.m1"]])
         assert "AlignedTimeseries(2 rows, 2 series)" in rendered_sparse
         assert "time" in rendered_sparse
         assert "root.a.d1.m1" in rendered_sparse
         assert "root.a.d2.m1" in rendered_sparse
         assert "NaN" in rendered_sparse
+
+    # 3. 生成 30 个时间点的对齐结果，校验 repr 超出 max_rows 时自动截断
+    large_path = tmp_path / "display_large.tsfile"
+    _write_tree_rows(
+        large_path,
+        {
+            "root.a.d1": [("m1", TSDataType.DOUBLE)],
+            "root.a.d2": [("m1", TSDataType.DOUBLE)],
+        },
+        t_count=30,
+    )
+    with TsFileDataFrame(str(large_path), show_progress=False) as tsdf:
+        rendered_large = repr(tsdf.loc[:, ["root.a.d1.m1", "root.a.d2.m1"]])
+        assert "AlignedTimeseries(30 rows, 2 series)" in rendered_large
+        assert "..." in rendered_large
+
+def test_tree_aligned_show_limits_rendered_rows(tmp_path, capsys):
+    """用例 107：验证 data.show(max_rows) 控制对齐结果输出行数。"""
+    # 1. 生成 30 个设备的树模型TsFile文件
+    path = tmp_path / "many.tsfile"
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
+    _write_tree_rows(path, devices, t_count=2)
+
+    # 2. 执行对齐查询并调用 show(max_rows=1)，校验输出表头和行数截断
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        aligned = tsdf.loc[0:1, [0, 1]]
+        aligned.show(max_rows=1)
+        aligned_show = capsys.readouterr().out
+        assert "AlignedTimeseries" in aligned_show
+        assert "time" in aligned_show
+        assert "root.db.d00.m1" in aligned_show
+        assert "root.db.d01.m1" in aligned_show
+        assert "..." in aligned_show
+
+def test_tree_display_timestamp_format_keeps_milliseconds(tmp_path, capsys):
+    """用例 133：验证展示层时间戳格式保留毫秒且整秒不追加多余小数。"""
+    # 1. 生成 30 个设备的树模型TsFile文件
+    path = tmp_path / "many.tsfile"
+    devices = {f"root.db.d{i:02d}": [("m1", TSDataType.DOUBLE)] for i in range(30)}
+    _write_tree_rows(path, devices, t_count=2)
+
+    # 2. 加载文件并校验 DataFrame repr 的时间戳格式
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        rendered = repr(tsdf)
+        assert "1970-01-01 08:00:00.001" in rendered
+        assert ".000" not in rendered
+
+        # 3. 校验 DataFrame.show 的时间戳格式
+        tsdf.show(max_rows=6)
+        df_show = capsys.readouterr().out
+        assert "1970-01-01 08:00:00.001" in df_show
+
+        # 4. 校验对齐结果 show 的时间戳格式
+        aligned = tsdf.loc[0:1, [0, 1]]
+        aligned.show(max_rows=1)
+        aligned_show = capsys.readouterr().out
+        assert "1970-01-01 08:00:00.001" in aligned_show
+
+    # 5. 生成稀疏时间轴文件，校验对齐结果 repr 的毫秒时间戳
+    sparse_path = tmp_path / "display_sparse.tsfile"
+    _write_tree_points(
+        sparse_path,
+        {
+            "root.a.d1": [("m1", TSDataType.DOUBLE)],
+            "root.a.d2": [("m1", TSDataType.DOUBLE)],
+        },
+        [
+            ("root.a.d1", 1, {"m1": 10.0}),
+            ("root.a.d2", 2, {"m1": 20.0}),
+        ],
+    )
+    with TsFileDataFrame(str(sparse_path), show_progress=False) as tsdf:
+        rendered_sparse = repr(tsdf.loc[1:2, ["root.a.d1.m1", "root.a.d2.m1"]])
         assert "1970-01-01 08:00:00.001" in rendered_sparse
         assert "1970-01-01 08:00:00.002" in rendered_sparse
+
+def test_tree_aligned_display_truncates_large_results(tmp_path):
+    """用例 135：验证对齐结果展示仅渲染展示行并在大结果集下正确截断。"""
+    # 1. 生成 30 个时间点、2 条序列的树模型TsFile文件
+    path = tmp_path / "aligned_large.tsfile"
+    _write_tree_rows(
+        path,
+        {
+            "root.a.d1": [("m1", TSDataType.DOUBLE)],
+            "root.a.d2": [("m1", TSDataType.DOUBLE)],
+        },
+        t_count=30,
+    )
+
+    # 2. 加载文件并执行覆盖全部时间点的对齐查询
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        aligned = tsdf.loc[:, ["root.a.d1.m1", "root.a.d2.m1"]]
+        assert aligned.shape == (30, 2)
+
+        # 3. 校验 repr 仅为展示行渲染，超出 max_rows 时按头尾截断
+        rendered = repr(aligned)
+        assert "AlignedTimeseries(30 rows, 2 series)" in rendered
+        assert "..." in rendered
+        rendered_rows = [
+            line for line in rendered.splitlines() if line.strip().startswith("1970-")
+        ]
+        assert len(rendered_rows) == 20
+        assert "29.50" in rendered
+        assert "10.50" not in rendered
 
 
 def test_tree_repr_only_builds_preview_rows(tmp_path, monkeypatch):
@@ -2206,37 +3448,84 @@ def test_tree_repr_only_builds_preview_rows(tmp_path, monkeypatch):
         assert len(built) == 20
 
 
-def test_tree_dataframe_and_series_lifecycle(tmp_path):
-    """用例 109-113：验证子集 close 是 no-op，根 DataFrame close 幂等，关闭后访问 df/series 均报错。"""
+# 用例 PYTHON-TREE-091：DataFrame关闭幂等
+# ── 由 test_tree_dataframe_and_series_lifecycle 拆分而来（5 个）──
+def test_tree_dataframe_close_releases_resources(tmp_path):
+    """用例 109：验证可手动调用 df.close() 释放资源。"""
     # 1. 生成基础树模型TsFile文件
     path = tmp_path / "tree.tsfile"
     _write_tree_file(path)
 
-    # 2. 创建根 DataFrame、单序列对象和子集视图
+    # 2. 创建根 DataFrame 并手动关闭
     tsdf = TsFileDataFrame(str(path), show_progress=False)
-    series = tsdf[0]
-    subset = tsdf[:1]
-
-    # 3. 关闭子集视图，确认是静默 no-op 且不影响根 DataFrame
-    subset.close()
-    assert len(tsdf) == 3
-
-    # 4. 连续关闭根 DataFrame，确认 close 幂等
-    tsdf.close()
     tsdf.close()
 
-    # 5. 关闭后访问 DataFrame 和既有 Timeseries 均应报错
+    # 3. 校验关闭后已释放 reader 资源
+    assert tsdf._closed
+    assert tsdf._readers == {}
+
+def test_tree_dataframe_access_after_close_raises(tmp_path):
+    """用例 110：验证 close 后再访问 df 抛 RuntimeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 创建根 DataFrame 并关闭
+    tsdf = TsFileDataFrame(str(path), show_progress=False)
+    tsdf.close()
+
+    # 3. 关闭后访问 DataFrame 均报错
     with pytest.raises(RuntimeError, match="closed"):
         tsdf[0]
     with pytest.raises(RuntimeError, match="closed"):
-        series[0]
-    with pytest.raises(RuntimeError, match="closed"):
         tsdf.loc[0:1, [0]]
 
+def test_tree_series_access_after_dataframe_close_raises(tmp_path):
+    """用例 111：验证 close 后访问已取得的 Timeseries 抛 RuntimeError。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
 
-@pytest.mark.skip(
-    reason="已知产品缺陷：CSV 用例 130 中复用 reader 跨设备名读取第二条序列为空，暂时跳过以避免影响仓库自动化"
-)
+    # 2. 创建根 DataFrame 并取得序列对象后关闭
+    tsdf = TsFileDataFrame(str(path), show_progress=False)
+    series = tsdf[0]
+    tsdf.close()
+
+    # 3. 关闭后访问既有 Timeseries 报错
+    with pytest.raises(RuntimeError, match="closed"):
+        series[0]
+
+def test_tree_subset_view_close_is_noop(tmp_path):
+    """用例 112：验证对子集视图调用 close() 为静默 no-op、不影响父。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 创建根 DataFrame 和子集视图
+    with TsFileDataFrame(str(path), show_progress=False) as tsdf:
+        subset = tsdf[:1]
+
+        # 3. 关闭子集视图，确认是静默 no-op 且不影响根 DataFrame
+        subset.close()
+        assert len(tsdf) == 3
+
+def test_tree_dataframe_repeated_close_is_idempotent(tmp_path):
+    """用例 113：验证重复 close 幂等、不报错。"""
+    # 1. 生成基础树模型TsFile文件
+    path = tmp_path / "tree.tsfile"
+    _write_tree_file(path)
+
+    # 2. 连续关闭根 DataFrame，确认 close 幂等
+    tsdf = TsFileDataFrame(str(path), show_progress=False)
+    tsdf.close()
+    tsdf.close()
+
+    # 3. 校验对象仍处于已关闭状态
+    assert tsdf._closed
+
+
+# [去 skip 裸跑] 已知缺陷：复用 reader 跨设备名读取第二条序列为空（失败即缺陷证据；验证期再按 AGENTS.md 挂 xfail(strict=True)）
+# 用例 PYTHON-TREE-092：Reader残留列隔离
 def test_tree_reader_handles_stale_path_columns_after_reused_queries(tmp_path):
     """用例 130：回归验证复用 reader 后，前一次查询遗留的 col_i 列不会误导后续设备读取。"""
     # 1. 生成树模型TsFile文件
@@ -2296,6 +3585,7 @@ def test_tree_reader_handles_stale_path_columns_after_reused_queries(tmp_path):
     )
 
 
+# 用例 PYTHON-TREE-093：多文件并行加载
 def test_tree_loading_uses_thread_pool_for_multiple_files(tmp_path, monkeypatch):
     """用例 136：验证多文件加载会走 ThreadPoolExecutor，worker 数为 min(文件数, CPU 核数)。"""
     # 1. 生成 4 个树模型TsFile文件，用于触发多文件并行加载分支
@@ -2334,6 +3624,7 @@ def test_tree_loading_uses_thread_pool_for_multiple_files(tmp_path, monkeypatch)
     assert recorded_workers == [min(len(paths), os.cpu_count() or 4)]
 
 
+# 用例 PYTHON-TREE-094：单文件串行加载
 def test_tree_single_file_uses_serial_loader(tmp_path, monkeypatch):
     """用例 137：验证单文件加载只走串行元数据扫描分支，不误触发并行加载逻辑。"""
     # 1. 生成单个树模型TsFile文件
@@ -2364,8 +3655,10 @@ def test_tree_single_file_uses_serial_loader(tmp_path, monkeypatch):
     assert calls == ["serial"]
 
 
-def test_tree_show_progress_reports_to_stderr(tmp_path, capsys):
-    """用例 138、139：验证 show_progress=True 时，DataFrame 加载和树 reader 元数据扫描都会向 stderr 输出进度。"""
+# 用例 PYTHON-TREE-095：加载进度输出
+# ── 由 test_tree_show_progress_reports_to_stderr 拆分而来（2 个）──
+def test_tree_dataframe_load_reports_shard_progress(tmp_path, capsys):
+    """用例 138：验证 show_progress=True 时向 stderr 输出加载进度。"""
     # 1. 生成两个树模型TsFile文件，用于验证 DataFrame 多分片加载进度
     path1 = tmp_path / "part1.tsfile"
     path2 = tmp_path / "part2.tsfile"
@@ -2381,12 +3674,14 @@ def test_tree_show_progress_reports_to_stderr(tmp_path, capsys):
     assert "Loading TsFile shards: 0/2" in stderr
     assert "Loading TsFile shards: 2/2 (2 series) ... done" in stderr
 
-    # 4. 生成单独 reader 文件，用于验证树模型元数据扫描进度
+def test_tree_reader_metadata_scan_reports_device_and_series_counts(tmp_path, capsys):
+    """用例 139：验证 show_progress=True 时树模型元数据扫描输出设备名数量和序列数量。"""
+    # 1. 生成基础树模型TsFile文件，用于验证树模型元数据扫描进度
     reader_path = tmp_path / "reader.tsfile"
     _write_tree_file(reader_path)
     reader = TsFileSeriesReader(str(reader_path), show_progress=True)
     try:
-        # 5. 校验 reader 元数据扫描输出设备数和序列数
+        # 2. 校验 reader 元数据扫描输出设备数和序列数
         stderr = capsys.readouterr().err
         assert "Reading TsFile metadata: 0/2 devices" in stderr
         assert "Reading TsFile metadata (tree): 2 device(s), 3 series ... done" in stderr
@@ -2394,8 +3689,9 @@ def test_tree_show_progress_reports_to_stderr(tmp_path, capsys):
         reader.close()
 
 
-def test_tree_device_path_rebuild_reports_unsupported_segments():
-    """用例 131、132：验证树设备路径重建时，对含点号路径段和中间 None 段给出明确异常。"""
+# ── 由 test_tree_device_path_rebuild_reports_unsupported_segments 拆分而来（2 个）──
+def test_tree_device_path_rebuild_rejects_dotted_segment():
+    """用例 131：验证树模型设备名分段本身含点号时读取路径重建给出明确错误。"""
     # 1. 构造 root 表入口，模拟树模型根段
     table_entry = SimpleNamespace(table_name="root")
 
@@ -2405,7 +3701,12 @@ def test_tree_device_path_rebuild_reports_unsupported_segments():
             table_entry, SimpleNamespace(tag_values=("a.b",))
         )
 
-    # 3. 设备路径中间出现 None 时，应提示非法空路径段
+def test_tree_device_path_rebuild_rejects_null_segment():
+    """用例 132：验证树模型设备名分段值出现中间 None 时不被当成尾部浅层补齐处理。"""
+    # 1. 构造 root 表入口，模拟树模型根段
+    table_entry = SimpleNamespace(table_name="root")
+
+    # 2. 设备路径中间出现 None 时，应提示非法空路径段
     with pytest.raises(ValueError, match="Tree device path cannot include a null segment"):
         TsFileSeriesReader._build_tree_device_path(
             table_entry, SimpleNamespace(tag_values=("a", None, "c"))

@@ -138,26 +138,31 @@ def get_expected_columns():
 
 # ==================== 测试 DataFrame ====================
 
+# 用例 PYTHON-TABLE-001：DataFrame部分空值
 def test_dataframe_partial_null(standard_dataframe, tsfile_path, num_rows):
     """测试部分值为空的DataFrame"""
     read_df = verify_dataframe_write_read(standard_dataframe, tsfile_path, num_rows=num_rows)
     assert list(read_df.columns) == get_expected_columns()
 
+# 用例 PYTHON-TABLE-002：DataFrame全空值
 def test_dataframe_all_null(all_null_dataframe, tsfile_path, num_rows):
     """测试全空值的DataFrame"""
     read_df = verify_dataframe_write_read(all_null_dataframe, tsfile_path, num_rows=num_rows)
     assert list(read_df.columns) == get_expected_columns()
 
+# 用例 PYTHON-TABLE-003：DataFrame跨分片
 def test_dataframe_cross_partition(cross_partition_dataframe, tsfile_path, num_rows):
     """测试跨时间分区的DataFrame"""
     read_df = verify_dataframe_write_read(cross_partition_dataframe, tsfile_path, num_rows=num_rows)
     assert list(read_df.columns) == get_expected_columns()
 
+# 用例 PYTHON-TABLE-004：DataFrame无空值
 def test_dataframe_no_null(no_null_dataframe, tsfile_path, num_rows):
     """测试无空值的DataFrame"""
     read_df = verify_dataframe_write_read(no_null_dataframe, tsfile_path, num_rows=num_rows)
     assert list(read_df.columns) == get_expected_columns()
 
+# 用例 PYTHON-TABLE-005：DataFrame值计数不一致
 def test_dataframe_values_count_inconsistent():
     """测试值数量不一致的DataFrame"""
     data = {
@@ -168,6 +173,7 @@ def test_dataframe_values_count_inconsistent():
     with pytest.raises(ValueError, match="All arrays must be of the same length"):
         pd.DataFrame(data)
 
+# 用例 PYTHON-TABLE-006：空DataFrame
 def test_dataframe_empty():
     """测试空DataFrame"""
     df = pd.DataFrame()
@@ -175,6 +181,7 @@ def test_dataframe_empty():
     with pytest.raises(ValueError, match="DataFrame cannot be None or empty"):
         dataframe_to_tsfile(df, "test.tsfile", table_name="empty_dataframe")
 
+# 用例 PYTHON-TABLE-007：None值DataFrame
 def test_dataframe_none():
     """测试None DataFrame"""
     with pytest.raises(ValueError, match="DataFrame cannot be None or empty"):
@@ -190,6 +197,7 @@ def test_dataframe_none():
     "12345",
     "!@#$%^&*()_+-=[]{};':\",./<>?",
 ])
+# 用例 PYTHON-TABLE-008：表名列表
 def test_table_names(standard_dataframe, tsfile_path, num_rows, table_name):
     """测试各种表名"""
     dataframe_to_tsfile(standard_dataframe, tsfile_path, table_name=table_name)
@@ -198,6 +206,7 @@ def test_table_names(standard_dataframe, tsfile_path, num_rows, table_name):
     read_df = to_dataframe(tsfile_path, table_name=table_name.lower() if table_name in ["TestTable", "TEST_TABLE"] else table_name)
     assert read_df.shape[0] == num_rows
 
+# 用例 PYTHON-TABLE-009：表名未设置
 def test_table_name_not_set(standard_dataframe, tsfile_path, num_rows):
     """测试不设置表名"""
     dataframe_to_tsfile(standard_dataframe, tsfile_path)
@@ -208,6 +217,7 @@ def test_table_name_not_set(standard_dataframe, tsfile_path, num_rows):
 
 # ==================== 测试路径 ====================
 
+# 用例 PYTHON-TABLE-010：已存在文件路径
 def test_existing_file_path(standard_dataframe, tsfile_path):
     """测试已存在的文件路径"""
     # 第一次写入
@@ -217,6 +227,7 @@ def test_existing_file_path(standard_dataframe, tsfile_path):
     with pytest.raises(Exception):
         dataframe_to_tsfile(standard_dataframe, tsfile_path, table_name="test_table")
 
+# 用例 PYTHON-TABLE-011：目录路径
 def test_directory_path(standard_dataframe, tmp_path):
     """测试目录路径"""
     directory_path = str(tmp_path)
@@ -234,6 +245,7 @@ def test_directory_path(standard_dataframe, tmp_path):
     ("123", "123"),
     ("!@#", "!@#"),
 ])
+# 用例 PYTHON-TABLE-012：时间列名
 def test_time_column_names(standard_dataframe, tsfile_path, num_rows, time_column_name, expected_first_col):
     """测试各种时间列名"""
     # 修改DataFrame的time列名
@@ -244,12 +256,14 @@ def test_time_column_names(standard_dataframe, tsfile_path, num_rows, time_colum
     read_df = to_dataframe(tsfile_path, table_name="test_table")
     assert read_df.shape[0] == num_rows
 
+# 用例 PYTHON-TABLE-013：时间列int32
 def test_time_column_int32(standard_dataframe, tsfile_path, num_rows):
     """测试int32类型的时间列"""
     standard_dataframe.time = standard_dataframe.time.astype(np.int32)
     read_df = verify_dataframe_write_read(standard_dataframe, tsfile_path, num_rows=num_rows)
     assert read_df.shape[0] == num_rows
 
+# 用例 PYTHON-TABLE-014：时间列不存在
 def test_time_column_not_exist(standard_dataframe, tsfile_path):
     """测试指定不存在的时间列"""
     with pytest.raises(ValueError, match="Time column 'non_existent_time' not found in DataFrame"):
@@ -259,6 +273,7 @@ def test_time_column_not_exist(standard_dataframe, tsfile_path):
     (str, TypeError),
     (np.float64, Exception),
 ])
+# 用例 PYTHON-TABLE-015：时间列类型无效
 def test_time_column_invalid_type(standard_dataframe, tsfile_path, time_dtype, error_type):
     """测试非法时间列类型"""
     standard_dataframe.time = standard_dataframe.time.astype(time_dtype)
@@ -267,6 +282,7 @@ def test_time_column_invalid_type(standard_dataframe, tsfile_path, time_dtype, e
 
 # ==================== 测试列名 ====================
 
+# 用例 PYTHON-TABLE-016：列名重复
 def test_column_duplicate(standard_dataframe, tsfile_path):
     """测试重复列名"""
     df = standard_dataframe.copy()
@@ -275,6 +291,7 @@ def test_column_duplicate(standard_dataframe, tsfile_path):
     with pytest.raises(ValueError, match="Column names must be unique"):
         dataframe_to_tsfile(df, tsfile_path, table_name="test_table")
 
+# 用例 PYTHON-TABLE-017：列名为空
 def test_column_name_empty(num_rows):
     """测试空白列名"""
     data = {
@@ -286,6 +303,7 @@ def test_column_name_empty(num_rows):
     with pytest.raises(ValueError, match="Column name cannot be None or empty"):
         dataframe_to_tsfile(df, "test.tsfile", table_name="test_table")
 
+# 用例 PYTHON-TABLE-018：列名未指定
 def test_column_name_none(num_rows):
     """测试None列名"""
     data = {
@@ -297,6 +315,7 @@ def test_column_name_none(num_rows):
     with pytest.raises(Exception):  # 可能抛出各种异常
         dataframe_to_tsfile(df, "test.tsfile", table_name="test_table")
 
+# 用例 PYTHON-TABLE-019：时间列未设置
 def test_time_column_not_set_without_time_column(num_rows, tsfile_path):
     """测试不设置时间列且DataFrame没有time列"""
     data = {
@@ -318,6 +337,7 @@ def test_time_column_not_set_without_time_column(num_rows, tsfile_path):
 
 # ==================== 测试结合to_dataframe函数 ====================
 
+# 用例 PYTHON-TABLE-020：DataFrame互转
 def test_dataframe_from_to_dataframe(tsfile_path, num_rows):
     """测试使用to_dataframe生成的DataFrame写入新TsFile"""
     # 先创建一个TsFile

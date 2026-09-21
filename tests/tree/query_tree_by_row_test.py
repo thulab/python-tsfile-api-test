@@ -72,6 +72,7 @@ def create_test_tsfile_tree(device_ids, measurement_names_map, rows_per_device=1
 # 1. 测试device_ids参数 - 各种设备ID
 # ============================================
 
+# 用例 PYTHON-TREE-001：单设备ID存在
 def test_device_ids_single_exist():
     """测试设备ID：单设备存在的设备"""
     try:
@@ -96,6 +97,7 @@ def test_device_ids_single_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-002：单设备ID不存在
 def test_device_ids_single_not_exist():
     """测试设备ID：单设备不存在的设备"""
     try:
@@ -117,6 +119,7 @@ def test_device_ids_single_not_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-003：多设备ID全部存在
 def test_device_ids_multi_all_exist():
     """测试设备ID：多设备全存在的设备"""
     try:
@@ -137,6 +140,7 @@ def test_device_ids_multi_all_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-004：多设备ID部分存在
 def test_device_ids_multi_partial_exist():
     """测试设备ID：多设备部分设备不存在"""
     try:
@@ -162,6 +166,7 @@ def test_device_ids_multi_partial_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-005：多设备ID全部不存在
 def test_device_ids_multi_all_not_exist():
     """测试设备ID：多设备全部设备不存在"""
     try:
@@ -185,6 +190,7 @@ def test_device_ids_multi_all_not_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-006：设备ID小写
 def test_device_ids_lowercase():
     """测试设备ID：小写英文"""
     try:
@@ -205,6 +211,7 @@ def test_device_ids_lowercase():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-007：设备ID大写
 def test_device_ids_uppercase():
     """测试设备ID：大写英文"""
     try:
@@ -225,6 +232,7 @@ def test_device_ids_uppercase():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-008：设备ID数字
 def test_device_ids_numbers():
     """测试设备ID：反引号包裹的纯数字节点"""
     try:
@@ -246,6 +254,7 @@ def test_device_ids_numbers():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-009：设备ID下划线
 def test_device_ids_underscore():
     """测试设备ID：纯下划线"""
     try:
@@ -266,6 +275,7 @@ def test_device_ids_underscore():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-010：设备ID中文
 def test_device_ids_chinese():
     """测试设备ID：中文字符"""
     try:
@@ -285,6 +295,7 @@ def test_device_ids_chinese():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
+# 用例 PYTHON-TREE-011：设备ID特殊字符
 def test_device_ids_special_chars():
     """测试设备ID：特殊字符"""
     try:
@@ -309,6 +320,7 @@ def test_device_ids_special_chars():
 # 2. 测试measurement_names参数 - 各种测点名
 # ============================================
 
+# 用例 PYTHON-TREE-012：单物理量存在
 def test_measurement_names_single_exist():
     """测试测点名：单测点存在的测点"""
     try:
@@ -330,6 +342,7 @@ def test_measurement_names_single_exist():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
+# 用例 PYTHON-TREE-013：单物理量不存在
 def test_measurement_names_single_not_exist():
     """测试测点名：单测点不存在的测点"""
     try:
@@ -351,6 +364,7 @@ def test_measurement_names_single_not_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-014：多物理量全部存在
 def test_measurement_names_multi_all_exist():
     """测试测点名：多测点全存在的测点"""
     try:
@@ -371,6 +385,7 @@ def test_measurement_names_multi_all_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-015：多测点名部分存在
 def test_measurement_names_multi_partial_exist():
     """测试测点名：多测点部分测点不存在"""
     try:
@@ -392,6 +407,7 @@ def test_measurement_names_multi_partial_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-016：多测点名全部不存在
 def test_measurement_names_multi_all_not_exist():
     """测试测点名：多测点全部测点不存在"""
     try:
@@ -412,6 +428,7 @@ def test_measurement_names_multi_all_not_exist():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-017：物理量小写
 def test_measurement_names_lowercase():
     """测试测点名：小写英文"""
     try:
@@ -432,6 +449,7 @@ def test_measurement_names_lowercase():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-018：物理量大写
 def test_measurement_names_uppercase():
     """测试测点名：大写英文"""
     try:
@@ -452,6 +470,7 @@ def test_measurement_names_uppercase():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-019：物理量数字
 def test_measurement_names_numbers():
     """测试测点名：反引号包裹的纯数字节点"""
     try:
@@ -472,6 +491,7 @@ def test_measurement_names_numbers():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-020：物理量下划线
 def test_measurement_names_underscore():
     """测试测点名：下划线"""
     try:
@@ -492,6 +512,7 @@ def test_measurement_names_underscore():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-021：物理量中文
 def test_measurement_names_chinese():
     """测试测点名：中文字符"""
     try:
@@ -512,6 +533,7 @@ def test_measurement_names_chinese():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-022：物理量特殊字符
 def test_measurement_names_special_chars():
     """测试测点名：特殊字符"""
     try:
@@ -536,6 +558,7 @@ def test_measurement_names_special_chars():
 # 3. 测试offset参数
 # ============================================
 
+# 用例 PYTHON-TREE-023：负偏移量
 def test_offset_negative():
     """测试offset：小于0"""
     try:
@@ -557,6 +580,7 @@ def test_offset_negative():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-024：零偏移量
 def test_offset_zero():
     """测试offset：等于0"""
     try:
@@ -577,6 +601,7 @@ def test_offset_zero():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-025：偏移量在范围内
 def test_offset_within_range():
     """测试offset：大于0且不超过实际行数"""
     try:
@@ -597,6 +622,7 @@ def test_offset_within_range():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-026：偏移量超出行数
 def test_offset_exceeds_rows():
     """测试offset：超过实际行数"""
     try:
@@ -621,6 +647,7 @@ def test_offset_exceeds_rows():
 # 4. 测试limit参数
 # ============================================
 
+# 用例 PYTHON-TREE-027：负行数限制
 def test_limit_negative():
     """测试limit：小于0（代表无限制）"""
     try:
@@ -641,11 +668,10 @@ def test_limit_negative():
             os.remove(get_tree_data_dir())
 
 
-@pytest.mark.skip(
-    reason="已知产品缺陷：limit=0 返回无效 TSDataType 254，暂时跳过以避免影响仓库自动化"
-)
+# 2026-09-21 用户确认：limit=0 的当前语义＝不返回数据（0 行）；本用例按该语义断言
+# 用例 PYTHON-TREE-028：零行数限制
 def test_limit_zero():
-    """测试limit=0按Java语义表示不限制返回行数"""
+    """测试limit=0时不返回数据（当前实现语义；若产品改为不限制需同步修改本用例）"""
     try:
         device_ids = ["root.device1"]
         measurement_names = ["s1"]
@@ -658,12 +684,13 @@ def test_limit_zero():
             count = 0
             while result.next():
                 count += 1
-            assert count == 10, f"Expected all 10 rows with limit=0, got {count}"
+            assert count == 0, f"Expected 0 rows with limit=0, got {count}"
     finally:
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-029：行数限制在范围内
 def test_limit_within_range():
     """测试limit：大于0且不超过实际行数"""
     try:
@@ -684,6 +711,7 @@ def test_limit_within_range():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-030：行数限制超出行数
 def test_limit_exceeds_rows():
     """测试limit：超过实际行数"""
     try:
@@ -704,6 +732,7 @@ def test_limit_exceeds_rows():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-031：偏移量与行数组合
 def test_offset_and_limit_combination():
     """测试offset和limit组合"""
     try:
@@ -724,6 +753,7 @@ def test_offset_and_limit_combination():
         if os.path.exists(get_tree_data_dir()):
             os.remove(get_tree_data_dir())
 
+# 用例 PYTHON-TREE-032：多设备不同物理量
 def test_multi_device_different_measurements():
     """测试多设备，每个设备的测点名不一样情况"""
     try:
@@ -749,6 +779,7 @@ def test_multi_device_different_measurements():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-033：多设备相同物理量
 def test_multi_device_common_measurements():
     """测试多设备，查询所有设备共有的测点"""
     try:
@@ -774,6 +805,7 @@ def test_multi_device_common_measurements():
             os.remove(get_tree_data_dir())
 
 
+# 用例 PYTHON-TREE-034：多设备全部物理量
 def test_multi_device_all_measurements():
     """测试多设备查询，指定部分测点"""
     try:

@@ -17,6 +17,7 @@ from tsfile import TsFileWriter, TsFileReader, ColumnCategory
 tsfile_path = os.path.join(os.path.dirname(__file__), "record_write_and_read.tsfile")
 
 
+# 用例 PYTHON-TREE-098：全数据类型查询转DataFrame
 def test_tree_all_datatype_query_to_dataframe_variants1():
     try:
         if os.path.exists(tsfile_path):

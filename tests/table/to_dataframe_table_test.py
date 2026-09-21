@@ -108,6 +108,7 @@ def verify_column_value(df, column_name, value_func):
 
 # ==================== 测试默认查询 ====================
 
+# 用例 PYTHON-TABLE-122：默认查询
 def test_default_query(tsfile_with_data, max_row_num):
     """测试默认查询"""
     df = to_dataframe(tsfile_with_data)
@@ -126,12 +127,14 @@ def test_default_query(tsfile_with_data, max_row_num):
     ("Value6", lambda t: f"string_value_{t}"),
     ("Value7", lambda t: f"text_value_{t}"),
 ])
+# 用例 PYTHON-TABLE-123：单列查询
 def test_single_column_query(tsfile_with_data, max_row_num, column_name, value_func):
     """测试单列查询"""
     df = to_dataframe(tsfile_with_data, column_names=[column_name])
     assert df.shape[0] == max_row_num
     verify_column_value(df, column_name, value_func)
 
+# 用例 PYTHON-TABLE-124：双列查询
 def test_two_columns_query(tsfile_with_data, max_row_num):
     """测试双列查询"""
     df = to_dataframe(tsfile_with_data, column_names=["Device1", "Value1"])
@@ -139,6 +142,7 @@ def test_two_columns_query(tsfile_with_data, max_row_num):
     verify_column_value(df, "Device1", lambda t: "Device1_" + str(t))
     verify_column_value(df, "Value1", lambda t: np.bool_(t % 2 == 0))
 
+# 用例 PYTHON-TABLE-125：全列查询
 def test_all_columns_query(tsfile_with_data, max_row_num):
     """测试全部列查询"""
     all_columns = [
@@ -153,12 +157,14 @@ def test_all_columns_query(tsfile_with_data, max_row_num):
 
 # ==================== 测试指定表名 ====================
 
+# 用例 PYTHON-TABLE-126：表名小写查询
 def test_table_name_lowercase(tsfile_with_data, max_row_num):
     """测试小写表名"""
     df = to_dataframe(tsfile_with_data, table_name="test_table")
     assert df.shape[0] == max_row_num
     assert df.iloc[0, 0] == 0
 
+# 用例 PYTHON-TABLE-127：表名大写查询
 def test_table_name_uppercase(tsfile_with_data, max_row_num):
     """测试大写表名"""
     df = to_dataframe(tsfile_with_data, table_name="TEST_TABLE")
@@ -178,6 +184,7 @@ def test_table_name_uppercase(tsfile_with_data, max_row_num):
     (-10, 10, 11),        # 包含0-10，共11行
     (-50, 50, 51),        # 包含0-50，共51行
 ])
+# 用例 PYTHON-TABLE-128：时间范围查询
 def test_time_range(tsfile_with_data, start_time, end_time, expected_rows):
     """测试时间段查询"""
     df = to_dataframe(tsfile_with_data, start_time=start_time, end_time=end_time)
@@ -193,6 +200,7 @@ def test_time_range(tsfile_with_data, start_time, end_time, expected_rows):
     (0, 0),
     (-10, 0),     # 无效值
 ])
+# 用例 PYTHON-TABLE-129：最大行数查询
 def test_max_row_num(tsfile_with_data, max_rows, expected_rows):
     """测试最大行数限制"""
     df = to_dataframe(tsfile_with_data, max_row_num=max_rows)
@@ -204,6 +212,7 @@ def test_max_row_num(tsfile_with_data, max_rows, expected_rows):
     (20, 20),
     (1000, 100),  # 单次迭代返回全部数据
 ])
+# 用例 PYTHON-TABLE-130：迭代器查询
 def test_iterator_query(tsfile_with_data, max_rows, chunk_size):
     """测试迭代式查询"""
     total_rows = 0
@@ -212,6 +221,7 @@ def test_iterator_query(tsfile_with_data, max_rows, chunk_size):
         total_rows += df.shape[0]
     assert total_rows <= 100
 
+# 用例 PYTHON-TABLE-131：迭代器全参数查询
 def test_iterator_with_all_params(tsfile_with_data):
     """测试迭代式查询带全部参数"""
     for df in to_dataframe(
@@ -229,11 +239,13 @@ def test_iterator_with_all_params(tsfile_with_data):
 
 # ==================== 测试异常情况 ====================
 
+# 用例 PYTHON-TABLE-132：表不存在查询
 def test_table_not_exist(tsfile_with_data):
     """测试表不存在异常"""
-    with pytest.raises(TableNotExistError, match="Table.*does not exist"):
+    with pytest.raises(TableNotExistError, match=r"(?i)table.*does not exist"):
         to_dataframe(tsfile_with_data, table_name="non_existent_table")
 
+# 用例 PYTHON-TABLE-133：列不存在查询
 def test_column_not_exist(tsfile_with_data):
     """测试列不存在异常"""
     with pytest.raises(ColumnNotExistError, match="Column.*does not exist"):
