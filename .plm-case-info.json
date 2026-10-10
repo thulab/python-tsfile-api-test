@@ -2110,5 +2110,527 @@
   "nodeId": "tests/table/dataframe_to_tsfile_test.py::test_dataframe_partial_null",
   "automationType": "python",
   "plmDescription": "test dataframe partial null"
+ },
+ "RN142-IDX-001": {
+  "name": "case46 backend matrix matches baseline",
+  "nodeId": "tests/index/index_backend_test.py::test_case46_backend_matrix_matches_baseline",
+  "automationType": "python",
+  "plmDescription": "（占位）case46 backend matrix matches baseline —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-002": {
+  "name": "case29 close contract violation",
+  "nodeId": "tests/index/index_close_contract_test.py::test_case29_close_contract_violation",
+  "automationType": "python",
+  "plmDescription": "（占位）case29 close contract violation —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-003": {
+  "name": "case39 concurrent tagged series queries match unindexed",
+  "nodeId": "tests/index/index_concurrency_test.py::test_case39_concurrent_tagged_series_queries_match_unindexed",
+  "automationType": "python",
+  "plmDescription": "（占位）case39 concurrent tagged series queries match unindexed —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-004": {
+  "name": "case40 barrier synchronized cold build returns equal queries",
+  "nodeId": "tests/index/index_concurrency_test.py::test_case40_barrier_synchronized_cold_build_returns_equal_queries",
+  "automationType": "python",
+  "plmDescription": "（占位）case40 barrier synchronized cold build returns equal queries —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-005": {
+  "name": "case41 reader limit blocks then wakes waiter",
+  "nodeId": "tests/index/index_concurrency_test.py::test_case41_reader_limit_blocks_then_wakes_waiter",
+  "automationType": "python",
+  "plmDescription": "（占位）case41 reader limit blocks then wakes waiter —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-006": {
+  "name": "case42 prepared series cache returns same object after eviction",
+  "nodeId": "tests/index/index_concurrency_test.py::test_case42_prepared_series_cache_returns_same_object_after_eviction",
+  "automationType": "python",
+  "plmDescription": "（占位）case42 prepared series cache returns same object after eviction —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-007": {
+  "name": "case43 teardown waits for all object and query leases",
+  "nodeId": "tests/index/index_concurrency_test.py::test_case43_teardown_waits_for_all_object_and_query_leases",
+  "automationType": "python",
+  "plmDescription": "（占位）case43 teardown waits for all object and query leases —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-008": {
+  "name": "case01 default off creates no index",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case01_default_off_creates_no_index",
+  "automationType": "python",
+  "plmDescription": "（占位）case01 default off creates no index —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-009": {
+  "name": "case02 default off ignores existing index",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case02_default_off_ignores_existing_index",
+  "automationType": "python",
+  "plmDescription": "（占位）case02 default off ignores existing index —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-010": {
+  "name": "case03 cold build publishes valid index",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case03_cold_build_publishes_valid_index",
+  "automationType": "python",
+  "plmDescription": "（占位）case03 cold build publishes valid index —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-011": {
+  "name": "case04 hot construct opens no data file",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case04_hot_construct_opens_no_data_file",
+  "automationType": "python",
+  "plmDescription": "（占位）case04 hot construct opens no data file —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-012": {
+  "name": "case05 index scoped to expanded file set",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case05_index_scoped_to_expanded_file_set",
+  "automationType": "python",
+  "plmDescription": "（占位）case05 index scoped to expanded file set —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-013": {
+  "name": "case06 size change triggers rebuild",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case06_size_change_triggers_rebuild",
+  "automationType": "python",
+  "plmDescription": "（占位）case06 size change triggers rebuild —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-014": {
+  "name": "case07 mtime change triggers rebuild",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case07_mtime_change_triggers_rebuild",
+  "automationType": "python",
+  "plmDescription": "（占位）case07 mtime change triggers rebuild —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-015": {
+  "name": "case08 fingerprint boundary record",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case08_fingerprint_boundary_record",
+  "automationType": "python",
+  "plmDescription": "（占位）case08 fingerprint boundary record —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-016": {
+  "name": "case09 14 corruption triggers rebuild[empty-14]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[empty-14]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[empty-14] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-017": {
+  "name": "case09 14 corruption triggers rebuild[header crc-11]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[header_crc-11]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[header crc-11] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-018": {
+  "name": "case09 14 corruption triggers rebuild[magic-9]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[magic-9]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[magic-9] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-019": {
+  "name": "case09 14 corruption triggers rebuild[random-14]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[random-14]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[random-14] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-020": {
+  "name": "case09 14 corruption triggers rebuild[truncate-13]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[truncate-13]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[truncate-13] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-021": {
+  "name": "case09 14 corruption triggers rebuild[version-10]",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[version-10]",
+  "automationType": "python",
+  "plmDescription": "（占位）case09 14 corruption triggers rebuild[version-10] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-022": {
+  "name": "case12 section tamper detection",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case12_section_tamper_detection",
+  "automationType": "python",
+  "plmDescription": "（占位）case12 section tamper detection —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-023": {
+  "name": "case12b locator offset tamper",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case12b_locator_offset_tamper",
+  "automationType": "python",
+  "plmDescription": "（占位）case12b locator offset tamper —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-024": {
+  "name": "case16 no temp residue and lock reusable",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case16_no_temp_residue_and_lock_reusable",
+  "automationType": "python",
+  "plmDescription": "（占位）case16 no temp residue and lock reusable —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-025": {
+  "name": "case49 same table schema conflict aborts",
+  "nodeId": "tests/index/index_lifecycle_test.py::test_case49_same_table_schema_conflict_aborts",
+  "automationType": "python",
+  "plmDescription": "（占位）case49 same table schema conflict aborts —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-026": {
+  "name": "case37 maps observation",
+  "nodeId": "tests/index/index_maps_test.py::test_case37_maps_observation",
+  "automationType": "python",
+  "plmDescription": "（占位）case37 maps observation —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-027": {
+  "name": "case17 single file values match",
+  "nodeId": "tests/index/index_queries_test.py::test_case17_single_file_values_match",
+  "automationType": "python",
+  "plmDescription": "（占位）case17 single file values match —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-028": {
+  "name": "case18 multi shard merge matches",
+  "nodeId": "tests/index/index_queries_test.py::test_case18_multi_shard_merge_matches",
+  "automationType": "python",
+  "plmDescription": "（占位）case18 multi shard merge matches —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-029": {
+  "name": "case19 time range and empty windows",
+  "nodeId": "tests/index/index_queries_test.py::test_case19_time_range_and_empty_windows",
+  "automationType": "python",
+  "plmDescription": "（占位）case19 time range and empty windows —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-030": {
+  "name": "case21 tag addressing matches",
+  "nodeId": "tests/index/index_queries_test.py::test_case21_tag_addressing_matches",
+  "automationType": "python",
+  "plmDescription": "（占位）case21 tag addressing matches —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-031": {
+  "name": "case22 list and metadata api matches",
+  "nodeId": "tests/index/index_queries_test.py::test_case22_list_and_metadata_api_matches",
+  "automationType": "python",
+  "plmDescription": "（占位）case22 list and metadata api matches —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-032": {
+  "name": "case23 loc multi field matches",
+  "nodeId": "tests/index/index_queries_test.py::test_case23_loc_multi_field_matches",
+  "automationType": "python",
+  "plmDescription": "（占位）case23 loc multi field matches —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-033": {
+  "name": "case24 null values and tags match",
+  "nodeId": "tests/index/index_queries_test.py::test_case24_null_values_and_tags_match",
+  "automationType": "python",
+  "plmDescription": "（占位）case24 null values and tags match —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-034": {
+  "name": "case26 tree model matches",
+  "nodeId": "tests/index/index_queries_test.py::test_case26_tree_model_matches",
+  "automationType": "python",
+  "plmDescription": "（占位）case26 tree model matches —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-035": {
+  "name": "case27 mixed model rejected",
+  "nodeId": "tests/index/index_queries_test.py::test_case27_mixed_model_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）case27 mixed model rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-036": {
+  "name": "case28 duplicate timestamps rejected",
+  "nodeId": "tests/index/index_queries_test.py::test_case28_duplicate_timestamps_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）case28 duplicate timestamps rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN142-IDX-037": {
+  "name": "case30 timeseries idempotent close",
+  "nodeId": "tests/index/index_queries_test.py::test_case30_timeseries_idempotent_close",
+  "automationType": "python",
+  "plmDescription": "（占位）case30 timeseries idempotent close —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-001": {
+  "name": "case45 read backend with http source",
+  "nodeId": "tests/source/regression_test.py::test_case45_read_backend_with_http_source",
+  "automationType": "python",
+  "plmDescription": "（占位）case45 read backend with http source —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-002": {
+  "name": "case47 local path regression arrow batch",
+  "nodeId": "tests/source/regression_test.py::test_case47_local_path_regression_arrow_batch",
+  "automationType": "python",
+  "plmDescription": "（占位）case47 local path regression arrow batch —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-003": {
+  "name": "case48 error messages regression",
+  "nodeId": "tests/source/regression_test.py::test_case48_error_messages_regression",
+  "automationType": "python",
+  "plmDescription": "（占位）case48 error messages regression —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-004": {
+  "name": "case19 midstream cut half",
+  "nodeId": "tests/source/remote_cases_b_test.py::test_case19_midstream_cut_half",
+  "automationType": "python",
+  "plmDescription": "（占位）case19 midstream cut half —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-005": {
+  "name": "case12 http normal table",
+  "nodeId": "tests/source/remote_sources_test.py::test_case12_http_normal_table",
+  "automationType": "python",
+  "plmDescription": "（占位）case12 http normal table —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-006": {
+  "name": "case13 http normal tree",
+  "nodeId": "tests/source/remote_sources_test.py::test_case13_http_normal_tree",
+  "automationType": "python",
+  "plmDescription": "（占位）case13 http normal tree —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-007": {
+  "name": "case14 short read one byte",
+  "nodeId": "tests/source/remote_sources_test.py::test_case14_short_read_one_byte",
+  "automationType": "python",
+  "plmDescription": "（占位）case14 short read one byte —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-008": {
+  "name": "case15 random chunking",
+  "nodeId": "tests/source/remote_sources_test.py::test_case15_random_chunking",
+  "automationType": "python",
+  "plmDescription": "（占位）case15 random chunking —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-009": {
+  "name": "case16 initial cursor nonzero",
+  "nodeId": "tests/source/remote_sources_test.py::test_case16_initial_cursor_nonzero",
+  "automationType": "python",
+  "plmDescription": "（占位）case16 initial cursor nonzero —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-010": {
+  "name": "case17 slow link",
+  "nodeId": "tests/source/remote_sources_test.py::test_case17_slow_link",
+  "automationType": "python",
+  "plmDescription": "（占位）case17 slow link —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-011": {
+  "name": "case18 connect stall timeout",
+  "nodeId": "tests/source/remote_sources_test.py::test_case18_connect_stall_timeout",
+  "automationType": "python",
+  "plmDescription": "（占位）case18 connect stall timeout —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-012": {
+  "name": "case19 midstream cut",
+  "nodeId": "tests/source/remote_sources_test.py::test_case19_midstream_cut",
+  "automationType": "python",
+  "plmDescription": "（占位）case19 midstream cut —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-013": {
+  "name": "case20 server 404",
+  "nodeId": "tests/source/remote_sources_test.py::test_case20_server_404",
+  "automationType": "python",
+  "plmDescription": "（占位）case20 server 404 —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-014": {
+  "name": "case21 server 5xx and redirect",
+  "nodeId": "tests/source/remote_sources_test.py::test_case21_server_5xx_and_redirect",
+  "automationType": "python",
+  "plmDescription": "（占位）case21 server 5xx and redirect —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-015": {
+  "name": "case22 range semantics",
+  "nodeId": "tests/source/remote_sources_test.py::test_case22_range_semantics",
+  "automationType": "python",
+  "plmDescription": "（占位）case22 range semantics —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-016": {
+  "name": "case24 concurrent readers",
+  "nodeId": "tests/source/remote_sources_test.py::test_case24_concurrent_readers",
+  "automationType": "python",
+  "plmDescription": "（占位）case24 concurrent readers —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-017": {
+  "name": "case25 multi shard",
+  "nodeId": "tests/source/remote_sources_test.py::test_case25_multi_shard",
+  "automationType": "python",
+  "plmDescription": "（占位）case25 multi shard —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-018": {
+  "name": "c01 str path baseline",
+  "nodeId": "tests/source/source_contract_test.py::test_c01_str_path_baseline",
+  "automationType": "python",
+  "plmDescription": "（占位）c01 str path baseline —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-019": {
+  "name": "c02 pathlib matches str",
+  "nodeId": "tests/source/source_contract_test.py::test_c02_pathlib_matches_str",
+  "automationType": "python",
+  "plmDescription": "（占位）c02 pathlib matches str —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-020": {
+  "name": "c03 bytes and pathlike match str",
+  "nodeId": "tests/source/source_contract_test.py::test_c03_bytes_and_pathlike_match_str",
+  "automationType": "python",
+  "plmDescription": "（占位）c03 bytes and pathlike match str —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-021": {
+  "name": "c04 file object table query",
+  "nodeId": "tests/source/source_contract_test.py::test_c04_file_object_table_query",
+  "automationType": "python",
+  "plmDescription": "（占位）c04 file object table query —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-022": {
+  "name": "c05 file object tree query",
+  "nodeId": "tests/source/source_contract_test.py::test_c05_file_object_tree_query",
+  "automationType": "python",
+  "plmDescription": "（占位）c05 file object tree query —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-023": {
+  "name": "c06 read only source rejected with type error",
+  "nodeId": "tests/source/source_contract_test.py::test_c06_read_only_source_rejected_with_type_error",
+  "automationType": "python",
+  "plmDescription": "（占位）c06 read only source rejected with type error —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-024": {
+  "name": "c07 read without size is rejected",
+  "nodeId": "tests/source/source_contract_test.py::test_c07_read_without_size_is_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）c07 read without size is rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-025": {
+  "name": "c08 text returning source rejected",
+  "nodeId": "tests/source/source_contract_test.py::test_c08_text_returning_source_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）c08 text returning source rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-026": {
+  "name": "c09 none and invalid sources[123]",
+  "nodeId": "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[123]",
+  "automationType": "python",
+  "plmDescription": "（占位）c09 none and invalid sources[123] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-027": {
+  "name": "c09 none and invalid sources[None]",
+  "nodeId": "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[None]",
+  "automationType": "python",
+  "plmDescription": "（占位）c09 none and invalid sources[None] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-028": {
+  "name": "c09 none and invalid sources[bad2]",
+  "nodeId": "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[bad2]",
+  "automationType": "python",
+  "plmDescription": "（占位）c09 none and invalid sources[bad2] —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-029": {
+  "name": "c10 seek boundary open error then read error",
+  "nodeId": "tests/source/source_contract_test.py::test_c10_seek_boundary_open_error_then_read_error",
+  "automationType": "python",
+  "plmDescription": "（占位）c10 seek boundary open error then read error —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-030": {
+  "name": "c11 shared source between two readers recorded",
+  "nodeId": "tests/source/source_contract_test.py::test_c11_shared_source_between_two_readers_recorded",
+  "automationType": "python",
+  "plmDescription": "（占位）c11 shared source between two readers recorded —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-031": {
+  "name": "c54 negative length raises value error",
+  "nodeId": "tests/source/source_design_test.py::test_c54_negative_length_raises_value_error",
+  "automationType": "python",
+  "plmDescription": "（占位）c54 negative length raises value error —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-032": {
+  "name": "c55 corrupt content and missing tail magic",
+  "nodeId": "tests/source/source_design_test.py::test_c55_corrupt_content_and_missing_tail_magic",
+  "automationType": "python",
+  "plmDescription": "（占位）c55 corrupt content and missing tail magic —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-033": {
+  "name": "c56 unsupported version byte recorded",
+  "nodeId": "tests/source/source_design_test.py::test_c56_unsupported_version_byte_recorded",
+  "automationType": "python",
+  "plmDescription": "（占位）c56 unsupported version byte recorded —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-034": {
+  "name": "c57 length cache does not detect content change",
+  "nodeId": "tests/source/source_design_test.py::test_c57_length_cache_does_not_detect_content_change",
+  "automationType": "python",
+  "plmDescription": "（占位）c57 length cache does not detect content change —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-035": {
+  "name": "c58 multi column query completes within guard",
+  "nodeId": "tests/source/source_design_test.py::test_c58_multi_column_query_completes_within_guard",
+  "automationType": "python",
+  "plmDescription": "（占位）c58 multi column query completes within guard —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-036": {
+  "name": "c26 query time read failure maps to file read error",
+  "nodeId": "tests/source/source_errors_test.py::test_c26_query_time_read_failure_maps_to_file_read_error",
+  "automationType": "python",
+  "plmDescription": "（占位）c26 query time read failure maps to file read error —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-037": {
+  "name": "c27 28 no silent empty result on injected failures",
+  "nodeId": "tests/source/source_errors_test.py::test_c27_28_no_silent_empty_result_on_injected_failures",
+  "automationType": "python",
+  "plmDescription": "（占位）c27 28 no silent empty result on injected failures —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-038": {
+  "name": "c30 truncation never returns partial silently",
+  "nodeId": "tests/source/source_errors_test.py::test_c30_truncation_never_returns_partial_silently",
+  "automationType": "python",
+  "plmDescription": "（占位）c30 truncation never returns partial silently —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-039": {
+  "name": "c31 truncated source rejected",
+  "nodeId": "tests/source/source_errors_test.py::test_c31_truncated_source_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）c31 truncated source rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-040": {
+  "name": "c32 non io exception propagates or wraps",
+  "nodeId": "tests/source/source_errors_test.py::test_c32_non_io_exception_propagates_or_wraps",
+  "automationType": "python",
+  "plmDescription": "（占位）c32 non io exception propagates or wraps —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-041": {
+  "name": "c33 source closed before query",
+  "nodeId": "tests/source/source_errors_test.py::test_c33_source_closed_before_query",
+  "automationType": "python",
+  "plmDescription": "（占位）c33 source closed before query —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-042": {
+  "name": "c34 over returning source recorded",
+  "nodeId": "tests/source/source_errors_test.py::test_c34_over_returning_source_recorded",
+  "automationType": "python",
+  "plmDescription": "（占位）c34 over returning source recorded —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-043": {
+  "name": "c35 read failure after open rejected",
+  "nodeId": "tests/source/source_errors_test.py::test_c35_read_failure_after_open_rejected",
+  "automationType": "python",
+  "plmDescription": "（占位）c35 read failure after open rejected —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-044": {
+  "name": "c36 reader does not close source",
+  "nodeId": "tests/source/source_errors_test.py::test_c36_reader_does_not_close_source",
+  "automationType": "python",
+  "plmDescription": "（占位）c36 reader does not close source —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-045": {
+  "name": "c37 source released after close",
+  "nodeId": "tests/source/source_errors_test.py::test_c37_source_released_after_close",
+  "automationType": "python",
+  "plmDescription": "（占位）c37 source released after close —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-046": {
+  "name": "c38 close is idempotent",
+  "nodeId": "tests/source/source_errors_test.py::test_c38_close_is_idempotent",
+  "automationType": "python",
+  "plmDescription": "（占位）c38 close is idempotent —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-047": {
+  "name": "c39 source closed before reader close is safe",
+  "nodeId": "tests/source/source_errors_test.py::test_c39_source_closed_before_reader_close_is_safe",
+  "automationType": "python",
+  "plmDescription": "（占位）c39 source closed before reader close is safe —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-048": {
+  "name": "c40 reader closed then source closed",
+  "nodeId": "tests/source/source_errors_test.py::test_c40_reader_closed_then_source_closed",
+  "automationType": "python",
+  "plmDescription": "（占位）c40 reader closed then source closed —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-049": {
+  "name": "c41 reader without close does not break process",
+  "nodeId": "tests/source/source_errors_test.py::test_c41_reader_without_close_does_not_break_process",
+  "automationType": "python",
+  "plmDescription": "（占位）c41 reader without close does not break process —— 待 PLM 用例导入后替换正式编号"
+ },
+ "RN146-SRC-050": {
+  "name": "c29 tree data block failures do not silently truncate",
+  "nodeId": "tests/source/source_tree_propagation_test.py::test_c29_tree_data_block_failures_do_not_silently_truncate",
+  "automationType": "python",
+  "plmDescription": "（占位）c29 tree data block failures do not silently truncate —— 待 PLM 用例导入后替换正式编号"
  }
 }

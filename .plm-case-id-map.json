@@ -1055,6 +1055,267 @@
   ],
   "TsFile-1": [
    "tests/table/dataframe_to_tsfile_test.py::test_dataframe_partial_null"
+  ],
+  "RN142-IDX-001": [
+   "tests/index/index_backend_test.py::test_case46_backend_matrix_matches_baseline"
+  ],
+  "RN142-IDX-002": [
+   "tests/index/index_close_contract_test.py::test_case29_close_contract_violation"
+  ],
+  "RN142-IDX-003": [
+   "tests/index/index_concurrency_test.py::test_case39_concurrent_tagged_series_queries_match_unindexed"
+  ],
+  "RN142-IDX-004": [
+   "tests/index/index_concurrency_test.py::test_case40_barrier_synchronized_cold_build_returns_equal_queries"
+  ],
+  "RN142-IDX-005": [
+   "tests/index/index_concurrency_test.py::test_case41_reader_limit_blocks_then_wakes_waiter"
+  ],
+  "RN142-IDX-006": [
+   "tests/index/index_concurrency_test.py::test_case42_prepared_series_cache_returns_same_object_after_eviction"
+  ],
+  "RN142-IDX-007": [
+   "tests/index/index_concurrency_test.py::test_case43_teardown_waits_for_all_object_and_query_leases"
+  ],
+  "RN142-IDX-008": [
+   "tests/index/index_lifecycle_test.py::test_case01_default_off_creates_no_index"
+  ],
+  "RN142-IDX-009": [
+   "tests/index/index_lifecycle_test.py::test_case02_default_off_ignores_existing_index"
+  ],
+  "RN142-IDX-010": [
+   "tests/index/index_lifecycle_test.py::test_case03_cold_build_publishes_valid_index"
+  ],
+  "RN142-IDX-011": [
+   "tests/index/index_lifecycle_test.py::test_case04_hot_construct_opens_no_data_file"
+  ],
+  "RN142-IDX-012": [
+   "tests/index/index_lifecycle_test.py::test_case05_index_scoped_to_expanded_file_set"
+  ],
+  "RN142-IDX-013": [
+   "tests/index/index_lifecycle_test.py::test_case06_size_change_triggers_rebuild"
+  ],
+  "RN142-IDX-014": [
+   "tests/index/index_lifecycle_test.py::test_case07_mtime_change_triggers_rebuild"
+  ],
+  "RN142-IDX-015": [
+   "tests/index/index_lifecycle_test.py::test_case08_fingerprint_boundary_record"
+  ],
+  "RN142-IDX-016": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[empty-14]"
+  ],
+  "RN142-IDX-017": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[header_crc-11]"
+  ],
+  "RN142-IDX-018": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[magic-9]"
+  ],
+  "RN142-IDX-019": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[random-14]"
+  ],
+  "RN142-IDX-020": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[truncate-13]"
+  ],
+  "RN142-IDX-021": [
+   "tests/index/index_lifecycle_test.py::test_case09_14_corruption_triggers_rebuild[version-10]"
+  ],
+  "RN142-IDX-022": [
+   "tests/index/index_lifecycle_test.py::test_case12_section_tamper_detection"
+  ],
+  "RN142-IDX-023": [
+   "tests/index/index_lifecycle_test.py::test_case12b_locator_offset_tamper"
+  ],
+  "RN142-IDX-024": [
+   "tests/index/index_lifecycle_test.py::test_case16_no_temp_residue_and_lock_reusable"
+  ],
+  "RN142-IDX-025": [
+   "tests/index/index_lifecycle_test.py::test_case49_same_table_schema_conflict_aborts"
+  ],
+  "RN142-IDX-026": [
+   "tests/index/index_maps_test.py::test_case37_maps_observation"
+  ],
+  "RN142-IDX-027": [
+   "tests/index/index_queries_test.py::test_case17_single_file_values_match"
+  ],
+  "RN142-IDX-028": [
+   "tests/index/index_queries_test.py::test_case18_multi_shard_merge_matches"
+  ],
+  "RN142-IDX-029": [
+   "tests/index/index_queries_test.py::test_case19_time_range_and_empty_windows"
+  ],
+  "RN142-IDX-030": [
+   "tests/index/index_queries_test.py::test_case21_tag_addressing_matches"
+  ],
+  "RN142-IDX-031": [
+   "tests/index/index_queries_test.py::test_case22_list_and_metadata_api_matches"
+  ],
+  "RN142-IDX-032": [
+   "tests/index/index_queries_test.py::test_case23_loc_multi_field_matches"
+  ],
+  "RN142-IDX-033": [
+   "tests/index/index_queries_test.py::test_case24_null_values_and_tags_match"
+  ],
+  "RN142-IDX-034": [
+   "tests/index/index_queries_test.py::test_case26_tree_model_matches"
+  ],
+  "RN142-IDX-035": [
+   "tests/index/index_queries_test.py::test_case27_mixed_model_rejected"
+  ],
+  "RN142-IDX-036": [
+   "tests/index/index_queries_test.py::test_case28_duplicate_timestamps_rejected"
+  ],
+  "RN142-IDX-037": [
+   "tests/index/index_queries_test.py::test_case30_timeseries_idempotent_close"
+  ],
+  "RN146-SRC-001": [
+   "tests/source/regression_test.py::test_case45_read_backend_with_http_source"
+  ],
+  "RN146-SRC-002": [
+   "tests/source/regression_test.py::test_case47_local_path_regression_arrow_batch"
+  ],
+  "RN146-SRC-003": [
+   "tests/source/regression_test.py::test_case48_error_messages_regression"
+  ],
+  "RN146-SRC-004": [
+   "tests/source/remote_cases_b_test.py::test_case19_midstream_cut_half"
+  ],
+  "RN146-SRC-005": [
+   "tests/source/remote_sources_test.py::test_case12_http_normal_table"
+  ],
+  "RN146-SRC-006": [
+   "tests/source/remote_sources_test.py::test_case13_http_normal_tree"
+  ],
+  "RN146-SRC-007": [
+   "tests/source/remote_sources_test.py::test_case14_short_read_one_byte"
+  ],
+  "RN146-SRC-008": [
+   "tests/source/remote_sources_test.py::test_case15_random_chunking"
+  ],
+  "RN146-SRC-009": [
+   "tests/source/remote_sources_test.py::test_case16_initial_cursor_nonzero"
+  ],
+  "RN146-SRC-010": [
+   "tests/source/remote_sources_test.py::test_case17_slow_link"
+  ],
+  "RN146-SRC-011": [
+   "tests/source/remote_sources_test.py::test_case18_connect_stall_timeout"
+  ],
+  "RN146-SRC-012": [
+   "tests/source/remote_sources_test.py::test_case19_midstream_cut"
+  ],
+  "RN146-SRC-013": [
+   "tests/source/remote_sources_test.py::test_case20_server_404"
+  ],
+  "RN146-SRC-014": [
+   "tests/source/remote_sources_test.py::test_case21_server_5xx_and_redirect"
+  ],
+  "RN146-SRC-015": [
+   "tests/source/remote_sources_test.py::test_case22_range_semantics"
+  ],
+  "RN146-SRC-016": [
+   "tests/source/remote_sources_test.py::test_case24_concurrent_readers"
+  ],
+  "RN146-SRC-017": [
+   "tests/source/remote_sources_test.py::test_case25_multi_shard"
+  ],
+  "RN146-SRC-018": [
+   "tests/source/source_contract_test.py::test_c01_str_path_baseline"
+  ],
+  "RN146-SRC-019": [
+   "tests/source/source_contract_test.py::test_c02_pathlib_matches_str"
+  ],
+  "RN146-SRC-020": [
+   "tests/source/source_contract_test.py::test_c03_bytes_and_pathlike_match_str"
+  ],
+  "RN146-SRC-021": [
+   "tests/source/source_contract_test.py::test_c04_file_object_table_query"
+  ],
+  "RN146-SRC-022": [
+   "tests/source/source_contract_test.py::test_c05_file_object_tree_query"
+  ],
+  "RN146-SRC-023": [
+   "tests/source/source_contract_test.py::test_c06_read_only_source_rejected_with_type_error"
+  ],
+  "RN146-SRC-024": [
+   "tests/source/source_contract_test.py::test_c07_read_without_size_is_rejected"
+  ],
+  "RN146-SRC-025": [
+   "tests/source/source_contract_test.py::test_c08_text_returning_source_rejected"
+  ],
+  "RN146-SRC-026": [
+   "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[123]"
+  ],
+  "RN146-SRC-027": [
+   "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[None]"
+  ],
+  "RN146-SRC-028": [
+   "tests/source/source_contract_test.py::test_c09_none_and_invalid_sources[bad2]"
+  ],
+  "RN146-SRC-029": [
+   "tests/source/source_contract_test.py::test_c10_seek_boundary_open_error_then_read_error"
+  ],
+  "RN146-SRC-030": [
+   "tests/source/source_contract_test.py::test_c11_shared_source_between_two_readers_recorded"
+  ],
+  "RN146-SRC-031": [
+   "tests/source/source_design_test.py::test_c54_negative_length_raises_value_error"
+  ],
+  "RN146-SRC-032": [
+   "tests/source/source_design_test.py::test_c55_corrupt_content_and_missing_tail_magic"
+  ],
+  "RN146-SRC-033": [
+   "tests/source/source_design_test.py::test_c56_unsupported_version_byte_recorded"
+  ],
+  "RN146-SRC-034": [
+   "tests/source/source_design_test.py::test_c57_length_cache_does_not_detect_content_change"
+  ],
+  "RN146-SRC-035": [
+   "tests/source/source_design_test.py::test_c58_multi_column_query_completes_within_guard"
+  ],
+  "RN146-SRC-036": [
+   "tests/source/source_errors_test.py::test_c26_query_time_read_failure_maps_to_file_read_error"
+  ],
+  "RN146-SRC-037": [
+   "tests/source/source_errors_test.py::test_c27_28_no_silent_empty_result_on_injected_failures"
+  ],
+  "RN146-SRC-038": [
+   "tests/source/source_errors_test.py::test_c30_truncation_never_returns_partial_silently"
+  ],
+  "RN146-SRC-039": [
+   "tests/source/source_errors_test.py::test_c31_truncated_source_rejected"
+  ],
+  "RN146-SRC-040": [
+   "tests/source/source_errors_test.py::test_c32_non_io_exception_propagates_or_wraps"
+  ],
+  "RN146-SRC-041": [
+   "tests/source/source_errors_test.py::test_c33_source_closed_before_query"
+  ],
+  "RN146-SRC-042": [
+   "tests/source/source_errors_test.py::test_c34_over_returning_source_recorded"
+  ],
+  "RN146-SRC-043": [
+   "tests/source/source_errors_test.py::test_c35_read_failure_after_open_rejected"
+  ],
+  "RN146-SRC-044": [
+   "tests/source/source_errors_test.py::test_c36_reader_does_not_close_source"
+  ],
+  "RN146-SRC-045": [
+   "tests/source/source_errors_test.py::test_c37_source_released_after_close"
+  ],
+  "RN146-SRC-046": [
+   "tests/source/source_errors_test.py::test_c38_close_is_idempotent"
+  ],
+  "RN146-SRC-047": [
+   "tests/source/source_errors_test.py::test_c39_source_closed_before_reader_close_is_safe"
+  ],
+  "RN146-SRC-048": [
+   "tests/source/source_errors_test.py::test_c40_reader_closed_then_source_closed"
+  ],
+  "RN146-SRC-049": [
+   "tests/source/source_errors_test.py::test_c41_reader_without_close_does_not_break_process"
+  ],
+  "RN146-SRC-050": [
+   "tests/source/source_tree_propagation_test.py::test_c29_tree_data_block_failures_do_not_silently_truncate"
   ]
  },
  "revmap": {
@@ -1409,7 +1670,94 @@
   "tests.table.dataframe_to_tsfile_test::test_dataframe_no_null": "TsFile-4",
   "tests.table.dataframe_to_tsfile_test::test_dataframe_cross_partition": "TsFile-3",
   "tests.table.dataframe_to_tsfile_test::test_dataframe_all_null": "TsFile-2",
-  "tests.table.dataframe_to_tsfile_test::test_dataframe_partial_null": "TsFile-1"
+  "tests.table.dataframe_to_tsfile_test::test_dataframe_partial_null": "TsFile-1",
+  "tests.index.index_backend_test::test_case46_backend_matrix_matches_baseline": "RN142-IDX-001",
+  "tests.index.index_close_contract_test::test_case29_close_contract_violation": "RN142-IDX-002",
+  "tests.index.index_concurrency_test::test_case39_concurrent_tagged_series_queries_match_unindexed": "RN142-IDX-003",
+  "tests.index.index_concurrency_test::test_case40_barrier_synchronized_cold_build_returns_equal_queries": "RN142-IDX-004",
+  "tests.index.index_concurrency_test::test_case41_reader_limit_blocks_then_wakes_waiter": "RN142-IDX-005",
+  "tests.index.index_concurrency_test::test_case42_prepared_series_cache_returns_same_object_after_eviction": "RN142-IDX-006",
+  "tests.index.index_concurrency_test::test_case43_teardown_waits_for_all_object_and_query_leases": "RN142-IDX-007",
+  "tests.index.index_lifecycle_test::test_case01_default_off_creates_no_index": "RN142-IDX-008",
+  "tests.index.index_lifecycle_test::test_case02_default_off_ignores_existing_index": "RN142-IDX-009",
+  "tests.index.index_lifecycle_test::test_case03_cold_build_publishes_valid_index": "RN142-IDX-010",
+  "tests.index.index_lifecycle_test::test_case04_hot_construct_opens_no_data_file": "RN142-IDX-011",
+  "tests.index.index_lifecycle_test::test_case05_index_scoped_to_expanded_file_set": "RN142-IDX-012",
+  "tests.index.index_lifecycle_test::test_case06_size_change_triggers_rebuild": "RN142-IDX-013",
+  "tests.index.index_lifecycle_test::test_case07_mtime_change_triggers_rebuild": "RN142-IDX-014",
+  "tests.index.index_lifecycle_test::test_case08_fingerprint_boundary_record": "RN142-IDX-015",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[empty-14]": "RN142-IDX-016",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[header_crc-11]": "RN142-IDX-017",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[magic-9]": "RN142-IDX-018",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[random-14]": "RN142-IDX-019",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[truncate-13]": "RN142-IDX-020",
+  "tests.index.index_lifecycle_test::test_case09_14_corruption_triggers_rebuild[version-10]": "RN142-IDX-021",
+  "tests.index.index_lifecycle_test::test_case12_section_tamper_detection": "RN142-IDX-022",
+  "tests.index.index_lifecycle_test::test_case12b_locator_offset_tamper": "RN142-IDX-023",
+  "tests.index.index_lifecycle_test::test_case16_no_temp_residue_and_lock_reusable": "RN142-IDX-024",
+  "tests.index.index_lifecycle_test::test_case49_same_table_schema_conflict_aborts": "RN142-IDX-025",
+  "tests.index.index_maps_test::test_case37_maps_observation": "RN142-IDX-026",
+  "tests.index.index_queries_test::test_case17_single_file_values_match": "RN142-IDX-027",
+  "tests.index.index_queries_test::test_case18_multi_shard_merge_matches": "RN142-IDX-028",
+  "tests.index.index_queries_test::test_case19_time_range_and_empty_windows": "RN142-IDX-029",
+  "tests.index.index_queries_test::test_case21_tag_addressing_matches": "RN142-IDX-030",
+  "tests.index.index_queries_test::test_case22_list_and_metadata_api_matches": "RN142-IDX-031",
+  "tests.index.index_queries_test::test_case23_loc_multi_field_matches": "RN142-IDX-032",
+  "tests.index.index_queries_test::test_case24_null_values_and_tags_match": "RN142-IDX-033",
+  "tests.index.index_queries_test::test_case26_tree_model_matches": "RN142-IDX-034",
+  "tests.index.index_queries_test::test_case27_mixed_model_rejected": "RN142-IDX-035",
+  "tests.index.index_queries_test::test_case28_duplicate_timestamps_rejected": "RN142-IDX-036",
+  "tests.index.index_queries_test::test_case30_timeseries_idempotent_close": "RN142-IDX-037",
+  "tests.source.regression_test::test_case45_read_backend_with_http_source": "RN146-SRC-001",
+  "tests.source.regression_test::test_case47_local_path_regression_arrow_batch": "RN146-SRC-002",
+  "tests.source.regression_test::test_case48_error_messages_regression": "RN146-SRC-003",
+  "tests.source.remote_cases_b_test::test_case19_midstream_cut_half": "RN146-SRC-004",
+  "tests.source.remote_sources_test::test_case12_http_normal_table": "RN146-SRC-005",
+  "tests.source.remote_sources_test::test_case13_http_normal_tree": "RN146-SRC-006",
+  "tests.source.remote_sources_test::test_case14_short_read_one_byte": "RN146-SRC-007",
+  "tests.source.remote_sources_test::test_case15_random_chunking": "RN146-SRC-008",
+  "tests.source.remote_sources_test::test_case16_initial_cursor_nonzero": "RN146-SRC-009",
+  "tests.source.remote_sources_test::test_case17_slow_link": "RN146-SRC-010",
+  "tests.source.remote_sources_test::test_case18_connect_stall_timeout": "RN146-SRC-011",
+  "tests.source.remote_sources_test::test_case19_midstream_cut": "RN146-SRC-012",
+  "tests.source.remote_sources_test::test_case20_server_404": "RN146-SRC-013",
+  "tests.source.remote_sources_test::test_case21_server_5xx_and_redirect": "RN146-SRC-014",
+  "tests.source.remote_sources_test::test_case22_range_semantics": "RN146-SRC-015",
+  "tests.source.remote_sources_test::test_case24_concurrent_readers": "RN146-SRC-016",
+  "tests.source.remote_sources_test::test_case25_multi_shard": "RN146-SRC-017",
+  "tests.source.source_contract_test::test_c01_str_path_baseline": "RN146-SRC-018",
+  "tests.source.source_contract_test::test_c02_pathlib_matches_str": "RN146-SRC-019",
+  "tests.source.source_contract_test::test_c03_bytes_and_pathlike_match_str": "RN146-SRC-020",
+  "tests.source.source_contract_test::test_c04_file_object_table_query": "RN146-SRC-021",
+  "tests.source.source_contract_test::test_c05_file_object_tree_query": "RN146-SRC-022",
+  "tests.source.source_contract_test::test_c06_read_only_source_rejected_with_type_error": "RN146-SRC-023",
+  "tests.source.source_contract_test::test_c07_read_without_size_is_rejected": "RN146-SRC-024",
+  "tests.source.source_contract_test::test_c08_text_returning_source_rejected": "RN146-SRC-025",
+  "tests.source.source_contract_test::test_c09_none_and_invalid_sources[123]": "RN146-SRC-026",
+  "tests.source.source_contract_test::test_c09_none_and_invalid_sources[None]": "RN146-SRC-027",
+  "tests.source.source_contract_test::test_c09_none_and_invalid_sources[bad2]": "RN146-SRC-028",
+  "tests.source.source_contract_test::test_c10_seek_boundary_open_error_then_read_error": "RN146-SRC-029",
+  "tests.source.source_contract_test::test_c11_shared_source_between_two_readers_recorded": "RN146-SRC-030",
+  "tests.source.source_design_test::test_c54_negative_length_raises_value_error": "RN146-SRC-031",
+  "tests.source.source_design_test::test_c55_corrupt_content_and_missing_tail_magic": "RN146-SRC-032",
+  "tests.source.source_design_test::test_c56_unsupported_version_byte_recorded": "RN146-SRC-033",
+  "tests.source.source_design_test::test_c57_length_cache_does_not_detect_content_change": "RN146-SRC-034",
+  "tests.source.source_design_test::test_c58_multi_column_query_completes_within_guard": "RN146-SRC-035",
+  "tests.source.source_errors_test::test_c26_query_time_read_failure_maps_to_file_read_error": "RN146-SRC-036",
+  "tests.source.source_errors_test::test_c27_28_no_silent_empty_result_on_injected_failures": "RN146-SRC-037",
+  "tests.source.source_errors_test::test_c30_truncation_never_returns_partial_silently": "RN146-SRC-038",
+  "tests.source.source_errors_test::test_c31_truncated_source_rejected": "RN146-SRC-039",
+  "tests.source.source_errors_test::test_c32_non_io_exception_propagates_or_wraps": "RN146-SRC-040",
+  "tests.source.source_errors_test::test_c33_source_closed_before_query": "RN146-SRC-041",
+  "tests.source.source_errors_test::test_c34_over_returning_source_recorded": "RN146-SRC-042",
+  "tests.source.source_errors_test::test_c35_read_failure_after_open_rejected": "RN146-SRC-043",
+  "tests.source.source_errors_test::test_c36_reader_does_not_close_source": "RN146-SRC-044",
+  "tests.source.source_errors_test::test_c37_source_released_after_close": "RN146-SRC-045",
+  "tests.source.source_errors_test::test_c38_close_is_idempotent": "RN146-SRC-046",
+  "tests.source.source_errors_test::test_c39_source_closed_before_reader_close_is_safe": "RN146-SRC-047",
+  "tests.source.source_errors_test::test_c40_reader_closed_then_source_closed": "RN146-SRC-048",
+  "tests.source.source_errors_test::test_c41_reader_without_close_does_not_break_process": "RN146-SRC-049",
+  "tests.source.source_tree_propagation_test::test_c29_tree_data_block_failures_do_not_silently_truncate": "RN146-SRC-050"
  },
  "aliases": {
   "Python-Table-001": [
