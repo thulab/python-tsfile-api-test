@@ -5,6 +5,8 @@ tsfile/**
 tests/__pycache__/**
 tests/.coverage
 **.tsfile
+# source 套件基线数据文件需入库（simple_table_t1/simple_tree，由产品资源同步）
+!tests/source/data/*.tsfile
 .idea
 reports/
 .venv
