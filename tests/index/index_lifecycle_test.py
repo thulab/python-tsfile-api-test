@@ -81,8 +81,9 @@ def sections_of(path):
     return result
 
 
-def build(data):
-    return TsFileDataFrame(str(data), show_progress=False, use_index=True)
+def build(data, trust_index=True):
+    return TsFileDataFrame(str(data), show_progress=False, use_index=True,
+                           trust_index=trust_index)
 
 
 def dev_a_series(frame):
@@ -198,12 +199,13 @@ def test_case05_index_scoped_to_expanded_file_set(d1_root, tmp_path):
 
 def test_case06_size_change_triggers_rebuild(d1_root, tmp_path):
     data = work_dir(d1_root, tmp_path)
-    frame = build(data)
+    # #1004 起默认 trust_index=True 不再校验源文件变化，需显式 trust_index=False 触发重建
+    frame = build(data, trust_index=False)
     frame.close()
     index = index_files(data)[0]
     before = sha256(index)
     rewrite(os.path.join(str(data), "weather_c.tsfile"), 200, 249, {"dev_a": ("cn", 5)})
-    frame = build(data)
+    frame = build(data, trust_index=False)
     rows = rows_of(frame)
     frame.close()
     assert sha256(index_files(data)[0]) != before
@@ -213,14 +215,15 @@ def test_case06_size_change_triggers_rebuild(d1_root, tmp_path):
 
 def test_case07_mtime_change_triggers_rebuild(d1_root, tmp_path):
     data = work_dir(d1_root, tmp_path)
-    frame = build(data)
+    # #1004 起默认 trust_index=True 不再校验源文件变化，需显式 trust_index=False 触发重建
+    frame = build(data, trust_index=False)
     frame.close()
     index = index_files(data)[0]
     before = sha256(index)
     target = os.path.join(str(data), "weather_a.tsfile")
     stat = os.stat(target)
     os.utime(target, ns=(stat.st_atime_ns, stat.st_mtime_ns + 5_000_000_000))
-    frame = build(data)
+    frame = build(data, trust_index=False)
     rows = rows_of(frame)
     frame.close()
     assert sha256(index_files(data)[0]) != before

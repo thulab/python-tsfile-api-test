@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import contextlib
 import gc
 import glob
 import hashlib
@@ -203,15 +204,16 @@ def test_case42_prepared_series_cache_returns_same_object_after_eviction(d1_root
     monkeypatch.setenv("TSFILE_DATAFRAME_MAX_OPEN_FILES", "1")
     frame = TsFileDataFrame(table, show_progress=False, use_index=True)
     cache = frame._runtime.prepared
-    original_get = cache.get
+    original_acquire = cache.acquire
     identities = []
 
-    def observed_get(file_id, locator_id, reader, time_owner=None):
-        value = original_get(file_id, locator_id, reader, time_owner=time_owner)
-        identities.append((int(file_id), int(locator_id), id(value)))
-        return value
+    @contextlib.contextmanager
+    def observed_acquire(file_id, locator_id, reader, time_owner=None):
+        with original_acquire(file_id, locator_id, reader, time_owner=time_owner) as prepared:
+            identities.append((int(file_id), int(locator_id), id(prepared)))
+            yield prepared
 
-    cache.get = observed_get
+    cache.acquire = observed_acquire
     try:
         names = [str(item) for item in frame.list_timeseries() if str(item).endswith(".temperature")]
         assert len(names) >= 2
