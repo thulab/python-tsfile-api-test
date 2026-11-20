@@ -126,6 +126,25 @@ def build_inventory(root: Path = ROOT) -> list[dict[str, object]]:
                 "description": metadata.get("name") or "",
             }
         )
+    # 一节点多编号：正式编号可能只登记在 aliases（如 777/778 共用节点），
+    # nmap 受 1:1 校验约束容纳不下，这里补发 aliases 中的 TsFile 正式编号。
+    aliases = load_json(root / ".plm-case-id-map.json").get("aliases") or {}
+    tsfile_case_id = re.compile(r"^TsFile-\d+$")
+    for case_id, nodes in aliases.items():
+        if case_id in nmap or not tsfile_case_id.fullmatch(case_id):
+            continue
+        node_id = nodes[0]
+        metadata = info.get(case_id) or {}
+        cases.append(
+            {
+                "caseId": case_id,
+                "automationType": "ts-py",
+                "nodeId": node_id,
+                "sourceFile": node_id.split("::", 1)[0],
+                "name": names.get(case_id) or metadata.get("name") or node_id.split("::")[-1],
+                "description": metadata.get("name") or "",
+            }
+        )
     return cases
 
 

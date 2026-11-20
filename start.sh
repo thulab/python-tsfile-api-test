@@ -23,7 +23,6 @@ for a in "$@"; do [ "$a" = "--proxy" ] && proxy_apply; done
 
 usage() { cat >&2 <<'EOF'
 Usage: sh start.sh <command> [target] [--proxy]
-  prepare            install TsFile wheel + pytest
   all                run all tests
   page <name>        page table | page tree
   case <case-id>     run single case
@@ -35,18 +34,6 @@ EOF
 }
 
 PY="python3"; [ -x .venv/bin/python ] && PY=".venv/bin/python"
-
-prepare() {
-  echo "=== install pytest ==="; "$PY" -m pip install pytest -q 2>&1 | tail -1
-  local ts="../tsfile"
-  [ -f "$ts/pom.xml" ] || { echo "ERROR: tsfile not found" >&2; return 1; }
-  echo "=== build TsFile Python wheel ==="
-  (cd "$ts" && mvn install -P with-python -DskipTests -Dspotless.check.skip=true -q) || { echo "ERROR: TsFile build failed" >&2; return 1; }
-  local whl=$(ls "$ts"/python/dist/*.whl 2>/dev/null | head -1)
-  [ -z "$whl" ] && { echo "ERROR: wheel not found" >&2; return 1; }
-  echo "=== install $whl ==="; "$PY" -m pip install "$whl" --force-reinstall -q
-  echo "=== prepare done ==="
-}
 
 list_cases() { "$PY" plm_case_map.py list-cases; }
 
@@ -237,7 +224,7 @@ page()   { case "$1" in table) D="tests/table";; tree) D="tests/tree";; *) echo 
 plm()    { echo "[plm] 全量测试"; all; }
 
 case "$CMD" in
-  prepare) prepare;;  all) all;;  page) page "$TGT";;
+  all) all;;  page) page "$TGT";;
   case|case-id) case_one "$TGT" || exit;;  cases) cases_batch "$TGT" || exit;;
   plm|plm-all) plm;;  list-cases) list_cases;;  help|-h|--help) usage;;
   test_*) case_one "$CMD";;  *) echo "Unknown: $CMD" >&2; usage; exit 2;;
